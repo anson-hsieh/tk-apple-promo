@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TK 蘋果檔期活動查詢</title>
+<style>
+  :root{
+    --bg:#fafafa; --card:#fff; --text:#0a0a0a; --sub:#737373; --muted:#a3a3a3;
+    --accent:#0071e3; --border:#e5e5e5; --border-strong:#d4d4d4;
+    --promo:#dc2626; --save:#16a34a; --gift:#ea580c;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.04);
+    --shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
+    --shadow-lg:0 4px 8px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not(.light){--bg:#0a0a0a;--card:#171717;--text:#fafafa;--sub:#a3a3a3;--muted:#737373;--border:#262626;--border-strong:#404040;--shadow-sm:none;--shadow:0 1px 3px rgba(0,0,0,.3);--shadow-lg:0 12px 32px rgba(0,0,0,.4)}
+  }
+  :root.dark{--bg:#0a0a0a;--card:#171717;--text:#fafafa;--sub:#a3a3a3;--muted:#737373;--border:#262626;--border-strong:#404040;--shadow-sm:none;--shadow:0 1px 3px rgba(0,0,0,.3);--shadow-lg:0 12px 32px rgba(0,0,0,.4)}
+  .theme-btn{position:fixed;top:16px;right:16px;width:38px;height:38px;border:1px solid var(--border);background:var(--card);border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:20;transition:.2s;color:var(--text);font-family:inherit;padding:0}
+  .theme-btn:hover{border-color:var(--accent);transform:scale(1.06);box-shadow:var(--shadow-sm)}
+  .theme-btn:active{transform:scale(.96)}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang TC",sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5}
+  .wrap{max-width:720px;margin:0 auto;padding:40px 24px 80px}
+
+  /* Header */
+  header{margin-bottom:28px}
+  .brand{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:8px}
+  .topbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .back{border:1px solid var(--border);background:var(--card);color:var(--text);padding:7px 12px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:.15s;font-family:inherit}
+  .back:hover{border-color:var(--border-strong);background:var(--bg)}
+  .back[hidden]{display:none}
+  h1{margin:0;font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15}
+  .crumb{color:var(--sub);font-size:14px;margin:10px 0 0}
+
+  /* Home: horizontal card list */
+  .hero{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+  .cat-tile{display:flex;align-items:center;gap:16px;padding:18px 20px;background:var(--card);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:.18s cubic-bezier(.2,.8,.2,1);text-align:left;font-family:inherit;color:inherit}
+  .cat-tile:hover{border-color:var(--accent);transform:translateX(3px);box-shadow:var(--shadow)}
+  .cat-tile .icon{font-size:26px;line-height:1;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;background:var(--bg);border-radius:10px;flex-shrink:0;border:1px solid var(--border)}
+  .cat-tile .info{flex:1;min-width:0}
+  .cat-tile .name{font-size:16px;font-weight:600;margin-bottom:2px}
+  .cat-tile .desc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
+  .cat-tile .arrow{color:var(--muted);font-size:16px;transition:.18s}
+  .cat-tile:hover .arrow{color:var(--accent);transform:translateX(3px)}
+
+  /* Panel card */
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-sm)}
+  .panel-head{padding:14px 20px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--sub);letter-spacing:.8px;text-transform:uppercase}
+  .panel-body{padding:20px}
+
+  /* Category tabs */
+  .cat-tabs{display:flex;flex-wrap:wrap;gap:8px}
+  .cat-tab{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border:1px solid var(--border-strong);background:var(--card);color:var(--text);border-radius:9px;cursor:pointer;font-size:14px;font-weight:500;font-family:inherit;transition:.15s}
+  .cat-tab:hover{border-color:var(--accent);color:var(--accent)}
+  .cat-tab.active{background:var(--text);color:var(--card);border-color:var(--text)}
+  .cat-tab .ci{font-size:16px;line-height:1}
+
+  /* Form */
+  .form{display:flex;flex-direction:column;gap:16px}
+  .field{display:flex;flex-direction:column;gap:7px}
+  .field label{font-size:12px;color:var(--sub);font-weight:600;letter-spacing:.3px}
+  .field select{width:100%;padding:11px 40px 11px 14px;border:1px solid var(--border-strong);border-radius:8px;background:var(--card);color:var(--text);font-size:14px;font-weight:500;font-family:inherit;appearance:none;-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%23737373' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-repeat:no-repeat;background-position:right 14px center;transition:.15s}
+  .field select:hover{border-color:var(--accent)}
+  .field select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)}
+
+  /* Result card */
+  .result{margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);animation:slideIn .3s cubic-bezier(.2,.8,.2,1)}
+  @keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .result-head{padding:20px 24px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 5%,transparent),transparent 60%);border-bottom:1px solid var(--border)}
+  .product-name{font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin-bottom:6px}
+  .product-meta{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;color:var(--sub);letter-spacing:-.2px}
+  .price-grid{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:18px 24px;border-bottom:1px solid var(--border);align-items:baseline}
+  .price-grid .label{font-size:13px;color:var(--sub);font-weight:500}
+  .price-grid .value{font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;text-align:right;color:var(--text)}
+  .price-grid .old{color:var(--muted);text-decoration:line-through;font-weight:400}
+  .price-grid .save-value{color:var(--save);font-weight:600}
+  .price-grid .final-label{font-size:14px;font-weight:600;color:var(--text);padding-top:6px;border-top:1px solid var(--border);margin-top:4px}
+  .price-grid .final-value{font-size:26px;font-weight:700;color:var(--promo);letter-spacing:-.02em;padding-top:6px;border-top:1px solid var(--border);margin-top:4px;font-variant-numeric:tabular-nums;text-align:right}
+  .promo-section{padding:18px 24px;display:flex;align-items:flex-start;gap:14px}
+  .promo-icon{width:36px;height:36px;background:color-mix(in srgb,var(--gift) 12%,transparent);color:var(--gift);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
+  .promo-content{flex:1;min-width:0}
+  .promo-header{font-size:10px;font-weight:700;color:var(--gift);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+  .promo-text{font-size:15px;font-weight:500;line-height:1.45;color:var(--text)}
+  .gift-title{margin-top:10px;font-size:11px;font-weight:700;color:var(--gift);letter-spacing:.6px;text-transform:uppercase}
+  .gift-list{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--text);line-height:1.5}
+  .gift-list li{margin:2px 0}
+  .gift-list li b{color:var(--sub);font-weight:500;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;margin-right:6px}
+  .edu-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .edu-icon{width:36px;height:36px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
+  .edu-content{flex:1;min-width:0}
+  .edu-header{font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+  .edu-rows{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .edu-disc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
+  .edu-disc b{color:var(--save);font-weight:600}
+  .edu-price{font-size:20px;font-weight:700;color:var(--accent);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .stock-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
+  .stock-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+  .stock-table{display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;font-size:13px;font-variant-numeric:tabular-nums}
+  .stock-table .head{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border)}
+  .stock-table .head:nth-child(2),.stock-table .head:nth-child(3){text-align:right}
+  .stock-table > div:not(.head):not(.total){padding:3px 0}
+  .stock-table > div:nth-child(3n+2),.stock-table > div:nth-child(3n){text-align:right;font-weight:500}
+  .stock-table .total{font-weight:700;padding-top:6px;border-top:1px solid var(--border);margin-top:2px;color:var(--text)}
+  .stock-table .zero{color:var(--muted);font-weight:400}
+  .stock-table .hi{color:var(--save)}
+  .stock-table .color-label{color:var(--text)}
+  .no-promo{padding:20px 24px;color:var(--sub);font-size:13px;text-align:center}
+
+  @media (max-width:600px){
+    .wrap{padding:24px 16px 60px}
+    h1{font-size:22px}
+    .result-head,.price-grid,.promo-section,.no-promo{padding-left:18px;padding-right:18px}
+    .price-grid .final-value{font-size:22px}
+    .panel-body{padding:16px}
+  }
+</style>
+</head>
+<body>
+<button class="theme-btn" id="themeBtn" aria-label="切換深色模式" title="切換深淺模式">🌙</button>
+<script>
+  // Init theme before render to avoid flash
+  (function(){
+    const saved = localStorage.getItem('theme');
+    const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const useDark = saved ? saved === 'dark' : sysDark;
+    document.documentElement.classList.add(useDark ? 'dark' : 'light');
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const btn = document.getElementById('themeBtn');
+      const update = ()=> btn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+      update();
+      btn.onclick = ()=>{
+        const isDark = document.documentElement.classList.toggle('dark');
+        document.documentElement.classList.toggle('light', !isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        update();
+      };
+    });
+  })();
+</script>
+<div class="wrap">
+  <header>
+    <h1 id="title">TK 蘋果檔期優惠活動查詢</h1>
+    <div class="brand">2026/06/19 – 2026/07/09 檔期優惠</div>
+    <p class="crumb" id="crumb">選擇類別、機型與規格,查看促銷活動與優惠價</p>
+  </header>
+  <main id="view"></main>
+</div>
+
+<script>
+// -------- Data --------
+const RAW = [
+  // Mac - MacBook Neo
+  ["Mac","MacBook Neo 滿萬送200配件金",[
+    [267442,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/胭粉","MHFH4TA/A",22900,0,22900],
+    [267443,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/青橘黃","MHFD4TA/A",22900,0,22900],
+    [267444,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/靛青","MHFF4TA/A",22900,0,22900],
+    [267445,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/銀","MHFA4TA/A",22900,0,22900],
+    [267446,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/胭粉","MHFJ4TA/A",25900,0,25900],
+    [267447,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/青橘黃","MHFE4TA/A",25900,0,25900],
+    [267448,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/靛青","MHFG4TA/A",25900,0,25900],
+    [267449,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/銀","MHFC4TA/A",25900,0,25900],
+  ]],
+  // Mac - MacBook Air 13 M5
+  ["Mac","MacBook Air 13 M5 滿萬送300配件金",[
+    [267369,"13.6吋MBA M5/10CPU/8GPU/16G/512G/午夜","MDHE4TA/A",42900,0,42900],
+    [267370,"13.6吋MBA M5/10CPU/8GPU/16G/512G/銀","MDH74TA/A",42900,0,42900],
+    [267371,"13.6吋MBA M5/10CPU/8GPU/16G/512G/天藍","MDHH4TA/A",42900,0,42900],
+    [267372,"13.6吋MBA M5/10CPU/8GPU/16G/512G/星光","MDHA4TA/A",42900,0,42900],
+    [267373,"13.6吋MBA M5/10CPU/10GPU/16G/1T/午夜","MDHF4TA/A",53400,0,53400],
+    [267374,"13.6吋MBA M5/10CPU/10GPU/16G/1T/銀","MDH84TA/A",53400,0,53400],
+    [267375,"13.6吋MBA M5/10CPU/10GPU/16G/1T/天藍","MDHJ4TA/A",53400,0,53400],
+    [267376,"13.6吋MBA M5/10CPU/10GPU/16G/1T/星光","MDHC4TA/A",53400,0,53400],
+    [267377,"13.6吋MBA M5/10CPU/10GPU/24G/1T/午夜","MDHG4TA/A",60400,0,60400],
+    [267378,"13.6吋MBA M5/10CPU/10GPU/24G/1T/銀","MDH94TA/A",60400,0,60400],
+    [267379,"13.6吋MBA M5/10CPU/10GPU/24G/1T/天藍","MDHK4TA/A",60400,0,60400],
+    [267380,"13.6吋MBA M5/10CPU/10GPU/24G/1T/星光","MDHD4TA/A",60400,0,60400],
+  ]],
+  // Mac - MacBook Air 15 M5
+  ["Mac","MacBook Air 15 M5 滿萬送300配件金",[
+    [267381,"15.3吋MBA M5/10CPU/10GPU/16G/512G/午夜","MDVH4TA/A",49900,0,49900],
+    [267382,"15.3吋MBA M5/10CPU/10GPU/16G/512G/銀","MDV94TA/A",49900,0,49900],
+    [267383,"15.3吋MBA M5/10CPU/10GPU/16G/512G/天藍","MDVQ4TA/A",49900,0,49900],
+    [267384,"15.3吋MBA M5/10CPU/10GPU/16G/512G/星光","MDVD4TA/A",49900,0,49900],
+    [267385,"15.3吋MBA M5/10CPU/10GPU/16G/1T/午夜","MDVK4TA/A",60400,0,60400],
+    [267386,"15.3吋MBA M5/10CPU/10GPU/16G/1T/銀","MDVA4TA/A",60400,0,60400],
+    [267387,"15.3吋MBA M5/10CPU/10GPU/16G/1T/天藍","MDVT4TA/A",60400,0,60400],
+    [267388,"15.3吋MBA M5/10CPU/10GPU/16G/1T/星光","MDVE4TA/A",60400,0,60400],
+    [267389,"15.3吋MBA M5/10CPU/10GPU/24G/1T/午夜","MDVN4TA/A",67400,0,67400],
+    [267390,"15.3吋MBA M5/10CPU/10GPU/24G/1T/銀","MDVC4TA/A",67400,0,67400],
+    [267391,"15.3吋MBA M5/10CPU/10GPU/24G/1T/天藍","MDVU4TA/A",67400,0,67400],
+    [267392,"15.3吋MBA M5/10CPU/10GPU/24G/1T/星光","MDVF4TA/A",67400,0,67400],
+  ]],
+  // Mac - iMac M4
+  ["Mac","iMac M4 現折4%",[
+    [253474,"iMac 24吋 M4/8CPU/8GPU/16G/256G/銀","MWUC3TA/A",49900,1996,47904],
+    [253475,"iMac 24吋 M4/8CPU/8GPU/16G/256G/藍","MWUF3TA/A",49900,1996,47904],
+    [253476,"iMac 24吋 M4/8CPU/8GPU/16G/256G/綠","MWUE3TA/A",49900,1996,47904],
+    [253477,"iMac 24吋 M4/8CPU/8GPU/16G/256G/粉","MWUG3TA/A",49900,1996,47904],
+    [253478,"iMac 24吋 M4/10CPU/10GPU/16G/256G/銀","MWUU3TA/A",57900,2316,55584],
+    [253479,"iMac 24吋 M4/10CPU/10GPU/16G/256G/藍","MWV13TA/A",57900,2316,55584],
+    [253480,"iMac 24吋 M4/10CPU/10GPU/16G/256G/綠","MWUY3TA/A",57900,2316,55584],
+    [253481,"iMac 24吋 M4/10CPU/10GPU/16G/256G/粉","MWV43TA/A",57900,2316,55584],
+    [253482,"iMac 24吋 M4/10CPU/10GPU/16G/512G/銀","MWUV3TA/A",64900,2596,62304],
+    [253483,"iMac 24吋 M4/10CPU/10GPU/16G/512G/藍","MWV33TA/A",64900,2596,62304],
+    [253484,"iMac 24吋 M4/10CPU/10GPU/16G/512G/綠","MWV03TA/A",64900,2596,62304],
+    [253485,"iMac 24吋 M4/10CPU/10GPU/16G/512G/粉","MWV53TA/A",64900,2596,62304],
+    [253486,"iMac 24吋 M4/10CPU/10GPU/24G/512G/銀","MCR24TA/A",71900,2876,69024],
+    [253487,"iMac 24吋 M4/10CPU/10GPU/24G/512G/藍","MD2T4TA/A",71900,2876,69024],
+    [253488,"iMac 24吋 M4/10CPU/10GPU/24G/512G/綠","MD2Q4TA/A",71900,2876,69024],
+    [253489,"iMac 24吋 M4/10CPU/10GPU/24G/512G/粉","MD2U4TA/A",71900,2876,69024],
+  ]],
+  // Mac - MBP 14 M5 (basic)
+  ["Mac","MacBook Pro 14 M5 現折1947起",[
+    [263627,"14.2吋MBP M5/10CPU/10GPU/16G/1T/太空黑","MDE14TA/A",64900,1947,62953],
+    [263628,"14.2吋MBP M5/10CPU/10GPU/16G/1T/銀","MDE54TA/A",64900,1947,62953],
+    [263629,"14.2吋MBP M5/10CPU/10GPU/24G/1T/太空黑","MDE34TA/A",71900,2157,69743],
+    [263630,"14.2吋MBP M5/10CPU/10GPU/24G/1T/銀","MDE64TA/A",71900,2157,69743],
+    [267393,"14.2吋MBP M5/10CPU/10GPU/32G/1T/銀","MJ3E4TA/A",78900,2367,76533],
+    [267394,"14.2吋MBP M5/10CPU/10GPU/32G/1T/太空黑","MJ3D4TA/A",78900,2367,76533],
+  ]],
+  // Mac - MBP 14 M5 Pro / Max
+  ["Mac","MacBook Pro 14 M5 Pro/Max 滿萬送500配件金",[
+    [267395,"14.2吋MBP M5 Pro/15CPU/16GPU/24G/1T/銀","MGDN4TA/A",84900,0,84900],
+    [267396,"14.2吋MBP M5 Pro/15CPU/16GPU/24G/1T/黑","MGDR4TA/A",84900,0,84900],
+    [267397,"14.2吋MBP M5 Pro/15CPU/16GPU/24G/2T/銀","MJLV4TA/A",102400,0,102400],
+    [267398,"14.2吋MBP M5 Pro/15CPU/16GPU/24G/2T/黑","MJLW4TA/A",102400,0,102400],
+    [267399,"14.2吋MBP M5 Pro/18CPU/20GPU/24G/2T/銀","MGDP4TA/A",109900,0,109900],
+    [267400,"14.2吋MBP M5 Pro/18CPU/20GPU/24G/2T/黑","MGDT4TA/A",109900,0,109900],
+    [267401,"14.2吋MBP M5 Max/18CPU/32GPU/36G/2T/銀","MGDQ4TA/A",139900,0,139900],
+    [267402,"14.2吋MBP M5 Max/18CPU/32GPU/36G/2T/黑","MGDU4TA/A",139900,0,139900],
+  ]],
+  // Mac - MBP 16
+  ["Mac","MacBook Pro 16 M5 Pro 滿萬送500配件金",[
+    [267403,"16.2吋MBP M5 Pro/18CPU/20GPU/24G/1T/銀","MGE44TA/A",99900,0,99900],
+    [267404,"16.2吋MBP M5 Pro/18CPU/20GPU/24G/1T/黑","MGEA4TA/A",99900,0,99900],
+    [267405,"16.2吋MBP M5 Pro/18CPU/20GPU/48G/1T/銀","MGE64TA/A",120900,0,120900],
+    [267406,"16.2吋MBP M5 Pro/18CPU/20GPU/48G/1T/黑","MGEC4TA/A",120900,0,120900],
+    [267407,"16.2吋MBP M5 Max/18CPU/32GPU/36G/2T/銀","MGE74TA/A",144900,0,144900],
+    [267408,"16.2吋MBP M5 Max/18CPU/32GPU/36G/2T/黑","MGED4TA/A",144900,0,144900],
+    [267409,"16.2吋MBP M5 Max/18CPU/40GPU/48G/2T/銀","MGE94TA/A",169900,0,169900],
+    [267410,"16.2吋MBP M5 Max/18CPU/40GPU/48G/2T/黑","MGEE4TA/A",169900,0,169900],
+  ]],
+  // Mac - Mac mini
+  ["Mac","Mac mini M4 暫無交期",[
+    [253545,"Mac mini M4/10CPU/10GPU/16G/512G","MU9E3TA/A",33900,0,33900],
+    [253546,"Mac mini M4/10CPU/10GPU/24G/512G","MCYT4TA/A",40900,0,40900],
+    [253547,"Mac mini M4 Pro/12CPU/16GPU/24G/512G","MCX44TA/A",54900,0,54900],
+  ]],
+  // Mac - Mac Studio
+  ["Mac","Mac Studio 暫無交期",[
+    [256657,"Mac Studio M4 Max/14CPU/32GPU/36G/512G","MU963TA/A",84900,0,84900],
+    [256658,"Mac Studio M3 Ultra/28CPU/60GPU/96G/1T","MU973TA/A",184900,0,184900],
+  ]],
+  // iPad - iPad mini 7th
+  ["iPad","iPad mini 7th 現折995起",[
+    [253160,"iPad mini 7th Wi-Fi 128G-藍色","MXN73TA/A",19900,995,18905],
+    [253161,"iPad mini 7th Wi-Fi 128G-紫色","MXN93TA/A",19900,995,18905],
+    [253162,"iPad mini 7th Wi-Fi 128G-太空灰色","MXN63TA/A",19900,995,18905],
+    [253163,"iPad mini 7th Wi-Fi 128G-星光色","MXN83TA/A",19900,995,18905],
+    [253164,"iPad mini 7th Wi-Fi 256G-藍色","MXNC3TA/A",23400,1170,22230],
+    [253165,"iPad mini 7th Wi-Fi 256G-紫色","MXNE3TA/A",23400,1170,22230],
+    [253166,"iPad mini 7th Wi-Fi 256G-太空灰色","MXNA3TA/A",23400,1170,22230],
+    [253167,"iPad mini 7th Wi-Fi 256G-星光色","MXND3TA/A",23400,1170,22230],
+    [253168,"iPad mini 7th Wi-Fi 512G-藍色","MYH13TA/A",30400,1520,28880],
+    [253169,"iPad mini 7th Wi-Fi 512G-紫色","MYH33TA/A",30400,1520,28880],
+    [253170,"iPad mini 7th Wi-Fi 512G-太空灰色","MYGY3TA/A",30400,1520,28880],
+    [253171,"iPad mini 7th Wi-Fi 512G-星光色","MYH23TA/A",30400,1520,28880],
+    [253172,"iPad mini 7th Wi-Fi+LTE 128G-藍色","MXPP3TA/A",24900,1245,23655],
+    [253173,"iPad mini 7th Wi-Fi+LTE 128G-紫色","MXPR3TA/A",24900,1245,23655],
+    [253174,"iPad mini 7th Wi-Fi+LTE 128G-太空灰色","MXPN3TA/A",24900,1245,23655],
+    [253175,"iPad mini 7th Wi-Fi+LTE 128G-星光色","MXPQ3TA/A",24900,1245,23655],
+    [253176,"iPad mini 7th Wi-Fi+LTE 256G-藍色","MXPW3TA/A",28400,1420,26980],
+    [253177,"iPad mini 7th Wi-Fi+LTE 256G-紫色","MXPY3TA/A",28400,1420,26980],
+    [253178,"iPad mini 7th Wi-Fi+LTE 256G-太空灰色","MXPT3TA/A",28400,1420,26980],
+    [253179,"iPad mini 7th Wi-Fi+LTE 256G-星光色","MXPX3TA/A",28400,1420,26980],
+    [253180,"iPad mini 7th Wi-Fi+LTE 512G-藍色","MYHD3TA/A",35400,1770,33630],
+    [253181,"iPad mini 7th Wi-Fi+LTE 512G-紫色","MYHF3TA/A",35400,1770,33630],
+    [253182,"iPad mini 7th Wi-Fi+LTE 512G-太空灰色","MYHC3TA/A",35400,1770,33630],
+    [253183,"iPad mini 7th Wi-Fi+LTE 512G-星光色","MYHE3TA/A",35400,1770,33630],
+  ]],
+  // iPad - iPad 11吋
+  ["iPad","iPad 11吋 現折745起",[
+    [256491,"iPad 11吋 Wi-Fi 128G-銀","MD3Y4TA/A",14900,745,14155],
+    [256493,"iPad 11吋 Wi-Fi 128G-藍","MD4A4TA/A",14900,745,14155],
+    [256494,"iPad 11吋 Wi-Fi 128G-黃","MD4D4TA/A",14900,745,14155],
+    [256495,"iPad 11吋 Wi-Fi 128G-粉紅","MD4E4TA/A",14900,745,14155],
+    [256496,"iPad 11吋 Wi-Fi 256G-銀","MD4G4TA/A",18400,920,17480],
+    [256497,"iPad 11吋 Wi-Fi 256G-藍","MD4H4TA/A",18400,920,17480],
+    [256498,"iPad 11吋 Wi-Fi 256G-黃","MD4J4TA/A",18400,920,17480],
+    [256499,"iPad 11吋 Wi-Fi 256G-粉紅","MD4P4TA/A",18400,920,17480],
+    [256500,"iPad 11吋 Wi-Fi 512G-銀","MD4Q4TA/A",25400,1270,24130],
+    [256501,"iPad 11吋 Wi-Fi 512G-藍","MD4Y4TA/A",25400,1270,24130],
+    [256502,"iPad 11吋 Wi-Fi 512G-黃","MD5A4TA/A",25400,1270,24130],
+    [256503,"iPad 11吋 Wi-Fi 512G-粉紅","MD5C4TA/A",25400,1270,24130],
+    [256504,"iPad 11吋 Wi-Fi+LTE 128G-銀","MD7F4TA/A",19900,995,18905],
+    [256505,"iPad 11吋 Wi-Fi+LTE 128G-藍","MD7G4TA/A",19900,995,18905],
+    [256506,"iPad 11吋 Wi-Fi+LTE 128G-黃","MD7H4TA/A",19900,995,18905],
+    [256507,"iPad 11吋 Wi-Fi+LTE 128G-粉紅","MD7J4TA/A",19900,995,18905],
+    [256508,"iPad 11吋 Wi-Fi+LTE 256G-銀","MD7K4TA/A",23400,1170,22230],
+    [256509,"iPad 11吋 Wi-Fi+LTE 256G-藍","MD7L4TA/A",23400,1170,22230],
+    [256510,"iPad 11吋 Wi-Fi+LTE 256G-黃","MD7M4TA/A",23400,1170,22230],
+    [256511,"iPad 11吋 Wi-Fi+LTE 256G-粉紅","MD7N4TA/A",23400,1170,22230],
+    [256512,"iPad 11吋 Wi-Fi+LTE 512G-銀","MD7P4TA/A",30400,1520,28880],
+    [256513,"iPad 11吋 Wi-Fi+LTE 512G-藍","MD7Q4TA/A",30400,1520,28880],
+    [256514,"iPad 11吋 Wi-Fi+LTE 512G-黃","MD7R4TA/A",30400,1520,28880],
+    [256515,"iPad 11吋 Wi-Fi+LTE 512G-粉紅","MD7T4TA/A",30400,1520,28880],
+  ]],
+  // iPad - iPad Air 11吋 M4
+  ["iPad","iPad Air 11吋 M4 現折1245起",[
+    [267288,"iPad Air 11吋 M4 Wi-Fi 128G太空灰","MH304TA/A",24900,1245,23655],
+    [267289,"iPad Air 11吋 M4 Wi-Fi 128G藍","MH314TA/A",24900,1245,23655],
+    [267290,"iPad Air 11吋 M4 Wi-Fi 128G星光","MH334TA/A",24900,1245,23655],
+    [267291,"iPad Air 11吋 M4 Wi-Fi 128G紫","MH344TA/A",24900,1245,23655],
+    [267292,"iPad Air 11吋 M4 Wi-Fi 256G太空灰","MH354TA/A",28400,1420,26980],
+    [267293,"iPad Air 11吋 M4 Wi-Fi 256G藍","MH364TA/A",28400,1420,26980],
+    [267294,"iPad Air 11吋 M4 Wi-Fi 256G星光","MH374TA/A",28400,1420,26980],
+    [267295,"iPad Air 11吋 M4 Wi-Fi 256G紫","MH394TA/A",28400,1420,26980],
+    [267296,"iPad Air 11吋 M4 Wi-Fi 512G太空灰","MH3A4TA/A",35400,1770,33630],
+    [267297,"iPad Air 11吋 M4 Wi-Fi 512G藍","MH3C4TA/A",35400,1770,33630],
+    [267298,"iPad Air 11吋 M4 Wi-Fi 512G星光","MH3D4TA/A",35400,1770,33630],
+    [267299,"iPad Air 11吋 M4 Wi-Fi 512G紫","MH3E4TA/A",35400,1770,33630],
+    [267300,"iPad Air 11吋 M4 Wi-Fi 1T太空灰","MH3G4TA/A",45900,2295,43605],
+    [267301,"iPad Air 11吋 M4 Wi-Fi 1T藍","MH3H4TA/A",45900,2295,43605],
+    [267302,"iPad Air 11吋 M4 Wi-Fi 1T星光","MH3J4TA/A",45900,2295,43605],
+    [267303,"iPad Air 11吋 M4 Wi-Fi 1T紫","MH3K4TA/A",45900,2295,43605],
+    [267304,"iPad Air 11吋 M4 LTE 128G太空灰","MH784TA/A",29900,1495,28405],
+    [267305,"iPad Air 11吋 M4 LTE 128G藍","MH794TA/A",29900,1495,28405],
+    [267306,"iPad Air 11吋 M4 LTE 128G星光","MH7A4TA/A",29900,1495,28405],
+    [267307,"iPad Air 11吋 M4 LTE 128G紫","MH7C4TA/A",29900,1495,28405],
+    [267308,"iPad Air 11吋 M4 LTE 256G太空灰","MH7D4TA/A",33400,1670,31730],
+    [267309,"iPad Air 11吋 M4 LTE 256G藍","MH7E4TA/A",33400,1670,31730],
+    [267310,"iPad Air 11吋 M4 LTE 256G星光","MH7F4TA/A",33400,1670,31730],
+    [267311,"iPad Air 11吋 M4 LTE 256G紫","MH7G4TA/A",33400,1670,31730],
+    [267312,"iPad Air 11吋 M4 LTE 512G太空灰","MH7H4TA/A",40400,2020,38380],
+    [267313,"iPad Air 11吋 M4 LTE 512G藍","MH7J4TA/A",40400,2020,38380],
+    [267314,"iPad Air 11吋 M4 LTE 512G星光","MH7K4TA/A",40400,2020,38380],
+    [267315,"iPad Air 11吋 M4 LTE 512G紫","MH7L4TA/A",40400,2020,38380],
+    [267316,"iPad Air 11吋 M4 LTE 1T太空灰","MH7M4TA/A",50900,2545,48355],
+    [267317,"iPad Air 11吋 M4 LTE 1T藍","MH7N4TA/A",50900,2545,48355],
+    [267318,"iPad Air 11吋 M4 LTE 1T星光","MH7P4TA/A",50900,2545,48355],
+    [267319,"iPad Air 11吋 M4 LTE 1T紫","MH7Q4TA/A",50900,2545,48355],
+  ]],
+  // iPad - iPad Air 13吋 M4
+  ["iPad","iPad Air 13吋 M4 現折1595起",[
+    [267320,"iPad Air 13吋 M4 Wi-Fi 128G太空灰","MH5N4TA/A",31900,1595,30305],
+    [267321,"iPad Air 13吋 M4 Wi-Fi 128G藍","MH5P4TA/A",31900,1595,30305],
+    [267322,"iPad Air 13吋 M4 Wi-Fi 128G星光","MH5Q4TA/A",31900,1595,30305],
+    [267323,"iPad Air 13吋 M4 Wi-Fi 128G紫","MH5T4TA/A",31900,1595,30305],
+    [267324,"iPad Air 13吋 M4 Wi-Fi 256G太空灰","MH5U4TA/A",35400,1770,33630],
+    [267325,"iPad Air 13吋 M4 Wi-Fi 256G藍","MH5V4TA/A",35400,1770,33630],
+    [267326,"iPad Air 13吋 M4 Wi-Fi 256G星光","MH5W4TA/A",35400,1770,33630],
+    [267327,"iPad Air 13吋 M4 Wi-Fi 256G紫","MH5X4TA/A",35400,1770,33630],
+    [267328,"iPad Air 13吋 M4 Wi-Fi 512G太空灰","MH5Y4TA/A",42400,2120,40280],
+    [267329,"iPad Air 13吋 M4 Wi-Fi 512G藍","MH604TA/A",42400,2120,40280],
+    [267330,"iPad Air 13吋 M4 Wi-Fi 512G星光","MH614TA/A",42400,2120,40280],
+    [267331,"iPad Air 13吋 M4 Wi-Fi 512G紫","MH624TA/A",42400,2120,40280],
+    [267332,"iPad Air 13吋 M4 Wi-Fi 1T太空灰","MH634TA/A",52900,2645,50255],
+    [267333,"iPad Air 13吋 M4 Wi-Fi 1T藍","MH644TA/A",52900,2645,50255],
+    [267334,"iPad Air 13吋 M4 Wi-Fi 1T星光","MH654TA/A",52900,2645,50255],
+    [267335,"iPad Air 13吋 M4 Wi-Fi 1T紫","MHDK4TA/A",52900,2645,50255],
+    [267336,"iPad Air 13吋 M4 LTE 128G太空灰","MH9D4TA/A",36900,1845,35055],
+    [267337,"iPad Air 13吋 M4 LTE 128G藍","MH9E4TA/A",36900,1845,35055],
+    [267338,"iPad Air 13吋 M4 LTE 128G星光","MH9F4TA/A",36900,1845,35055],
+    [267339,"iPad Air 13吋 M4 LTE 128G紫","MH9G4TA/A",36900,1845,35055],
+    [267340,"iPad Air 13吋 M4 LTE 256G太空灰","MH9H4TA/A",40400,2020,38380],
+    [267341,"iPad Air 13吋 M4 LTE 256G藍","MH9J4TA/A",40400,2020,38380],
+    [267342,"iPad Air 13吋 M4 LTE 256G星光","MH9K4TA/A",40400,2020,38380],
+    [267343,"iPad Air 13吋 M4 LTE 256G紫","MH9L4TA/A",40400,2020,38380],
+    [267344,"iPad Air 13吋 M4 LTE 512G太空灰","MH9M4TA/A",47400,2370,45030],
+    [267345,"iPad Air 13吋 M4 LTE 512G藍","MH9N4TA/A",47400,2370,45030],
+    [267346,"iPad Air 13吋 M4 LTE 512G星光","MH9P4TA/A",47400,2370,45030],
+    [267347,"iPad Air 13吋 M4 LTE 512G紫","MH9Q4TA/A",47400,2370,45030],
+    [267348,"iPad Air 13吋 M4 LTE 1T太空灰","MH9R4TA/A",57900,2895,55005],
+    [267349,"iPad Air 13吋 M4 LTE 1T藍","MH9T4TA/A",57900,2895,55005],
+    [267350,"iPad Air 13吋 M4 LTE 1T星光","MH9U4TA/A",57900,2895,55005],
+    [267351,"iPad Air 13吋 M4 LTE 1T紫","MH9V4TA/A",57900,2895,55005],
+  ]],
+  // iPad - iPad Pro 11吋 M5
+  ["iPad","iPad Pro 11吋 M5 現折2394起",[
+    [263631,"iPad Pro 11吋 Wi-Fi 256GB-太空黑","MDWK4TA/A",39900,2394,37506],
+    [263632,"iPad Pro 11吋 Wi-Fi 256GB-銀","MDWL4TA/A",39900,2394,37506],
+    [263633,"iPad Pro 11吋 Wi-Fi 512GB-太空黑","MDWM4TA/A",46900,2814,44086],
+    [263634,"iPad Pro 11吋 Wi-Fi 512GB-銀","MDWN4TA/A",46900,2814,44086],
+    [263635,"iPad Pro 11吋 Wi-Fi 1TB-太空黑","MDWP4TA/A",60900,3654,57246],
+    [263636,"iPad Pro 11吋 Wi-Fi 1TB-銀","MDWQ4TA/A",60900,3654,57246],
+    [263637,"iPad Pro 11吋 Wi-Fi 2TB-太空黑","MDWU4TA/A",78400,4704,73696],
+    [263638,"iPad Pro 11吋 Wi-Fi 2TB-銀","MDWV4TA/A",78400,4704,73696],
+    [263639,"iPad Pro 11吋 Wi-Fi 1T-太空黑(Nano)","MDWR4TA/A",64400,3864,60536],
+    [263640,"iPad Pro 11吋 Wi-Fi 1T-銀(Nano)","MDWT4TA/A",64400,3864,60536],
+    [263641,"iPad Pro 11吋 Wi-Fi 2T-太空黑(Nano)","MDWW4TA/A",81900,4914,76986],
+    [263642,"iPad Pro 11吋 Wi-Fi 2T-銀(Nano)","MDWX4TA/A",81900,4914,76986],
+    [263643,"iPad Pro 11吋 Wi-Fi+LTE 256G-太空黑","ME2N4TA/A",46900,2814,44086],
+    [263644,"iPad Pro 11吋 Wi-Fi+LTE 256G-銀","ME2P4TA/A",46900,2814,44086],
+    [263645,"iPad Pro 11吋 Wi-Fi+LTE 512G-太空黑","ME2Q4TA/A",53900,3234,50666],
+    [263646,"iPad Pro 11吋 Wi-Fi+LTE 512G-銀","ME2T4TA/A",53900,3234,50666],
+    [263647,"iPad Pro 11吋 Wi-Fi+LTE 1T-太空黑","ME2U4TA/A",67900,4074,63826],
+    [263648,"iPad Pro 11吋 Wi-Fi+LTE 1T-銀","ME2V4TA/A",67900,4074,63826],
+    [263649,"iPad Pro 11吋 Wi-Fi+LTE 2T-太空黑","ME2Y4TA/A",85400,5124,80276],
+    [263650,"iPad Pro 11吋 Wi-Fi+LTE 2T-銀","ME6A4TA/A",85400,5124,80276],
+    [263651,"iPad Pro 11吋 Wi-Fi+LTE 1T-太空黑(Nano)","ME2W4TA/A",71400,4284,67116],
+    [263652,"iPad Pro 11吋 Wi-Fi+LTE 1T-銀(Nano)","ME2X4TA/A",71400,4284,67116],
+    [263653,"iPad Pro 11吋 Wi-Fi+LTE 2T-太空黑(Nano)","ME6C4TA/A",88900,5334,83566],
+    [263654,"iPad Pro 11吋 Wi-Fi+LTE 2T-銀(Nano)","ME6D4TA/A",88900,5334,83566],
+  ]],
+  // iPad - iPad Pro 13吋 M5
+  ["iPad","iPad Pro 13吋 M5 現折3054起",[
+    [263655,"iPad Pro 13吋 Wi-Fi 256GB-太空黑","MDYJ4TA/A",50900,3054,47846],
+    [263656,"iPad Pro 13吋 Wi-Fi 256GB-銀","MDYK4TA/A",50900,3054,47846],
+    [263657,"iPad Pro 13吋 Wi-Fi 512GB-太空黑","MDYL4TA/A",57900,3474,54426],
+    [263658,"iPad Pro 13吋 Wi-Fi 512GB-銀","MDYM4TA/A",57900,3474,54426],
+    [263659,"iPad Pro 13吋 Wi-Fi 1TB-太空黑","MDYN4TA/A",71900,4314,67586],
+    [263660,"iPad Pro 13吋 Wi-Fi 1TB-銀","MDYP4TA/A",71900,4314,67586],
+    [263661,"iPad Pro 13吋 Wi-Fi 2TB-太空黑","MDYT4TA/A",89400,5364,84036],
+    [263662,"iPad Pro 13吋 Wi-Fi 2TB-銀","MDYU4TA/A",89400,5364,84036],
+    [263663,"iPad Pro 13吋 Wi-Fi 1TB-太空黑(Nano)","MDYQ4TA/A",75400,4524,70876],
+    [263664,"iPad Pro 13吋 Wi-Fi 1TB-銀(Nano)","MDYR4TA/A",75400,4524,70876],
+    [263665,"iPad Pro 13吋 Wi-Fi 2TB-太空黑(Nano)","MDYV4TA/A",92900,5574,87326],
+    [263666,"iPad Pro 13吋 Wi-Fi 2TB-銀(Nano)","MDYW4TA/A",92900,5574,87326],
+    [263667,"iPad Pro 13吋 Wi-Fi+LTE 256G-太空黑","ME7W4TA/A",57900,3474,54426],
+    [263668,"iPad Pro 13吋 Wi-Fi+LTE 256G-銀","ME7X4TA/A",57900,3474,54426],
+    [263669,"iPad Pro 13吋 Wi-Fi+LTE 512G-太空黑","ME7Y4TA/A",64900,3894,61006],
+    [263670,"iPad Pro 13吋 Wi-Fi+LTE 512G-銀","ME8C4TA/A",64900,3894,61006],
+    [263671,"iPad Pro 13吋 Wi-Fi+LTE 1T-太空黑","ME8D4TA/A",78900,4734,74166],
+    [263672,"iPad Pro 13吋 Wi-Fi+LTE 1T-銀","ME8F4TA/A",78900,4734,74166],
+    [263673,"iPad Pro 13吋 Wi-Fi+LTE 2T-太空黑","ME8J4TA/A",96400,5784,90616],
+    [263674,"iPad Pro 13吋 Wi-Fi+LTE 2T-銀","ME8K4TA/A",96400,5784,90616],
+    [263675,"iPad Pro 13吋 Wi-Fi+LTE 1T-太空黑(Nano)","ME8G4TA/A",82400,4944,77456],
+    [263676,"iPad Pro 13吋 Wi-Fi+LTE 1T-銀(Nano)","ME8H4TA/A",82400,4944,77456],
+    [263677,"iPad Pro 13吋 Wi-Fi+LTE 2T-太空黑(Nano)","ME8M4TA/A",99900,5994,93906],
+    [263678,"iPad Pro 13吋 Wi-Fi+LTE 2T-銀(Nano)","ME8N4TA/A",99900,5994,93906],
+  ]],
+  // ===== 舊檔期延續(iPhone / Apple Watch / AirPods / AirTag)=====
+  // iPhone
+  ["iPhone","iPhone 16e 現折736",[
+    [256229,"iPhone 16e 128G-黑色","MD1Q4ZP/A",18400,736,17664],
+    [256230,"iPhone 16e 128G-白色","MD1R4ZP/A",18400,736,17664],
+  ]],
+  ["iPhone","iPhone 17e 現折834起再送市價1280保護貼(贈品:267451 Riivan i17e 2.5D 滿版防窺保護貼 / 267452 Riivan i17e 電競霧面保護貼)",[
+    [267282,"iPhone 17e 256GB-黑色","MHRV4ZP/A",21900,834,21066],
+    [267283,"iPhone 17e 256GB-白色","MHRW4ZP/A",21900,834,21066],
+    [267284,"iPhone 17e 256GB-嫩粉色","MHRX4ZP/A",21900,834,21066],
+    [267285,"iPhone 17e 512GB-黑色","MHRY4ZP/A",28900,1254,27646],
+    [267286,"iPhone 17e 512GB-白色","MHU04ZP/A",28900,1254,27646],
+    [267287,"iPhone 17e 512GB-嫩粉色","MHU34ZP/A",28900,1254,27646],
+  ]],
+  ["iPhone","iPhone 16 現折1295起",[
+    [252083,"iPhone 16 128GB-黑色","MYE73ZP/A",25900,1295,24605],
+    [252084,"iPhone 16 128GB-白色","MYE93ZP/A",25900,1295,24605],
+    [252085,"iPhone 16 128GB-粉紅色","MYEA3ZP/A",25900,1295,24605],
+    [252088,"iPhone 16 256GB-黑色","MYEE3ZP/A",29400,3401,25999],
+    [252089,"iPhone 16 256GB-白色","MYEF3ZP/A",29400,3401,25999],
+    [252091,"iPhone 16 256GB-湛海藍色","MYEH3ZP/A",29400,3401,25999],
+    [252092,"iPhone 16 256GB-湖水綠色","MYEJ3ZP/A",29400,3401,25999],
+  ]],
+  ["iPhone","iPhone 16 Plus 現折5%",[
+    [252098,"iPhone 16 Plus 128GB-黑色","MXVU3ZP/A",29900,1495,28405],
+    [252099,"iPhone 16 Plus 128GB-白色","MXVV3ZP/A",29900,1495,28405],
+    [252103,"iPhone 16 Plus 256GB-黑色","MXWN3ZP/A",33400,1670,31730],
+    [252104,"iPhone 16 Plus 256GB-白色","MXWV3ZP/A",33400,1670,31730],
+  ]],
+  ["iPhone","iPhone 17 現折1463起再送市價1290保護貼(贈品:262121 Riivan i17/17Pro 2.5D 4倍抗藍光保貼-AR / 262120 Riivan i17/17Pro 2.5D 4倍抗藍光保貼-防窺)",[
+    [262249,"iPhone 17 256GB-黑色","MG6J4ZP/A",29900,1463,28437],
+    [262250,"iPhone 17 256GB-白色","MG6K4ZP/A",29900,1463,28437],
+    [262251,"iPhone 17 256GB-霧藍色","MG6L4ZP/A",29900,1463,28437],
+    [262252,"iPhone 17 256GB-薰衣草紫色","MG6M4ZP/A",29900,1463,28437],
+    [262253,"iPhone 17 256GB-鼠尾草綠色","MG6N4ZP/A",29900,1463,28437],
+    [262254,"iPhone 17 512GB-黑色","MG6P4ZP/A",36900,1918,34982],
+    [262255,"iPhone 17 512GB-白色","MG6Q4ZP/A",36900,1918,34982],
+    [262256,"iPhone 17 512GB-霧藍色","MG6T4ZP/A",36900,1918,34982],
+    [262257,"iPhone 17 512GB-薰衣草紫色","MG6U4ZP/A",36900,1918,34982],
+    [262258,"iPhone 17 512GB-鼠尾草綠色","MG6V4ZP/A",36900,1918,34982],
+  ]],
+  ["iPhone","iPhone Air 現折2583起",[
+    [262259,"iPhone Air 256GB-太空黑色","MG2L4ZP/A",36900,2583,34317],
+    [262262,"iPhone Air 256GB-天藍色","MG2P4ZP/A",36900,2583,34317],
+    [262264,"iPhone Air 512GB-雲白色","MG2T4ZP/A",43900,3073,40827],
+    [262266,"iPhone Air 512GB-天藍色","MG2V4ZP/A",43900,3073,40827],
+  ]],
+  ["iPhone","iPhone 17 Pro 現折946起再送市價790保護貼(贈品:261716 PG i17 Pro SAFE 玻璃保貼-亮面 / 261717 PG i17 Pro SAFE 玻璃保貼-防窺)",[
+    [262271,"iPhone 17 Pro 256GB-銀色","MG8G4ZP/A",39900,946,38954],
+    [262272,"iPhone 17 Pro 256GB-宇宙橙色","MG8H4ZP/A",39900,946,38954],
+    [262273,"iPhone 17 Pro 256GB-藏藍色","MG8J4ZP/A",39900,946,38954],
+    [262274,"iPhone 17 Pro 512GB-銀色","MG8K4ZP/A",46900,1191,45709],
+    [262275,"iPhone 17 Pro 512GB-宇宙橙色","MG8M4ZP/A",46900,1191,45709],
+    [262276,"iPhone 17 Pro 512GB-藏藍色","MG8N4ZP/A",46900,1191,45709],
+    [262277,"iPhone 17 Pro 1TB-銀色","MG8P4ZP/A",53900,1436,52464],
+    [262278,"iPhone 17 Pro 1TB-宇宙橙色","MG8Q4ZP/A",53900,1436,52464],
+    [262279,"iPhone 17 Pro 1TB-藏藍色","MG8R4ZP/A",53900,1436,52464],
+  ]],
+  ["iPhone","iPhone 17 Pro Max 現折1046起再送市價1499保護殼貼組(贈品:267706 UAG i17 Pro Max 磁吸輕量保護殼貼配件組)",[
+    [262280,"iPhone 17 Pro Max 256GB-銀色","MFYM4ZP/A",44900,1046,43854],
+    [262281,"iPhone 17 Pro Max 256GB-宇宙橙色","MFYN4ZP/A",44900,1046,43854],
+    [262282,"iPhone 17 Pro Max 256GB-藏藍色","MFYP4ZP/A",44900,1046,43854],
+    [262283,"iPhone 17 Pro Max 512GB-銀色","MFYQ4ZP/A",51900,1326,50574],
+    [262284,"iPhone 17 Pro Max 512GB-宇宙橙色","MFYQ5ZP/A",51900,1326,50574],
+    [262285,"iPhone 17 Pro Max 512GB-藏藍色","MFYQ6ZP/A",51900,1326,50574],
+    [262286,"iPhone 17 Pro Max 1TB-銀色","MFYQ7ZP/A",58900,1606,57294],
+    [262287,"iPhone 17 Pro Max 1TB-宇宙橙色","MFYQ8ZP/A",58900,1606,57294],
+    [262288,"iPhone 17 Pro Max 1TB-藏藍色","MFYQ9ZP/A",58900,1606,57294],
+    [262289,"iPhone 17 Pro Max 2TB-銀色","MFYQ10ZP/A",72900,2166,70734],
+    [262290,"iPhone 17 Pro Max 2TB-宇宙橙色","MFYQ11ZP/A",72900,2166,70734],
+    [262291,"iPhone 17 Pro Max 2TB-藏藍色","MFYQ12ZP/A",72900,2166,70734],
+  ]],
+  // Apple Watch
+  ["Apple Watch","Apple Watch SE 3 現折553起",[
+    [262292,"AW SE GPS 40/星光鋁/星光運動錶帶-S/M","MEH34TA/A",7900,553,7347],
+    [262293,"AW SE GPS 40/星光鋁/星光運動錶帶-M/L","MEH54TA/A",7900,553,7347],
+    [262294,"AW SE GPS 40/午夜鋁/午夜運動錶帶-S/M","MEH94TA/A",7900,553,7347],
+    [262295,"AW SE GPS 40/午夜鋁/午夜運動錶帶-M/L","MEHC4TA/A",7900,553,7347],
+    [262296,"AW SE GPS 44/星光鋁/星光運動錶帶-S/M","MEHG4TA/A",8900,623,8277],
+    [262297,"AW SE GPS 44/星光鋁/星光運動錶帶-M/L","MEHJ4TA/A",8900,623,8277],
+    [262298,"AW SE GPS 44/午夜鋁/午夜運動錶帶-S/M","MEHN4TA/A",8900,623,8277],
+    [262299,"AW SE GPS 44/午夜鋁/午夜運動錶帶-M/L","MEHQ4TA/A",8900,623,8277],
+    [262300,"AW SE LTE 40/星光鋁/星光運動錶帶-S/M","MEP64TA/A",9400,658,8742],
+  ]],
+  ["Apple Watch","Apple Watch S11 現折903起",[
+    [262308,"AW S11 GPS 42/曜石黑鋁/黑運動錶帶-S/M","MEQT4TA/A",12900,903,11997],
+    [262309,"AW S11 GPS 42/曜石黑鋁/黑運動錶帶-M/L","MEQU4TA/A",12900,903,11997],
+    [262310,"AW S11 GPS 42/太空灰鋁/黑運動錶帶-S/M","MEQW4TA/A",12900,903,11997],
+    [262311,"AW S11 GPS 42/太空灰鋁/黑運動錶帶-M/L","MEQX4TA/A",12900,903,11997],
+    [262312,"AW S11 GPS 42/玫瑰金鋁/淡胭粉運動錶帶-SM","MEU04TA/A",12900,903,11997],
+    [262313,"AW S11 GPS 42/玫瑰金鋁/淡胭粉運動錶帶-ML","MEU44TA/A",12900,903,11997],
+    [262314,"AW S11 GPS 42/銀鋁/霧紫運動錶帶-S/M","MEU64TA/A",12900,903,11997],
+    [262316,"AW S11 GPS 46/曜石黑鋁/黑運動錶帶-S/M","MEUW4TA/A",13900,973,12927],
+    [262317,"AW S11 GPS 46/曜石黑鋁/黑運動錶帶-M/L","MEUX4TA/A",13900,973,12927],
+    [262318,"AW S11 GPS 46/太空灰鋁/黑運動錶帶-S/M","MEV04TA/A",13900,973,12927],
+    [262319,"AW S11 GPS 46/太空灰鋁/黑運動錶帶-M/L","MEV44TA/A",13900,973,12927],
+    [262320,"AW S11 GPS 46/玫瑰金鋁/淡胭粉運動錶帶-SM","MEV64TA/A",13900,973,12927],
+    [262321,"AW S11 GPS 46/玫瑰金鋁/淡胭粉運動錶帶-ML","MEV74TA/A",13900,973,12927],
+    [262322,"AW S11 GPS 46/銀鋁/霧紫運動錶帶-S/M","MEV94TA/A",13900,973,12927],
+    [262323,"AW S11 GPS 46/銀鋁/霧紫運動錶帶-M/L","MEVA4TA/A",13900,973,12927],
+  ]],
+  ["Apple Watch","Apple Watch Ultra 3 現折2152起",[
+    [262361,"AW Ultra 3 49/原色鈦/錨藍色海洋錶帶","MEWH4TA/A",26900,2152,24748],
+    [262362,"AW Ultra 3 49/黑色鈦/黑色海洋錶帶","MF0J4TA/A",26900,2152,24748],
+    [262364,"AW Ultra 3 49/黑色鈦/黑色高山錶環-M","MF0V4TA/A",26900,2152,24748],
+    [262367,"AW Ultra 3 49/原色鈦/淡藍色高山錶環-M","MEWM4TA/A",26900,2152,24748],
+    [262369,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-SM","MEWR4TA/A",26900,2152,24748],
+    [262370,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-ML","MEWU4TA/A",26900,2152,24748],
+    [262371,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-SM","MF1D4TA/A",26900,2152,24748],
+    [262372,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-ML","MF1H4TA/A",26900,2152,24748],
+    [262373,"AW Ultra 3 49/原色鈦/原色鈦米蘭錶環-S","MEWW4TA/A",29900,2392,27508],
+    [262376,"AW Ultra 3 49/黑色鈦/黑色鈦米蘭錶環-S","MF1N4TA/A",29900,2392,27508],
+    [262378,"AW Ultra 3 49/黑色鈦/黑色鈦米蘭錶環-L","MF1T4TA/A",29900,2392,27508],
+  ]],
+  // AirPods
+  ["耳機","AirPods Pro 3 現折800",[
+    [262379,"AirPods Pro 3","MFHP4TA/A",7490,800,6690],
+  ]],
+  ["耳機","AirPods 4 現折500",[
+    [252141,"AirPods 4","MXP63TA/A",4490,500,3990],
+  ]],
+  ["耳機","AirPods 4 主動式降噪 現折600",[
+    [252142,"AirPods 4-主動式降噪","MXP93TA/A",5990,600,5390],
+  ]],
+  ["耳機","AirPods Max 現折1799",[
+    [252143,"AirPods Max-午夜色","MWW43TA/A",17990,1799,16191],
+    [252147,"AirPods Max-紫色","MWW83TA/A",17990,1799,16191],
+  ]],
+  ["耳機","AirPods Max 2",[
+    [267952,"AirPods Max 2-午夜色","MHWK4TA/A",17990,0,17990],
+    [267953,"AirPods Max 2-星光色","MHWL4TA/A",17990,0,17990],
+    [267954,"AirPods Max 2-藍色","MHWM4TA/A",17990,0,17990],
+    [267955,"AirPods Max 2-紫色","MHWP4TA/A",17990,0,17990],
+  ]],
+  // AirTag (新增回其他類別)
+  ["其他","AirTag 現折20%",[
+    [217386,"AirTag 1件裝","MX532FE/A",990,198,792],
+    [217387,"AirTag 4件裝","MX542FE/A",3390,678,2712],
+  ]],
+  ["其他","AirTag 2 現折5%",[
+    [266323,"AirTag 2-1件裝","MFE94TA/A",990,49,941],
+    [266324,"AirTag 2-4件裝","MFEA4TA/A",3390,169,3221],
+  ]],
+  // ===== 新檔期(其他 - Apple TV / HomePod)=====
+  // 其他 - Apple TV
+  ["其他","Apple TV 4K 現折5%",[
+    [234915,"Apple TV 4K-64G","MN873TA/A",6900,345,6555],
+    [234916,"Apple TV 4K-128G","MN893TA/A",8500,425,8075],
+  ]],
+  // 其他 - HomePod
+  ["其他","HomePod 現折5%",[
+    [264479,"HomePod-白色","MDEY4TA/A",10990,549,10441],
+    [264478,"HomePod-午夜色","MDEW4TA/A",10990,549,10441],
+  ]],
+  // 其他 - HomePod mini
+  ["其他","HomePod mini",[
+    [250679,"HomePod mini-太空灰色","MTJT3TA/A",3990,0,3990],
+    [212358,"HomePod mini-白色","MY5H2TA/A",3990,0,3990],
+    [222183,"HomePod mini-藍色","MJ2C3TA/A",3990,0,3990],
+    [222184,"HomePod mini-橙色","MJ2D3TA/A",3990,0,3990],
+    [222185,"HomePod mini-黃色","MJ2E3TA/A",3990,0,3990],
+  ]],
+];
+
+// Flatten
+const ALL = [];
+RAW.forEach(([cat, promo, items])=>{
+  items.forEach(it=>{
+    const [id,name,model,price,disc,final] = it;
+    ALL.push({cat,promo,id,name,model,price,disc,final});
+  });
+});
+
+const KEEP = ["Mac","iPad","iPhone","Apple Watch","AirPods","其他"];
+// Normalize legacy category name
+ALL.forEach(x=>{if(x.cat==="耳機") x.cat="AirPods";});
+// Remove out-of-scope categories, and any glass/texture variants
+for(let i=ALL.length-1;i>=0;i--){
+  if(!KEEP.includes(ALL[i].cat)) ALL.splice(i,1);
+  else if(/\(Nano\)|Nano-?texture|玻璃/i.test(ALL[i].name)) ALL.splice(i,1);
+}
+
+// Parse each item into {family, steps: [[label,value], ...]}
+function parseItem(x){
+  const n = x.name, c = x.cat;
+  if(c==="iPhone"){
+    const m = n.match(/^(.+?)\s+(\d+\s*(?:GB?|TB?))\s*-\s*(.+)$/i);
+    if(m) return {family:m[1].trim(), steps:[["容量",m[2].replace(/\s+/g,'')]]};
+  }
+  if(c==="iPad"){
+    const m = n.match(/^(.+?)\s+(Wi-Fi\+LTE|Wi-Fi|LTE)\s*(\d+)(GB?|TB?|T)\s*-?\s*(.*?)$/);
+    if(m){
+      const conn = m[2]==="Wi-Fi" ? "Wi-Fi" : "Wi-Fi + 行動網路";
+      // Normalize capacity: "1T" → "1TB", "128G" → "128GB"
+      let unit = m[4].toUpperCase();
+      if(unit==="G") unit="GB";
+      if(unit==="T") unit="TB";
+      return {family:m[1].trim(), steps:[
+        ["連線方式",conn],["容量",m[3]+unit]
+      ]};
+    }
+  }
+  if(c==="Mac"){
+    const parts = n.split("/");
+    if(parts.length < 2) return {family:n, steps:[]};
+    const family = parts[0].trim();
+    const rest = parts.slice(1).map(s=>s.trim());
+    // Detect if last part is a color (not RAM/storage/CPU/GPU spec)
+    const last = rest[rest.length-1];
+    const isSpec = /^\d+\s*[GT]B?$|CPU|GPU/i.test(last);
+    const specParts = isSpec ? rest : rest.slice(0,-1);
+    const color = isSpec ? null : last;
+    // Split into RAM + Storage (skip CPU/GPU)
+    const nonProc = specParts.filter(p=>!/CPU|GPU/i.test(p));
+    const ram = nonProc[0];        // e.g. "16G"
+    const storage = nonProc[1];    // e.g. "512G" / "1T"
+    const steps = [];
+    if(ram) steps.push(["記憶體", ram]);
+    if(storage) steps.push(["儲存空間", storage]);
+    return {family, steps};
+  }
+  if(c==="Apple Watch"){
+    let m = n.match(/^AW\s+(SE|S\d+|Ultra\s+\d+)\s+(GPS|LTE)?\s*(\d+)\/?(.+)$/);
+    if(m){
+      const series = m[1].startsWith("Ultra") ? "Apple Watch Ultra "+m[1].split(/\s+/)[1] :
+                     m[1]==="SE" ? "Apple Watch SE(第三代)" : "Apple Watch Series "+m[1].slice(1);
+      const conn = m[2]==="LTE" ? "GPS + 行動網路" : "GPS";
+      return {family:series, steps:[
+        ["連線方式",conn],["錶徑",m[3]+"mm"]
+      ]};
+    }
+  }
+  if(c==="AirPods"){
+    // Strip color suffix from AirPods Max families
+    const m = n.match(/^(AirPods Max(?:\s+\d+)?)-.+$/);
+    if(m) return {family:m[1].trim(), steps:[]};
+    return {family:n.trim(), steps:[]};
+  }
+  if(c==="其他"){
+    // "Apple TV 4K-64G" → family + capacity
+    const at = n.match(/^(Apple TV 4K)-(\d+G[B]?)$/);
+    if(at) return {family:at[1], steps:[["容量",at[2]]]};
+    // "AirTag 1件裝" / "AirTag 4件裝" → family + 件數
+    const tag = n.match(/^(AirTag(?:\s+\d+)?)[-\s]?(\d+件裝)$/);
+    if(tag) return {family:tag[1].trim(), steps:[["組合",tag[2]]]};
+    // "HomePod-白色" or "HomePod mini-太空灰色" → strip color
+    if(/^HomePod\s+mini-/.test(n)) return {family:"HomePod mini", steps:[]};
+    if(/^HomePod-/.test(n)) return {family:"HomePod", steps:[]};
+    return {family:n, steps:[]};
+  }
+  return {family:n, steps:[]};
+}
+ALL.forEach(x=>{const p=parseItem(x); x.family=p.family; x.steps=p.steps;});
+
+// How many variant steps (dropdowns) to show before revealing the promo
+// (following steps are aesthetic — same price/promo)
+const VARIANT_STEPS = {Mac:2, iPad:3, iPhone:1, "Apple Watch":3, AirPods:0, "其他":1};
+const CAT_META = {
+  Mac:{icon:"💻",label:"Mac"},
+  iPad:{icon:"◻️",label:"iPad"},
+  iPhone:{icon:"📱",label:"iPhone"},
+  "Apple Watch":{icon:"⌚",label:"Apple Watch"},
+  AirPods:{icon:"🎧",label:"AirPods"},
+  "其他":{icon:"📺",label:"其他"}
+};
+
+const state = {cat:null, family:null, picks:[]};
+const viewEl = document.getElementById("view");
+
+function fmt(n){return n?n.toLocaleString():"—";}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// 從原始品名擷取顏色/變體標籤
+function extractColor(x){
+  const n = x.name, c = x.cat;
+  if(c==="iPhone"){
+    const m = n.match(/-([^-]+)$/);
+    return m ? m[1] : "";
+  }
+  if(c==="iPad"){
+    const m = n.match(/(?:Wi-Fi\+LTE|Wi-Fi|LTE)\s*\d+(?:GB?|TB?|T)\s*-?\s*(.+)$/);
+    return m ? m[1].trim() : "";
+  }
+  if(c==="Mac"){
+    const parts = n.split("/");
+    const last = parts[parts.length-1].trim();
+    return /^\d+\s*[GT]B?$|CPU|GPU/i.test(last) ? "" : last;
+  }
+  if(c==="Apple Watch"){
+    const m = n.match(/^AW\s+\S+(?:\s+\S+)?\s+\d+\/([^/]+)\/(.+)$/);
+    if(m) return `${m[1].trim()} · ${m[2].trim()}`;
+    return "";
+  }
+  if(c==="AirPods"){
+    const m = n.match(/^AirPods Max(?:\s+\d+)?-(.+)$/);
+    return m ? m[1] : "";
+  }
+  return "";
+}
+
+// 近期到貨資訊(0703 版本)— key: 貨號, value: [本週 7/2-7/8, 下週 7/9-7/15]
+const STOCK = {
+  // AirPods
+  252141:[350,0], 252142:[250,0], 262379:[1030,110],
+  // iMac / Mac mini
+  253474:[2,0], 253475:[5,5], 253478:[1,0], 253479:[2,0],
+  253545:[10,9], 253547:[0,2],
+  // MBP 14 / 16
+  263628:[10,0], 263629:[18,0], 263630:[8,0],
+  267393:[12,0], 267394:[27,0],
+  267395:[9,0], 267396:[8,0], 267399:[1,0], 267402:[2,0],
+  267403:[3,0], 267404:[8,0], 267405:[3,0],
+  // MBA 13
+  267369:[35,0], 267370:[16,0], 267371:[180,0], 267372:[45,0],
+  267373:[4,0], 267374:[18,0], 267375:[23,0], 267376:[1,0], 267377:[1,0],
+  // MBA 15
+  267381:[10,0], 267382:[11,0], 267383:[50,0], 267384:[21,0],
+  267385:[7,0], 267386:[1,0], 267387:[22,0],
+  // MacBook Neo
+  267442:[60,0], 267443:[50,0], 267444:[20,0], 267445:[35,0], 267447:[50,0], 267448:[70,0],
+  // Studio Display (not in current data but kept for future)
+  267411:[2,0], 267412:[3,0],
+  // iPad mini
+  253162:[130,0], 253165:[5,0],
+  // iPad 11
+  256491:[5,0], 256493:[185,0], 256494:[10,0], 256495:[100,0],
+  256496:[200,0], 256497:[170,0], 256499:[5,0],
+  // iPad Pro 11 / 13
+  263633:[5,0], 263655:[5,0], 263658:[3,0], 263659:[1,0],
+  // iPad Air 11
+  267292:[180,0], 267293:[95,0], 267294:[75,0], 267295:[85,0],
+  267296:[5,0], 267299:[5,0], 267300:[1,0], 267301:[1,0],
+  // iPad Air 13
+  267320:[35,0], 267321:[34,0], 267323:[40,0], 267324:[20,0],
+  267327:[5,0], 267328:[3,0], 267330:[2,0],
+  // Apple Watch SE
+  262292:[84,0], 262293:[12,0], 262295:[0,0],
+  262296:[24,42], 262297:[18,12], 262298:[30,12], 262299:[36,30], 262300:[6,0],
+  // Apple Watch Series 11
+  262308:[6,6], 262310:[6,12], 262312:[30,30], 262314:[0,12],
+  262316:[0,0], 262317:[96,18], 262318:[6,0], 262319:[60,30],
+  262320:[42,0], 262321:[12,6], 262322:[6,6],
+  // Apple Watch Ultra 3
+  262361:[12,12], 262362:[30,0], 262372:[12,0], 262378:[12,0],
+  // iPhone 17 Pro
+  262271:[290,150], 262272:[250,80], 262273:[140,170],
+  262274:[20,0], 262275:[60,10], 262276:[90,0],
+  // iPhone 17 Pro Max
+  262280:[190,0], 262281:[90,20], 262282:[100,400],
+  262283:[100,0], 262284:[70,0], 262285:[10,0],
+  // iPhone 17e
+  267283:[0,10]
+};
+
+// 大專院校教育優惠折抵(依貨號/類別對應)
+function eduDisc(x){
+  const id = x.id, cat = x.cat;
+  // === Mac ===
+  if(id>=267442 && id<=267449) return 3000;   // MacBook Neo
+  if(id>=267369 && id<=267380) return 3310;   // MBA 13 M5
+  if(id>=267381 && id<=267392) return 3310;   // MBA 15 M5
+  if(id>=253474 && id<=253477) return 1710;   // iMac 8CPU/8GPU
+  if(id>=253478 && id<=253489) return 3410;   // iMac 10CPU/10GPU
+  if([263627,263628,263629,263630,267393,267394].includes(id)) return 3210; // MBP 14 M5 (basic)
+  if([267395,267396].includes(id)) return 5110;   // MBP 14 M5 Pro 15/16/24/1T
+  if([267397,267398].includes(id)) return 6860;   // MBP 14 M5 Pro 15/16/24/2T
+  if([267399,267400].includes(id)) return 6910;   // MBP 14 M5 Pro 18/20/24/2T
+  if([267401,267402].includes(id)) return 10210;  // MBP 14 M5 Max
+  if(id>=267403 && id<=267406) return 6710;   // MBP 16 M5 Pro
+  if(id>=267407 && id<=267410) return 9910;   // MBP 16 M5 Max
+  if(id>=253545 && id<=253547) return 3410;   // Mac mini
+  if(id===256657) return 6810;                // Mac Studio M4 Max
+  if(id===256658) return 14010;               // Mac Studio M3 Ultra
+  // === iPad ===
+  if(cat==="iPad"){
+    if(id>=253160 && id<=253183) return 1700; // iPad mini 7th 全系列
+    if(id>=256491 && id<=256515) return 700;  // iPad A16 (11吋) 全系列
+    if(id>=267288 && id<=267351) return 1700; // iPad Air M4 (11/13) 全系列
+    if(id>=263631 && id<=263654) return 3300; // iPad Pro 11 M5 全系列
+    if(id>=263655 && id<=263678) return 3400; // iPad Pro 13 M5 全系列
+  }
+  // === Apple Watch ===
+  if(cat==="Apple Watch"){
+    if(id>=262292 && id<=262299) return 600;  // SE GPS 鋁
+    if(id===262300) return 1000;              // SE LTE 鋁
+    if(id>=262308 && id<=262323) return 1300; // S11 鋁 GPS
+    if(id>=262361 && id<=262378) return 2700; // Ultra 3 全系列
+  }
+  return 0;
+}
+
+function renderField(idx, label, options, value, placeholder){
+  const opts = options.map(o=>`<option value="${esc(o)}"${o===value?" selected":""}>${esc(o)}</option>`).join("");
+  return `<div class="field">
+    <label>${label}</label>
+    <select data-idx="${idx}">
+      <option value="">${placeholder}</option>
+      ${opts}
+    </select>
+  </div>`;
+}
+
+function render(){
+  let html = `<div class="panel"><div class="panel-head">選擇規格</div><div class="panel-body"><div class="form">`;
+
+  // Category tabs (buttons, not dropdown)
+  const catTabs = KEEP.map(c=>`<button class="cat-tab${c===state.cat?' active':''}" data-cat="${esc(c)}"><span class="ci">${CAT_META[c].icon}</span>${esc(c)}</button>`).join("");
+  html += `<div class="field">
+    <label>類別</label>
+    <div class="cat-tabs">${catTabs}</div>
+  </div>`;
+
+  let matched = null;
+
+  if(state.cat){
+    const items = ALL.filter(x=>x.cat===state.cat);
+    const families = [...new Set(items.map(x=>x.family))].sort((a,b)=>{
+      // Mac: custom order — Neo → Air 13/15 → Pro 14/16 → iMac → mini → Studio
+      if(state.cat==="Mac"){
+        const order = ["MBN","13.6吋MBA","15.3吋MBA","14.2吋MBP","16.2吋MBP","iMac","Mac mini","Mac Studio"];
+        const rank = f => { const i = order.findIndex(k=>f.includes(k)); return i<0 ? 999 : i; };
+        const ra = rank(a), rb = rank(b);
+        if(ra !== rb) return ra - rb;
+      }
+      return a.localeCompare(b,'zh');
+    });
+    html += renderField(-1, "機型", families, state.family, "— 請選擇機型 —");
+
+    if(state.family){
+      const famItems = items.filter(x=>x.family===state.family);
+      const maxSteps = VARIANT_STEPS[state.cat];
+      const nSteps = famItems.length ? Math.min(maxSteps, famItems[0].steps.length) : 0;
+      let stop = false;
+      for(let i=0;i<nSteps && !stop;i++){
+        let base = famItems.slice();
+        for(let j=0;j<i;j++) base = base.filter(x=>x.steps[j] && x.steps[j][1]===state.picks[j]);
+        if(!base.length){stop=true;break;}
+        const label = base[0].steps[i]?.[0] || `規格 ${i+1}`;
+        const opts = [...new Set(base.map(x=>x.steps[i]?.[1]).filter(Boolean))];
+        // Auto-select when only one option is available (transparent to user)
+        if(opts.length===1 && state.picks[i]==null) state.picks[i] = opts[0];
+        html += renderField(i, label, opts, state.picks[i], `— 請選擇${label} —`);
+        if(state.picks[i]==null){stop=true;break;}
+      }
+      if(!stop && state.picks.length>=nSteps){
+        let base = famItems.slice();
+        for(let j=0;j<nSteps;j++) base = base.filter(x=>x.steps[j] && x.steps[j][1]===state.picks[j]);
+        matched = base[0];
+      }
+    }
+  }
+
+  html += `</div></div></div>`;
+  if(matched) html += renderDetailHTML(matched);
+  viewEl.innerHTML = html;
+
+  viewEl.querySelectorAll(".cat-tab").forEach(b=>{
+    b.onclick = ()=>{
+      state.cat = b.dataset.cat === state.cat ? null : b.dataset.cat;
+      state.family = null;
+      state.picks = [];
+      render();
+    };
+  });
+
+  viewEl.querySelectorAll("select[data-idx]").forEach(sel=>{
+    sel.onchange = ()=>{
+      const idx = parseInt(sel.dataset.idx);
+      const v = sel.value;
+      if(idx===-1){ state.family = v || null; state.picks = []; }
+      else{
+        state.picks = state.picks.slice(0, idx);
+        if(v) state.picks[idx] = v;
+      }
+      render();
+    };
+  });
+}
+
+function renderDetailHTML(x){
+  const pct = x.disc && x.price ? Math.round(x.disc/x.price*100) : 0;
+  const hasPromo = x.promo && !/暫無交期|售完為止/.test(x.promo);
+  const dispName = state.family + (state.picks.length ? " " + state.picks.join(" ") : "");
+  const edu = eduDisc(x);
+  const eduPrice = edu ? x.price - edu : 0;
+  // 加總同規格所有色系的到貨量
+  const siblings = ALL.filter(it=>{
+    if(it.family !== state.family) return false;
+    for(let i=0;i<state.picks.length;i++){
+      if(!it.steps[i] || it.steps[i][1] !== state.picks[i]) return false;
+    }
+    return true;
+  });
+  let w1=0, w2=0, hasStock=false;
+  siblings.forEach(it=>{
+    const s = STOCK[it.id];
+    if(s){ hasStock = true; w1 += s[0]; w2 += s[1]; }
+  });
+  const stockClass = q => q===0 ? "zero" : (q>=50 ? "hi" : "");
+  return `<div class="result">
+    <div class="result-head">
+      <div class="product-name">${esc(dispName)}</div>
+    </div>
+    <div class="price-grid">
+      ${x.disc?`<div class="label">會員價</div><div class="value old">$${fmt(x.price)}</div>`:''}
+      ${x.disc?`<div class="label">活動折讓</div><div class="value save-value">-$${fmt(x.disc)} (${pct}%)</div>`:''}
+      <div class="final-label">促銷價</div><div class="final-value">$${fmt(x.final)}</div>
+    </div>
+    ${hasPromo?`<div class="promo-section">
+      <div class="promo-icon">🎉</div>
+      <div class="promo-content">
+        <div class="promo-header">活動方案</div>
+        ${(()=>{
+          const m = x.promo.match(/^(.+?)\s*[((]贈品[::](.+?)[))]\s*$/);
+          if(!m) return `<div class="promo-text">${esc(x.promo)}</div>`;
+          const gifts = m[2].split(/\s*\/\s*/).map(g=>{
+            const gm = g.trim().match(/^(\d+)\s+(.+)$/);
+            return gm ? `<li><b>${esc(gm[1])}</b>${esc(gm[2])}</li>` : `<li>${esc(g.trim())}</li>`;
+          }).join("");
+          return `<div class="promo-text">${esc(m[1].trim())}</div>
+            <div class="gift-title">🎁 加贈(擇一)</div>
+            <ul class="gift-list">${gifts}</ul>`;
+        })()}
+      </div>
+    </div>`:`<div class="no-promo">此商品目前無特別活動</div>`}
+    ${edu?`<div class="edu-section">
+      <div class="edu-icon">🎓</div>
+      <div class="edu-content">
+        <div class="edu-header">學生教育優惠</div>
+        <div class="edu-rows">
+          <div class="edu-price">$${fmt(eduPrice)}</div>
+          <div class="edu-disc">折抵 <b>-$${fmt(edu)}</b> · 憑學生 / 教職員證</div>
+        </div>
+      </div>
+    </div>`:''}
+    ${hasStock?`<div class="stock-section">
+      <div class="stock-header">📦 近期到貨資訊(統計:0703)</div>
+      <div class="stock-table">
+        <div class="head">機型 / 色系</div>
+        <div class="head">本週 7/2 – 8</div>
+        <div class="head">下週 7/9 – 15</div>
+        ${siblings.filter(it=>STOCK[it.id]).map(it=>{
+          const s = STOCK[it.id];
+          const col = extractColor(it) || "—";
+          return `<div class="color-label">${esc(col)}</div>
+            <div class="${stockClass(s[0])}">${fmt(s[0])}</div>
+            <div class="${stockClass(s[1])}">${fmt(s[1])}</div>`;
+        }).join("")}
+        <div class="total">總計</div>
+        <div class="total ${stockClass(w1)}">${fmt(w1)}</div>
+        <div class="total ${stockClass(w2)}">${fmt(w2)}</div>
+      </div>
+    </div>`:''}
+  </div>`;
+}
+
+render();
+</script>
+</body>
+</html>
