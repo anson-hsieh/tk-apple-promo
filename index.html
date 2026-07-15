@@ -106,6 +106,7 @@
   .stock-table .zero{color:var(--muted);font-weight:400}
   .stock-table .hi{color:var(--save)}
   .stock-table .color-label{color:var(--text)}
+  .stock-table .sku-tag{display:inline-block;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11px;color:var(--sub);background:color-mix(in srgb,var(--sub) 10%,transparent);padding:1px 6px;border-radius:4px;margin-right:8px;font-weight:500}
   .no-promo{padding:20px 24px;color:var(--sub);font-size:13px;text-align:center}
 
   @media (max-width:600px){
@@ -969,13 +970,13 @@ function renderDetailHTML(x){
     ${hasStock?`<div class="stock-section">
       <div class="stock-header">📦 近期到貨資訊(統計:0713)</div>
       <div class="stock-table">
-        <div class="head">機型 / 色系</div>
+        <div class="head">貨號 / 色系</div>
         <div class="head">本週 7/9 – 15</div>
         <div class="head">下週 7/16 – 22</div>
         ${siblings.filter(it=>STOCK[it.id]).map(it=>{
           const s = STOCK[it.id];
           const col = extractColor(it) || "—";
-          return `<div class="color-label">${esc(col)}</div>
+          return `<div class="color-label"><span class="sku-tag">${it.id}</span>${esc(col)}</div>
             <div class="${stockClass(s[0])}">${fmt(s[0])}</div>
             <div class="${stockClass(s[1])}">${fmt(s[1])}</div>`;
         }).join("")}
