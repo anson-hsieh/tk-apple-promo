@@ -96,6 +96,15 @@
   .edu-disc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
   .edu-disc b{color:var(--save);font-weight:600}
   .edu-price{font-size:20px;font-weight:700;color:var(--accent);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .bts-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--save) 5%,transparent)}
+  .bts-icon{width:36px;height:36px;background:color-mix(in srgb,var(--save) 14%,transparent);color:var(--save);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
+  .bts-content{flex:1;min-width:0}
+  .bts-header{font-size:10px;font-weight:700;color:var(--save);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+  .bts-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+  .bts-title b{color:var(--save);font-variant-numeric:tabular-nums}
+  .bts-list{margin:4px 0 0;padding-left:18px;font-size:13px;color:var(--text);line-height:1.55}
+  .bts-list li{margin:2px 0}
+  .bts-list li b{color:var(--sub);font-weight:500;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;margin-right:6px}
   .stock-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
   .stock-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
   .stock-table{display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;font-size:13px;font-variant-numeric:tabular-nums}
@@ -726,6 +735,62 @@ function extractColor(x){
   return "";
 }
 
+// BTS 開學方案(2026/07/17 – 07/31)— 買就送好禮清單
+const BTS = {
+  "13.6吋MBA M5": { total: 6869, gifts: [
+    "257407 Microsoft 365 Personal 個人版一年盒裝",
+    "231581 Riivan MacBook Air M2 13.6 亮面保護貼",
+    "256601 / 256602 / 256603 TUCANO Smilza 都會手提電腦包 13/14吋(黑 / 藍 / 奶茶)",
+    "267701 Riivan 65W GaN 伸縮線電源供應器 2C1A-白",
+    "269179 Zeiss 蔡司 手機螢幕清潔噴霧組 120ml"
+  ]},
+  "15.3吋MBA M5": { total: 6969, gifts: [
+    "257407 Microsoft 365 Personal 個人版一年盒裝",
+    "240939 Riivan MacBook Air 15 亮面抗刮保護貼",
+    "256605 / 256606 TUCANO Smilza 都會手提電腦包 15/16吋(黑 / 藍)",
+    "267701 Riivan 65W GaN 伸縮線電源供應器 2C1A-白",
+    "269179 Zeiss 蔡司 手機螢幕清潔噴霧組 120ml"
+  ]},
+  "14.2吋MBP M5": { total: 5990, gifts: [
+    "252142 AirPods 4 主動式降噪"
+  ]},
+  "14.2吋MBP M5 Pro": { total: 5990, gifts: [
+    "252142 AirPods 4 主動式降噪"
+  ]},
+  "14.2吋MBP M5 Max": { total: 5990, gifts: [
+    "252142 AirPods 4 主動式降噪"
+  ]},
+  "16.2吋MBP M5 Pro": { total: 5990, gifts: [
+    "252142 AirPods 4 主動式降噪"
+  ]},
+  "16.2吋MBP M5 Max": { total: 5990, gifts: [
+    "252142 AirPods 4 主動式降噪"
+  ]},
+  "iPad Air 11吋 M4": { total: 4440, gifts: [
+    "257407 Microsoft 365 Personal 個人版一年盒裝",
+    "249744 Riivan iPad Air 11 亮面保護貼",
+    "267696 / 267697 Riivan 45W GaN 氮化鎵電源供應器 2C(黑 / 白)"
+  ]},
+  "iPad Air 13吋 M4": { total: 4939, gifts: [
+    "257407 Microsoft 365 Personal 個人版一年盒裝",
+    "249745 Riivan iPad Air/Pro 13吋 亮面保護貼",
+    "267696 / 267697 Riivan 45W GaN 氮化鎵電源供應器 2C(黑 / 白)",
+    "269179 Zeiss 蔡司 手機螢幕清潔噴霧組 120ml"
+  ]},
+  "iPad Pro 11吋": { total: 5850, gifts: [
+    "257407 Microsoft 365 Personal 個人版一年盒裝",
+    "270306 / 270307 / 270308 LAUT iPad Pro 11吋 多角度保護殼(黑 / 灰 / 粉)",
+    "249746 Riivan iPad Pro 11 亮面保護貼",
+    "254371 / 254372 Riivan 65W GaN 氮化鎵充電器(黑 / 白)"
+  ]},
+  "iPad Pro 13吋": { total: 5950, gifts: [
+    "257407 Microsoft 365 Personal 個人版一年盒裝",
+    "270309 / 270310 / 270311 LAUT iPad Pro 13吋 多角度保護殼(黑 / 灰 / 粉)",
+    "249745 Riivan iPad Air/Pro 13吋 亮面保護貼",
+    "254371 / 254372 Riivan 65W GaN 氮化鎵充電器(黑 / 白)"
+  ]}
+};
+
 // AppleCare+ 新價(依家族名對應)
 const AC_PRICE = {
   // Mac
@@ -1015,6 +1080,17 @@ function renderDetailHTML(x){
           <div class="edu-price">$${fmt(eduPrice)}</div>
           <div class="edu-disc">折抵 <b>-$${fmt(edu)}</b> · 憑學生 / 教職員證</div>
         </div>
+      </div>
+    </div>`:''}
+    ${BTS[state.family]?`<div class="bts-section">
+      <div class="bts-icon">🎒</div>
+      <div class="bts-content">
+        <div class="bts-header">BTS 開學方案(2026/7/17 – 7/31)</div>
+        <div class="bts-title">買就送市價 <b>NT$${fmt(BTS[state.family].total)}</b> 好禮</div>
+        <ul class="bts-list">${BTS[state.family].gifts.map(g=>{
+          const gm = g.match(/^([\d\s/]+)\s+(.+)$/);
+          return gm ? `<li><b>${esc(gm[1].trim())}</b>${esc(gm[2])}</li>` : `<li>${esc(g)}</li>`;
+        }).join("")}</ul>
       </div>
     </div>`:''}
     ${hasStock?`<div class="stock-section">
