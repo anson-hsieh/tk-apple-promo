@@ -71,6 +71,7 @@
   .result-head{padding:20px 24px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 5%,transparent),transparent 60%);border-bottom:1px solid var(--border)}
   .product-name{font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.35;margin-bottom:6px}
   .product-meta{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;color:var(--sub);letter-spacing:-.2px}
+  .ac-badge{display:inline-block;margin-top:6px;font-size:12px;font-weight:500;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);padding:3px 10px;border-radius:6px;font-variant-numeric:tabular-nums}
   .price-grid{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:18px 24px;border-bottom:1px solid var(--border);align-items:baseline}
   .price-grid .label{font-size:13px;color:var(--sub);font-weight:500}
   .price-grid .value{font-size:14px;font-weight:500;font-variant-numeric:tabular-nums;text-align:right;color:var(--text)}
@@ -725,6 +726,54 @@ function extractColor(x){
   return "";
 }
 
+// AppleCare+ 新價(依家族名對應)
+const AC_PRICE = {
+  // Mac
+  "13吋MBN A18 Pro": 4990,
+  "13.6吋MBA M5": 6790,
+  "15.3吋MBA M5": 7790,
+  "iMac 24吋 M4": 5790,
+  "14.2吋MBP M5": 9490,
+  "14.2吋MBP M5 Pro": 9490,
+  "14.2吋MBP M5 Max": 9490,
+  "16.2吋MBP M5 Pro": 13490,
+  "16.2吋MBP M5 Max": 13490,
+  "Mac mini M4": 3490,
+  "Mac mini M4 Pro": 3490,
+  "Mac Studio M4 Max": 5790,
+  "Mac Studio M3 Ultra": 5790,
+  // iPad
+  "iPad mini 7th": 2490,
+  "iPad 11吋": 2490,
+  "iPad Air 11吋": 2890,
+  "iPad Air 13吋": 3590,
+  "iPad Air 11吋 M4": 2890,
+  "iPad Air 13吋 M4": 3590,
+  "iPad Pro 11吋": 5190,
+  "iPad Pro 13吋": 5890,
+  // iPhone
+  "iPhone 16e": 4890,
+  "iPhone 17e": 3890,
+  "iPhone 16": 4890,
+  "iPhone 16 Plus": 5790,
+  "iPhone 17": 4890,
+  "iPhone Air": 6390,
+  "iPhone 17 Pro": 6390,
+  "iPhone 17 Pro Max": 6390,
+  // Apple Watch
+  "Apple Watch SE(第三代)": 1690,
+  "Apple Watch Series 11": 2590,
+  "Apple Watch Ultra 3": 3190,
+  // AirPods
+  "AirPods 4": 990,
+  "AirPods 4-主動式降噪": 990,
+  "AirPods Pro 3": 1290,
+  "AirPods Max": 1990,
+  "AirPods Max 2": 1990,
+  // 其他
+  "HomePod": 1400
+};
+
 // 近期到貨資訊(0713 版本)— key: 貨號, value: [本週 7/9-7/15, 下週 7/16-7/22]
 const STOCK = {
   // AirPods
@@ -934,6 +983,7 @@ function renderDetailHTML(x){
   return `<div class="result">
     <div class="result-head">
       <div class="product-name">${esc(dispName)}</div>
+      ${AC_PRICE[state.family]?`<div class="ac-badge">🛡️ AppleCare+ NT$${fmt(AC_PRICE[state.family])}${state.cat==="Mac"?" (3年方案)":AC_PRICE[state.family]?" (2年方案)":""}</div>`:''}
     </div>
     <div class="price-grid">
       ${x.disc?`<div class="label">會員價</div><div class="value old">$${fmt(x.price)}</div>`:''}
