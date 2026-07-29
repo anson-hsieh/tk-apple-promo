@@ -108,11 +108,11 @@
   .bts-list li b{color:var(--sub);font-weight:500;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;margin-right:6px}
   .stock-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
   .stock-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-  .stock-table{display:grid;grid-template-columns:1fr auto auto;gap:4px 14px;font-size:13px;font-variant-numeric:tabular-nums}
-  .stock-table .head{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border)}
-  .stock-table .head:nth-child(2),.stock-table .head:nth-child(3){text-align:right}
+  .stock-table{display:grid;grid-template-columns:1fr auto auto auto;gap:4px 10px;font-size:12.5px;font-variant-numeric:tabular-nums}
+  .stock-table .head{font-size:9.5px;color:var(--muted);font-weight:600;letter-spacing:.3px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border)}
+  .stock-table .head:nth-child(2),.stock-table .head:nth-child(3),.stock-table .head:nth-child(4){text-align:right}
   .stock-table > div:not(.head):not(.total){padding:3px 0}
-  .stock-table > div:nth-child(3n+2),.stock-table > div:nth-child(3n){text-align:right;font-weight:500}
+  .stock-table > div:nth-child(4n+2),.stock-table > div:nth-child(4n+3),.stock-table > div:nth-child(4n){text-align:right;font-weight:500}
   .stock-table .total{font-weight:700;padding-top:6px;border-top:1px solid var(--border);margin-top:2px;color:var(--text)}
   .stock-table .zero{color:var(--muted);font-weight:400}
   .stock-table .hi{color:var(--save)}
@@ -840,61 +840,64 @@ function extractColor(x){
   return "";
 }
 
-// 近期到貨資訊(統計:0720)— key: 貨號, value: [本週 7/16-7/22, 下週 7/23-7/29]
+// 近期到貨資訊(統計:0727)— key: 貨號, value: [7/23-7/29, 7/30-8/5, 8/6-8/12]
 const STOCK = {
+  // AirPods
+  252142:[0,0,180], 262379:[0,0,1500],
   // iMac
-  253474:[10,1], 253475:[0,1], 253476:[2,0], 253477:[2,0],
-  253480:[1,0], 253481:[1,0], 253482:[1,0], 253483:[0,2],
-  // Mac mini
-  253545:[55,0],
-  // AirPods Pro 3
-  262379:[140,0],
+  253474:[1,2,0], 253475:[1,13,4], 253479:[0,1,0], 253483:[2,0,0],
   // MBP 14 basic
-  263627:[20,0], 263628:[0,10], 263629:[23,0], 263630:[5,0],
-  // MBA 13
-  267369:[14,0], 267370:[20,0], 267371:[4,0], 267372:[25,0],
-  267374:[5,0], 267375:[6,0], 267376:[5,0], 267377:[3,0],
+  263628:[10,0,0],
   // MBA 15
-  267381:[0,10], 267385:[0,5], 267389:[0,2],
+  267381:[10,0,0], 267385:[5,0,0], 267389:[2,0,0],
   // MBP 14 Pro/Max
-  267395:[1,0], 267396:[7,0], 267402:[1,0],
+  267395:[0,1,0], 267396:[0,4,5],
   // MBP 16
-  267404:[1,0], 267405:[1,2], 267406:[1,1], 267409:[1,0],
+  267403:[0,0,3], 267404:[0,0,2], 267405:[2,2,0], 267406:[1,0,0],
   // Studio Display
-  267411:[5,2],
+  267411:[2,5,0],
   // MacBook Neo
-  267442:[5,6], 267443:[0,10], 267444:[10,30], 267445:[7,0],
-  267446:[125,0], 267447:[12,0], 267448:[33,0], 267449:[45,0],
+  267442:[6,18,0], 267443:[10,0,0], 267444:[30,0,0],
+  267447:[0,24,0], 267449:[0,25,0],
+  // iPad mini 7th
+  253160:[0,0,10], 253161:[0,5,5], 253167:[0,0,5],
   // iPad 11吋
-  256491:[640,215], 256493:[380,250], 256494:[5,0], 256495:[55,0],
-  256496:[30,15], 256499:[5,0], 256501:[1,0], 256505:[0,5],
+  256491:[215,125,0], 256493:[250,0,0], 256494:[0,0,10], 256495:[0,0,30],
+  256496:[15,0,0], 256497:[0,0,10], 256499:[0,5,0],
+  256505:[5,0,0], 256507:[0,5,0],
   // iPad Pro 11 / 13
-  263631:[55,15], 263632:[20,0], 263633:[20,5], 263634:[0,10],
-  263655:[19,0], 263656:[18,0], 263657:[3,3],
+  263631:[15,0,0], 263633:[5,10,0], 263634:[10,10,0], 263644:[0,0,5],
+  263655:[0,5,0], 263657:[3,1,0],
   // iPad Air 11 M4
-  267288:[0,160], 267289:[0,60], 267290:[0,70], 267291:[0,10],
-  267292:[0,25], 267293:[0,40], 267294:[0,20], 267295:[0,15],
+  267288:[160,0,0], 267289:[60,0,20], 267290:[70,15,0], 267291:[10,5,0],
+  267292:[25,0,0], 267293:[40,20,0], 267294:[20,20,0], 267295:[15,10,0],
+  267298:[0,5,0],
   // iPad Air 13 M4
-  267320:[9,17], 267322:[12,0], 267323:[22,17],
-  267324:[45,15], 267326:[2,6], 267327:[17,26], 267332:[2,0],
+  267320:[17,0,0], 267323:[17,0,0], 267324:[15,10,0],
+  267326:[6,21,0], 267327:[26,0,0], 267343:[0,1,0],
   // Apple Watch SE
-  262292:[18,42], 262294:[0,6], 262295:[6,6],
-  262296:[12,0], 262298:[12,0], 262299:[0,12],
+  262292:[42,0,60], 262293:[0,6,0], 262294:[6,18,0], 262295:[6,0,0],
+  262296:[0,30,0], 262297:[0,0,12], 262298:[0,0,12], 262299:[12,0,6],
   // Apple Watch Series 11
-  262312:[18,78], 262316:[6,0], 262317:[12,0],
-  262318:[6,6], 262319:[6,36],
+  262308:[0,48,0], 262310:[0,48,0], 262311:[0,18,0],
+  262312:[78,120,0], 262314:[0,18,0],
+  262318:[6,42,0], 262319:[36,90,0], 262320:[0,18,0],
   // Apple Watch Ultra 3
-  262362:[6,6], 262372:[0,12],
-  // iPhone 16e / 17e
-  256229:[10,0], 256230:[10,0], 267283:[10,0],
+  262361:[0,24,0], 262362:[6,42,0], 262364:[0,0,6], 262367:[0,6,0],
+  262369:[0,6,0], 262370:[0,6,0], 262372:[12,6,0],
+  // iPhone 17e
+  267284:[0,10,0],
   // iPhone 17
-  262250:[0,30], 262255:[0,10], 262258:[0,20],
+  262249:[0,0,10], 262250:[30,0,10], 262251:[0,0,10], 262252:[0,0,10],
+  262254:[0,0,10], 262255:[10,0,0], 262256:[0,0,10], 262257:[0,0,10],
+  262258:[20,0,0],
   // iPhone 17 Pro
-  262271:[220,160], 262272:[50,30], 262273:[130,50],
-  262274:[10,100], 262277:[0,10],
+  262271:[160,20,70], 262272:[30,0,0], 262273:[50,30,0],
+  262274:[100,0,0], 262277:[10,0,0],
   // iPhone 17 Pro Max
-  262280:[70,450], 262281:[90,160], 262283:[0,50],
-  262284:[20,0], 262285:[20,30], 262286:[0,10]
+  262280:[450,70,0], 262281:[160,10,60], 262283:[50,40,10],
+  262284:[0,20,10], 262285:[30,0,10], 262286:[0,10,0],
+  262287:[0,10,0], 262288:[0,10,0]
 };
 
 function renderField(idx, label, options, value, placeholder){
@@ -996,10 +999,10 @@ function renderDetailHTML(x){
     }
     return true;
   });
-  let w1=0, w2=0, hasStock=false;
+  let w1=0, w2=0, w3=0, hasStock=false;
   siblings.forEach(it=>{
     const s = STOCK[it.id];
-    if(s){ hasStock = true; w1 += s[0]; w2 += s[1]; }
+    if(s){ hasStock = true; w1 += s[0]; w2 += s[1]; w3 += s[2]; }
   });
   const stockClass = q => q===0 ? "zero" : (q>=50 ? "hi" : "");
   return `<div class="result">
@@ -1051,21 +1054,24 @@ function renderDetailHTML(x){
       </div>
     </div>`:''}
     ${hasStock?`<div class="stock-section">
-      <div class="stock-header">📦 近期到貨資訊(統計:0720)</div>
+      <div class="stock-header">📦 近期到貨資訊(統計:0727)</div>
       <div class="stock-table">
         <div class="head">貨號 / 色系</div>
-        <div class="head">本週 7/16 – 22</div>
-        <div class="head">下週 7/23 – 29</div>
+        <div class="head">7/23 – 29</div>
+        <div class="head">7/30 – 8/5</div>
+        <div class="head">8/6 – 12</div>
         ${siblings.filter(it=>STOCK[it.id]).map(it=>{
           const s = STOCK[it.id];
           const col = extractColor(it) || "—";
           return `<div class="color-label"><span class="sku-tag">${it.id}</span>${esc(col)}</div>
             <div class="${stockClass(s[0])}">${fmt(s[0])}</div>
-            <div class="${stockClass(s[1])}">${fmt(s[1])}</div>`;
+            <div class="${stockClass(s[1])}">${fmt(s[1])}</div>
+            <div class="${stockClass(s[2])}">${fmt(s[2])}</div>`;
         }).join("")}
         <div class="total">總計</div>
         <div class="total ${stockClass(w1)}">${fmt(w1)}</div>
         <div class="total ${stockClass(w2)}">${fmt(w2)}</div>
+        <div class="total ${stockClass(w3)}">${fmt(w3)}</div>
       </div>
     </div>`:''}
   </div>`;
