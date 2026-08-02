@@ -8,7 +8,7 @@
   :root{
     --bg:#fafafa; --card:#fff; --text:#0a0a0a; --sub:#737373; --muted:#a3a3a3;
     --accent:#0071e3; --border:#e5e5e5; --border-strong:#d4d4d4;
-    --promo:#dc2626; --save:#16a34a; --gift:#ea580c;
+    --promo:#dc2626; --save:#16a34a; --gift:#ea580c; --parallel:#7c3aed;
     --shadow-sm:0 1px 2px rgba(0,0,0,.04);
     --shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
     --shadow-lg:0 4px 8px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.08);
@@ -97,6 +97,18 @@
   .edu-disc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
   .edu-disc b{color:var(--save);font-weight:600}
   .edu-price{font-size:20px;font-weight:700;color:var(--accent);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .parallel-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--parallel) 5%,transparent)}
+  .parallel-icon{width:36px;height:36px;background:color-mix(in srgb,var(--parallel) 12%,transparent);color:var(--parallel);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
+  .parallel-content{flex:1;min-width:0}
+  .parallel-header{font-size:10px;font-weight:700;color:var(--parallel);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+  .parallel-rows{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .parallel-disc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
+  .parallel-disc b{color:var(--parallel);font-weight:600}
+  .parallel-price{font-size:20px;font-weight:700;color:var(--parallel);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .parallel-gift-title{margin-top:10px;font-size:11px;font-weight:700;color:var(--parallel);letter-spacing:.6px;text-transform:uppercase}
+  .parallel-gift-list{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--text);line-height:1.5}
+  .parallel-gift-list li{margin:2px 0}
+  .parallel-gift-list li b{color:var(--sub);font-weight:500;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;margin-right:6px}
   .bts-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--save) 5%,transparent)}
   .bts-icon{width:36px;height:36px;background:color-mix(in srgb,var(--save) 14%,transparent);color:var(--save);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
   .bts-content{flex:1;min-width:0}
@@ -989,6 +1001,16 @@ function renderDetailHTML(x){
   const dispName = state.family + (state.picks.length ? " " + state.picks.join(" ") : "");
   const edu = eduDisc(x);
   const eduPrice = edu ? x.price - edu : 0;
+  // 併行活動:
+  // · Mac 系列中沒有 BTS 方案、且非 Studio Display 的品項,促銷價再折固定金額(MacBook Neo 折1500,其餘折2000)
+  // · iPad / Apple Watch 系列中沒有 BTS 方案的品項,促銷價再折「教育優惠折抵金額」
+  const showParallelMac = state.cat==="Mac" && !BTS[state.family] && !/^Studio Display/.test(state.family);
+  const showParallelOther = (state.cat==="iPad" || state.cat==="Apple Watch") && !BTS[state.family] && edu>0;
+  const showParallel = showParallelMac || showParallelOther;
+  const PARALLEL_DISC = {"13吋MBN A18 Pro":1500};
+  const parallelDisc = showParallelMac ? (PARALLEL_DISC[state.family] || 2000) : (showParallelOther ? edu : 0);
+  const parallelPrice = showParallel ? x.final - parallelDisc : 0;
+  const parallelGiftMatch = (showParallel && x.promo) ? x.promo.match(/^(.+?)\s*[((]贈品[::](.+?)[))]\s*$/) : null;
   // 加總同規格所有色系的到貨量
   const siblings = ALL.filter(it=>{
     if(it.family !== state.family) return false;
@@ -1050,6 +1072,21 @@ function renderDetailHTML(x){
           return gm ? `<li><b>${esc(gm[1].trim())}</b>${esc(gm[2])}</li>` : `<li>${esc(g)}</li>`;
         }).join("")}</ul>
         <div class="bts-split">🔁 可換配件金 $${fmt(BTS[state.family].split)}</div>
+      </div>
+    </div>`:''}
+    ${showParallel?`<div class="parallel-section">
+      <div class="parallel-icon">🔀</div>
+      <div class="parallel-content">
+        <div class="parallel-header">併行活動</div>
+        <div class="parallel-rows">
+          <div class="parallel-price">$${fmt(parallelPrice)}</div>
+          <div class="parallel-disc">促銷價再折 <b>-$${fmt(parallelDisc)}</b></div>
+        </div>
+        ${parallelGiftMatch?`<div class="parallel-gift-title">🎁 加贈</div>
+        <ul class="parallel-gift-list">${parallelGiftMatch[2].split(/\s*\/\s*/).map(g=>{
+          const gm = g.trim().match(/^(\d+)\s+(.+)$/);
+          return gm ? `<li><b>${esc(gm[1])}</b>${esc(gm[2])}</li>` : `<li>${esc(g.trim())}</li>`;
+        }).join("")}</ul>`:''}
       </div>
     </div>`:''}
     ${hasStock?`<div class="stock-section">
