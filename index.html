@@ -1002,13 +1002,17 @@ function renderDetailHTML(x){
   const edu = eduDisc(x);
   const eduPrice = edu ? x.price - edu : 0;
   // 併行活動:
-  // · Mac 系列中沒有 BTS 方案、且非 Studio Display 的品項,促銷價再折固定金額(MacBook Neo 折1500,其餘折2000)
+  // · Mac 系列中沒有 BTS 方案、且非 Studio Display 的品項:
+  //   - MacBook Neo 固定折 1500
+  //   - 其餘 Mac:教育優惠折扣金額 < 2000 時,直接折抵該教育優惠金額;≥ 2000 時,維持折 2000
   // · iPad / Apple Watch 系列中沒有 BTS 方案的品項,促銷價再折「教育優惠折抵金額」
   const showParallelMac = state.cat==="Mac" && !BTS[state.family] && !/^Studio Display/.test(state.family);
   const showParallelOther = (state.cat==="iPad" || state.cat==="Apple Watch") && !BTS[state.family] && edu>0;
   const showParallel = showParallelMac || showParallelOther;
   const PARALLEL_DISC = {"13吋MBN A18 Pro":1500};
-  const parallelDisc = showParallelMac ? (PARALLEL_DISC[state.family] || 2000) : (showParallelOther ? edu : 0);
+  const parallelDisc = showParallelMac
+    ? (PARALLEL_DISC[state.family] !== undefined ? PARALLEL_DISC[state.family] : (edu>0 && edu<2000 ? edu : 2000))
+    : (showParallelOther ? edu : 0);
   const parallelPrice = showParallel ? x.final - parallelDisc : 0;
   const parallelGiftMatch = (showParallel && x.promo) ? x.promo.match(/^(.+?)\s*[((]贈品[::](.+?)[))]\s*$/) : null;
   // 加總同規格所有色系的到貨量
