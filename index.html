@@ -675,7 +675,7 @@ const CAT_META = {
   "其他":{icon:"📺",label:"其他"}
 };
 
-// BTS 開學方案(2026/07/17 – 08/27)— 買就送好禮清單
+// BTS 開學方案(2026/07/17 – 09/24)— 買就送好禮清單
 const BTS = {
   "13.6吋MBA M5": { total: 6869, split: 3540, gifts: [
     "257407 Microsoft 365 Personal 個人版一年盒裝",
@@ -1067,7 +1067,7 @@ function renderDetailHTML(x){
     ${BTS[state.family]?`<div class="bts-section">
       <div class="bts-icon">🎒</div>
       <div class="bts-content">
-        <div class="bts-header">BTS 開學方案(2026/7/17 – 8/27)</div>
+        <div class="bts-header">BTS 開學方案(2026/7/17 – 9/24)</div>
         <div class="bts-title">買就送市價 <b>NT$${fmt(BTS[state.family].total)}</b> 好禮</div>
         <ul class="bts-list">${BTS[state.family].gifts.map(g=>{
           const gm = g.match(/^([\d\s/]+)\s+(.+)$/);
