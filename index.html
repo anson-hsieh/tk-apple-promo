@@ -89,6 +89,16 @@
   .gift-list li{margin:2px 0}
   .gift-list li b{color:var(--sub);font-weight:500;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;margin-right:6px}
   .no-promo{padding:20px 24px;color:var(--sub);font-size:13px;text-align:center}
+  /* 產品貨號資訊(結果卡片內) */
+  .skuinfo-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
+  .skuinfo-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+  .skuinfo-table{display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;font-size:12.5px;align-items:baseline}
+  .skuinfo-table .head{font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border);white-space:nowrap}
+  .skuinfo-table .head.r{text-align:right}
+  .skuinfo-table > div{padding:3px 0}
+  .skuinfo-table .sku-id{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;font-weight:600;color:var(--accent);white-space:nowrap}
+  .skuinfo-table .sku-name{color:var(--text);line-height:1.4}
+  .skuinfo-table .sku-model{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:11.5px;color:var(--sub);text-align:right;white-space:nowrap}
   .edu-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--accent) 4%,transparent)}
   .edu-icon{width:36px;height:36px;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
   .edu-content{flex:1;min-width:0}
@@ -915,6 +925,19 @@ function renderField(idx, label, options, value, placeholder){
   </div>`;
 }
 
+// 機型排序(Mac 依產品線自訂順序,其餘依中文字序)
+function sortFamilies(cat, families){
+  return families.slice().sort((a,b)=>{
+    if(cat==="Mac"){
+      const order = ["MBN","13.6吋MBA","15.3吋MBA","14.2吋MBP","16.2吋MBP","iMac","Mac mini","Mac Studio","Studio Display"];
+      const rank = f => { const i = order.findIndex(k=>f.includes(k)); return i<0 ? 999 : i; };
+      const ra = rank(a), rb = rank(b);
+      if(ra !== rb) return ra - rb;
+    }
+    return a.localeCompare(b,'zh');
+  });
+}
+
 function render(){
   let html = `<div class="panel"><div class="panel-head">選擇規格</div><div class="panel-body"><div class="form">`;
 
@@ -928,15 +951,7 @@ function render(){
 
   if(state.cat){
     const items = ALL.filter(x=>x.cat===state.cat);
-    const families = [...new Set(items.map(x=>x.family))].sort((a,b)=>{
-      if(state.cat==="Mac"){
-        const order = ["MBN","13.6吋MBA","15.3吋MBA","14.2吋MBP","16.2吋MBP","iMac","Mac mini","Mac Studio","Studio Display"];
-        const rank = f => { const i = order.findIndex(k=>f.includes(k)); return i<0 ? 999 : i; };
-        const ra = rank(a), rb = rank(b);
-        if(ra !== rb) return ra - rb;
-      }
-      return a.localeCompare(b,'zh');
-    });
+    const families = sortFamilies(state.cat, [...new Set(items.map(x=>x.family))]);
     html += renderField(-1, "機型", families, state.family, "— 請選擇機型 —");
 
     if(state.family){
@@ -1085,6 +1100,17 @@ function renderDetailHTML(x){
           const gm = g.trim().match(/^(\d+)\s+(.+)$/);
           return gm ? `<li><b>${esc(gm[1])}</b>${esc(gm[2])}</li>` : `<li>${esc(g.trim())}</li>`;
         }).join("")}</ul>`:''}
+      </div>
+    </div>`:''}
+    ${siblings.length?`<div class="skuinfo-section">
+      <div class="skuinfo-header">🔖 產品貨號(${siblings.length} 項)</div>
+      <div class="skuinfo-table">
+        <div class="head">貨號</div>
+        <div class="head">品名</div>
+        <div class="head r">型號</div>
+        ${siblings.map(it=>`<div class="sku-id">${it.id}</div>
+          <div class="sku-name">${esc(it.name)}</div>
+          <div class="sku-model">${esc(it.model)}</div>`).join("")}
       </div>
     </div>`:''}
     ${hasStock?`<div class="stock-section">
