@@ -131,11 +131,12 @@
   .bts-split{margin-top:10px;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1.5px solid var(--save);border-radius:8px;font-size:13px;font-weight:700;color:var(--save);background:color-mix(in srgb,var(--save) 12%,transparent);font-variant-numeric:tabular-nums}
   .stock-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
   .stock-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-  .stock-table{display:grid;grid-template-columns:1fr auto auto auto;gap:4px 10px;font-size:12.5px;font-variant-numeric:tabular-nums}
-  .stock-table .head{font-size:9.5px;color:var(--muted);font-weight:600;letter-spacing:.3px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border)}
-  .stock-table .head:nth-child(2),.stock-table .head:nth-child(3),.stock-table .head:nth-child(4){text-align:right}
+  .stock-note{font-size:10.5px;color:var(--muted);font-weight:500;margin:-6px 0 10px}
+  .stock-table{display:grid;grid-template-columns:1fr auto auto auto auto;gap:4px 8px;font-size:12px;font-variant-numeric:tabular-nums}
+  .stock-table .head{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.2px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border);white-space:nowrap}
+  .stock-table .head:nth-child(2),.stock-table .head:nth-child(3),.stock-table .head:nth-child(4),.stock-table .head:nth-child(5){text-align:right}
   .stock-table > div:not(.head):not(.total){padding:3px 0}
-  .stock-table > div:nth-child(4n+2),.stock-table > div:nth-child(4n+3),.stock-table > div:nth-child(4n){text-align:right;font-weight:500}
+  .stock-table > div:nth-child(5n+2),.stock-table > div:nth-child(5n+3),.stock-table > div:nth-child(5n+4),.stock-table > div:nth-child(5n){text-align:right;font-weight:500}
   .stock-table .total{font-weight:700;padding-top:6px;border-top:1px solid var(--border);margin-top:2px;color:var(--text)}
   .stock-table .zero{color:var(--muted);font-weight:400}
   .stock-table .hi{color:var(--save)}
@@ -183,7 +184,7 @@
 </div>
 
 <script>
-// -------- Data (來源:0901-0915操盤.pdf) --------
+// -------- Data (來源:0901-0915操盤.pdf + 0910售價調整.pdf) --------
 const RAW = [
   // ===== Mac =====
   ["Mac","MacBook Neo 現折400再送市價1280保護貼(贈品:268486 Riivan MacBook Neo 13吋亮面防刮保護貼)",[
@@ -459,32 +460,35 @@ const RAW = [
   ]],
   // ===== iPhone =====
   ["iPhone","iPhone 16e 滿萬送500配件金",[
-    [256229,"iPhone 16e 128G-黑色","MD1Q4ZP/A",18400,0,18400],
-    [256230,"iPhone 16e 128G-白色","MD1R4ZP/A",18400,0,18400],
+    [256229,"iPhone 16e 128G-黑色","MD1Q4ZP/A",21900,0,21900],
+    [256230,"iPhone 16e 128G-白色","MD1R4ZP/A",21900,0,21900],
   ]],
   ["iPhone","iPhone 17e 滿萬送500配件金",[
-    [267282,"iPhone 17e 256GB-黑色","MHRV4ZP/A",21900,0,21900],
-    [267283,"iPhone 17e 256GB-白色","MHRW4ZP/A",21900,0,21900],
-    [267284,"iPhone 17e 256GB-嫩粉色","MHRX4ZP/A",21900,0,21900],
-    [267285,"iPhone 17e 512GB-黑色","MHRY4ZP/A",28900,0,28900],
-    [267286,"iPhone 17e 512GB-白色","MHU04ZP/A",28900,0,28900],
+    [267282,"iPhone 17e 256GB-黑色","MHRV4ZP/A",25900,0,25900],
+    [267283,"iPhone 17e 256GB-白色","MHRW4ZP/A",25900,0,25900],
+    [267284,"iPhone 17e 256GB-嫩粉色","MHRX4ZP/A",25900,0,25900],
+    [267285,"iPhone 17e 512GB-黑色","MHRY4ZP/A",32900,0,32900],
+    [267286,"iPhone 17e 512GB-白色","MHU04ZP/A",32900,0,32900],
+    [267287,"iPhone 17e 512GB-嫩粉色","MHU34ZP/A",32900,0,32900],
   ]],
-  ["iPhone","iPhone 16 現折1295起",[
-    [252083,"iPhone 16 128GB-黑色","MYE73ZP/A",25900,1295,24605],
-    [252084,"iPhone 16 128GB-白色","MYE93ZP/A",25900,1295,24605],
-    [252085,"iPhone 16 128GB-粉紅色","MYEA3ZP/A",25900,1295,24605],
+  ["iPhone","iPhone 16 滿萬送500配件金",[
+    [252083,"iPhone 16 128GB-黑色","MYE73ZP/A",29900,0,29900],
+    [252084,"iPhone 16 128GB-白色","MYE93ZP/A",29900,0,29900],
+    [252085,"iPhone 16 128GB-粉紅色","MYEA3ZP/A",29900,0,29900],
+    [252086,"iPhone 16 128GB-湛海藍色","MYEC3ZP/A",29900,0,29900],
+    [252087,"iPhone 16 128GB-湖水綠色","MYED3ZP/A",29900,0,29900],
   ]],
   ["iPhone","iPhone 17 滿萬送500配件金(只賣現貨,不開放預訂)",[
-    [262249,"iPhone 17 256GB-黑色","MG6J4ZP/A",29900,0,29900],
-    [262250,"iPhone 17 256GB-白色","MG6K4ZP/A",29900,0,29900],
-    [262251,"iPhone 17 256GB-霧藍色","MG6L4ZP/A",29900,0,29900],
-    [262252,"iPhone 17 256GB-薰衣草紫色","MG6M4ZP/A",29900,0,29900],
-    [262253,"iPhone 17 256GB-鼠尾草綠色","MG6N4ZP/A",29900,0,29900],
-    [262254,"iPhone 17 512GB-黑色","MG6P4ZP/A",36900,0,36900],
-    [262255,"iPhone 17 512GB-白色","MG6Q4ZP/A",36900,0,36900],
-    [262256,"iPhone 17 512GB-霧藍色","MG6T4ZP/A",36900,0,36900],
-    [262257,"iPhone 17 512GB-薰衣草紫色","MG6U4ZP/A",36900,0,36900],
-    [262258,"iPhone 17 512GB-鼠尾草綠色","MG6V4ZP/A",36900,0,36900],
+    [262249,"iPhone 17 256GB-黑色","MG6J4ZP/A",32900,0,32900],
+    [262250,"iPhone 17 256GB-白色","MG6K4ZP/A",32900,0,32900],
+    [262251,"iPhone 17 256GB-霧藍色","MG6L4ZP/A",32900,0,32900],
+    [262252,"iPhone 17 256GB-薰衣草紫色","MG6M4ZP/A",32900,0,32900],
+    [262253,"iPhone 17 256GB-鼠尾草綠色","MG6N4ZP/A",32900,0,32900],
+    [262254,"iPhone 17 512GB-黑色","MG6P4ZP/A",39900,0,39900],
+    [262255,"iPhone 17 512GB-白色","MG6Q4ZP/A",39900,0,39900],
+    [262256,"iPhone 17 512GB-霧藍色","MG6T4ZP/A",39900,0,39900],
+    [262257,"iPhone 17 512GB-薰衣草紫色","MG6U4ZP/A",39900,0,39900],
+    [262258,"iPhone 17 512GB-鼠尾草綠色","MG6V4ZP/A",39900,0,39900],
   ]],
   ["iPhone","iPhone 17 Pro 現折906起再送市價1290保護貼(皆是現有庫存售完為止)(贈品:262121 Riivan i17/17Pro 2.5D 4倍抗藍光保貼-AR / 262120 Riivan i17/17Pro 2.5D 4倍抗藍光保貼-防窺)",[
     [262271,"iPhone 17 Pro 256GB-銀色","MG8G4ZP/A",39900,906,38994],
@@ -517,37 +521,37 @@ const RAW = [
     [262298,"AW SE GPS 44/午夜鋁/午夜運動錶帶-S/M","MEHN4TA/A",8900,623,8277],
     [262299,"AW SE GPS 44/午夜鋁/午夜運動錶帶-M/L","MEHQ4TA/A",8900,623,8277],
   ]],
-  ["Apple Watch","Apple Watch S11 現折903起",[
-    [262308,"AW S11 GPS 42/曜石黑鋁/黑運動錶帶-S/M","MEQT4TA/A",12900,903,11997],
-    [262309,"AW S11 GPS 42/曜石黑鋁/黑運動錶帶-M/L","MEQU4TA/A",12900,903,11997],
-    [262310,"AW S11 GPS 42/太空灰鋁/黑運動錶帶-S/M","MEQW4TA/A",12900,903,11997],
-    [262311,"AW S11 GPS 42/太空灰鋁/黑運動錶帶-M/L","MEQX4TA/A",12900,903,11997],
-    [262312,"AW S11 GPS 42/玫瑰金鋁/淡胭粉運動錶帶-SM","MEU04TA/A",12900,903,11997],
-    [262314,"AW S11 GPS 42/銀鋁/霧紫運動錶帶-S/M","MEU64TA/A",12900,903,11997],
-    [262318,"AW S11 GPS 46/太空灰鋁/黑運動錶帶-S/M","MEV04TA/A",13900,973,12927],
-    [262319,"AW S11 GPS 46/太空灰鋁/黑運動錶帶-M/L","MEV44TA/A",13900,973,12927],
-    [262320,"AW S11 GPS 46/玫瑰金鋁/淡胭粉運動錶帶-SM","MEV64TA/A",13900,973,12927],
+  ["Apple Watch","Apple Watch S11 已降價,售降價後價格(現有庫存售完為止)",[
+    [262308,"AW S11 GPS 42/曜石黑鋁/黑運動錶帶-S/M","MEQT4TA/A",12400,0,12400],
+    [262309,"AW S11 GPS 42/曜石黑鋁/黑運動錶帶-M/L","MEQU4TA/A",12400,0,12400],
+    [262310,"AW S11 GPS 42/太空灰鋁/黑運動錶帶-S/M","MEQW4TA/A",12400,0,12400],
+    [262311,"AW S11 GPS 42/太空灰鋁/黑運動錶帶-M/L","MEQX4TA/A",12400,0,12400],
+    [262312,"AW S11 GPS 42/玫瑰金鋁/淡胭粉運動錶帶-SM","MEU04TA/A",12400,0,12400],
+    [262314,"AW S11 GPS 42/銀鋁/霧紫運動錶帶-S/M","MEU64TA/A",12400,0,12400],
+    [262318,"AW S11 GPS 46/太空灰鋁/黑運動錶帶-S/M","MEV04TA/A",13300,0,13300],
+    [262319,"AW S11 GPS 46/太空灰鋁/黑運動錶帶-M/L","MEV44TA/A",13300,0,13300],
+    [262320,"AW S11 GPS 46/玫瑰金鋁/淡胭粉運動錶帶-SM","MEV64TA/A",13300,0,13300],
   ]],
-  ["Apple Watch","Apple Watch Ultra 3 現折2152起",[
-    [262361,"AW Ultra 3 49/原色鈦/錨藍色海洋錶帶","MEWH4TA/A",26900,2152,24748],
-    [262362,"AW Ultra 3 49/黑色鈦/黑色海洋錶帶","MF0J4TA/A",26900,2152,24748],
-    [262364,"AW Ultra 3 49/黑色鈦/黑色高山錶環-M","MF0V4TA/A",26900,2152,24748],
-    [262367,"AW Ultra 3 49/原色鈦/淡藍色高山錶環-M","MEWM4TA/A",26900,2152,24748],
-    [262369,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-SM","MEWR4TA/A",26900,2152,24748],
-    [262370,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-ML","MEWU4TA/A",26900,2152,24748],
-    [262371,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-SM","MF1D4TA/A",26900,2152,24748],
-    [262372,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-ML","MF1H4TA/A",26900,2152,24748],
-    [262378,"AW Ultra 3 49/黑色鈦/黑色鈦米蘭錶環-L","MF1T4TA/A",29900,2392,27508],
+  ["Apple Watch","Apple Watch Ultra 3 已降價,售降價後價格(現有庫存售完為止)",[
+    [262361,"AW Ultra 3 49/原色鈦/錨藍色海洋錶帶","MEWH4TA/A",24800,0,24800],
+    [262362,"AW Ultra 3 49/黑色鈦/黑色海洋錶帶","MF0J4TA/A",24800,0,24800],
+    [262364,"AW Ultra 3 49/黑色鈦/黑色高山錶環-M","MF0V4TA/A",24800,0,24800],
+    [262367,"AW Ultra 3 49/原色鈦/淡藍色高山錶環-M","MEWM4TA/A",24800,0,24800],
+    [262369,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-SM","MEWR4TA/A",24800,0,24800],
+    [262370,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-ML","MEWU4TA/A",24800,0,24800],
+    [262371,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-SM","MF1D4TA/A",24800,0,24800],
+    [262372,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-ML","MF1H4TA/A",24800,0,24800],
+    [262378,"AW Ultra 3 49/黑色鈦/黑色鈦米蘭錶環-L","MF1T4TA/A",24800,0,24800],
   ]],
   // ===== AirPods =====
   ["AirPods","AirPods Pro 3 現折800",[
     [262379,"AirPods Pro 3","MFHP4TA/A",7490,800,6690],
   ]],
-  ["AirPods","AirPods 4 現折500",[
-    [252141,"AirPods 4","MXP63TA/A",4490,500,3990],
+  ["AirPods","AirPods 4 已降價,售降價後價格(現有庫存售完為止)",[
+    [252141,"AirPods 4","MXP63TA/A",3790,0,3790],
   ]],
-  ["AirPods","AirPods 4 主動式降噪 現折600",[
-    [252142,"AirPods 4-主動式降噪","MXP93TA/A",5990,600,5390],
+  ["AirPods","AirPods 4 主動式降噪 已降價,售降價後價格(現有庫存售完為止)",[
+    [252142,"AirPods 4-主動式降噪","MXP93TA/A",4790,0,4790],
   ]],
   ["AirPods","AirPods Max 現折3991",[
     [252143,"AirPods Max-午夜色","MWW43TA/A",17990,3991,13999],
@@ -844,44 +848,50 @@ function extractColor(x){
   return "";
 }
 
-// 近期到貨資訊(統計:0831)— key: 貨號, value: [8/27-9/2, 9/3-9/9, 9/10-9/16]
+// 近期到貨資訊(統計:0908)— key: 貨號, value: [9/3-9/9, 9/10-9/16, 9/17-9/23, 9/24-9/30(季末不出貨)]
 const STOCK = {
   // AirPods
-  252141:[0,280,0], 262379:[1540,1000,0],
+  252141:[280,0,0,0], 252142:[0,0,20,0], 262379:[1000,180,350,0],
+  // iMac
+  253475:[0,1,0,0],
   // MBP 14 basic
-  263627:[0,0,18], 263628:[0,0,20], 263630:[2,0,0],
+  263627:[0,18,5,0], 263628:[0,20,0,0], 263630:[0,0,1,0],
+  267393:[0,8,13,0], 267394:[0,10,3,0],
   // MBA 13
-  267369:[29,8,0], 267371:[79,12,0], 267372:[25,8,0],
-  267373:[0,8,0], 267375:[1,10,0], 267376:[12,5,0],
-  267378:[3,0,0], 267379:[5,0,0], 267380:[2,0,0],
+  267369:[8,0,2,0], 267370:[0,0,35,0], 267371:[12,0,27,0], 267372:[8,0,14,0],
+  267373:[8,0,2,0], 267374:[0,0,14,0], 267375:[10,0,8,0], 267376:[5,0,2,0],
+  267377:[0,0,2,0],
   // MBA 15
-  267381:[29,42,33], 267382:[24,3,34], 267383:[38,2,0], 267384:[37,12,13],
-  267386:[0,7,1], 267389:[0,0,2],
+  267381:[42,34,0,0], 267382:[3,34,0,0], 267383:[2,0,0,0], 267384:[12,13,0,0],
+  267386:[7,1,0,0], 267389:[0,2,3,0], 267390:[0,0,4,0], 267391:[0,0,1,0],
+  267392:[0,0,4,0],
   // MBP 14 Pro/Max
-  267395:[3,0,1], 267396:[0,0,2], 267401:[0,0,2], 267402:[0,0,2],
+  267395:[0,1,0,0], 267396:[0,2,0,0], 267401:[0,2,0,0], 267402:[0,2,0,0],
   // Studio Display
-  267411:[3,0,0], 267412:[1,0,0],
+  267411:[0,4,0,0],
   // MacBook Neo
-  267442:[15,0,5], 267443:[0,0,8], 267444:[3,0,8], 267445:[0,1,0],
-  267446:[50,0,1], 267447:[12,3,3], 267448:[0,0,10], 267449:[0,18,19],
+  267442:[0,11,8,0], 267443:[0,9,15,0], 267444:[0,10,5,0], 267445:[1,0,15,0],
+  267446:[0,1,80,0], 267447:[3,6,15,0], 267448:[0,18,25,0], 267449:[18,31,28,0],
   // iPad mini 7th
-  253160:[0,5,0],
+  253160:[5,0,0,0],
   // iPad 11吋
-  256491:[0,400,0], 256493:[0,50,0],
-  // iPad Pro 11 / 13
-  263632:[10,0,0],
-  263655:[0,10,0], 263656:[0,5,0], 263657:[6,0,6], 263658:[0,0,8],
-  263659:[1,1,0], 263660:[0,1,0],
+  256491:[400,0,0,0], 256493:[50,50,0,0],
+  // iPad Pro 13
+  263655:[10,14,30,0], 263656:[5,2,20,0], 263657:[0,6,0,0], 263658:[0,8,0,0],
+  263659:[1,0,0,0], 263660:[1,0,0,0], 263667:[0,1,0,0], 263668:[0,1,0,0],
   // iPad Air 11 M4
-  267295:[0,0,5],
+  267288:[0,0,30,0], 267289:[0,0,50,0], 267290:[0,0,10,0], 267291:[0,0,10,0],
+  267292:[0,0,15,0], 267293:[0,0,25,0], 267294:[0,0,25,0], 267295:[0,5,25,0],
+  267297:[0,0,5,0],
   // iPad Air 13 M4
-  267320:[27,3,0], 267321:[33,0,0], 267322:[11,14,0], 267323:[19,0,1],
-  267324:[0,0,15], 267326:[0,0,1],
+  267320:[3,0,0,0], 267322:[14,0,0,0], 267323:[0,1,0,0],
+  267324:[0,15,0,0], 267326:[0,1,0,0],
   // iPhone 17e
-  267282:[0,0,20], 267283:[0,0,140], 267284:[0,50,30],
+  267282:[0,30,10,0], 267283:[0,140,0,0], 267284:[50,30,20,0],
   // iPhone 17
-  262249:[0,0,40], 262250:[0,40,90], 262251:[0,50,70],
-  262252:[0,50,60], 262253:[10,0,0], 262255:[10,0,0]
+  262249:[0,140,130,0], 262250:[40,90,230,0], 262251:[50,70,40,0],
+  262252:[50,60,20,0], 262253:[0,0,10,0],
+  262254:[0,10,0,0], 262256:[0,10,0,0], 262257:[0,10,0,0], 262258:[0,10,0,0]
 };
 
 function renderField(idx, label, options, value, placeholder){
@@ -1002,10 +1012,10 @@ function renderDetailHTML(x){
     }
     return true;
   });
-  let w1=0, w2=0, w3=0, hasStock=false;
+  let w1=0, w2=0, w3=0, w4=0, hasStock=false;
   siblings.forEach(it=>{
     const s = STOCK[it.id];
-    if(s){ hasStock = true; w1 += s[0]; w2 += s[1]; w3 += s[2]; }
+    if(s){ hasStock = true; w1 += s[0]; w2 += s[1]; w3 += s[2]; w4 += s[3]; }
   });
   const stockClass = q => q===0 ? "zero" : (q>=50 ? "hi" : "");
   return `<div class="result">
@@ -1084,24 +1094,28 @@ function renderDetailHTML(x){
       </div>
     </div>`:''}
     ${hasStock?`<div class="stock-section">
-      <div class="stock-header">📦 近期到貨資訊(統計:0831)</div>
+      <div class="stock-header">📦 近期到貨資訊(統計:0908)</div>
+      <div class="stock-note">※ 9/24 – 9/30 季末不出貨</div>
       <div class="stock-table">
         <div class="head">貨號 / 色系</div>
-        <div class="head">8/27 – 9/2</div>
         <div class="head">9/3 – 9</div>
         <div class="head">9/10 – 16</div>
+        <div class="head">9/17 – 23</div>
+        <div class="head">9/24 – 30</div>
         ${siblings.filter(it=>STOCK[it.id]).map(it=>{
           const s = STOCK[it.id];
           const col = extractColor(it) || "—";
           return `<div class="color-label"><span class="sku-tag">${it.id}</span>${esc(col)}</div>
             <div class="${stockClass(s[0])}">${fmt(s[0])}</div>
             <div class="${stockClass(s[1])}">${fmt(s[1])}</div>
-            <div class="${stockClass(s[2])}">${fmt(s[2])}</div>`;
+            <div class="${stockClass(s[2])}">${fmt(s[2])}</div>
+            <div class="${stockClass(s[3])}">${fmt(s[3])}</div>`;
         }).join("")}
         <div class="total">總計</div>
         <div class="total ${stockClass(w1)}">${fmt(w1)}</div>
         <div class="total ${stockClass(w2)}">${fmt(w2)}</div>
         <div class="total ${stockClass(w3)}">${fmt(w3)}</div>
+        <div class="total ${stockClass(w4)}">${fmt(w4)}</div>
       </div>
     </div>`:''}
   </div>`;
