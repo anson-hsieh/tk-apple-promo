@@ -132,11 +132,11 @@
   .stock-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
   .stock-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
   .stock-note{font-size:10.5px;color:var(--muted);font-weight:500;margin:-6px 0 10px}
-  .stock-table{display:grid;grid-template-columns:1fr auto auto auto auto;gap:4px 8px;font-size:12px;font-variant-numeric:tabular-nums}
-  .stock-table .head{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.2px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border);white-space:nowrap}
-  .stock-table .head:nth-child(2),.stock-table .head:nth-child(3),.stock-table .head:nth-child(4),.stock-table .head:nth-child(5){text-align:right}
+  .stock-table{display:grid;grid-template-columns:1fr auto auto auto;gap:4px 10px;font-size:12.5px;font-variant-numeric:tabular-nums}
+  .stock-table .head{font-size:9.5px;color:var(--muted);font-weight:600;letter-spacing:.3px;text-transform:uppercase;padding-bottom:4px;border-bottom:1px solid var(--border);white-space:nowrap}
+  .stock-table .head:nth-child(2),.stock-table .head:nth-child(3),.stock-table .head:nth-child(4){text-align:right}
   .stock-table > div:not(.head):not(.total){padding:3px 0}
-  .stock-table > div:nth-child(5n+2),.stock-table > div:nth-child(5n+3),.stock-table > div:nth-child(5n+4),.stock-table > div:nth-child(5n){text-align:right;font-weight:500}
+  .stock-table > div:nth-child(4n+2),.stock-table > div:nth-child(4n+3),.stock-table > div:nth-child(4n){text-align:right;font-weight:500}
   .stock-table .total{font-weight:700;padding-top:6px;border-top:1px solid var(--border);margin-top:2px;color:var(--text)}
   .stock-table .zero{color:var(--muted);font-weight:400}
   .stock-table .hi{color:var(--save)}
@@ -774,16 +774,15 @@ function parseItem(x){
     // 支援 AW SE / AW SE 3 / AW S11 / AW S12 / AW Ultra 3 / AW Ultra 4 等命名
     let m = n.match(/^AW\s+(SE\s+\d+|SE|S\d+|Ultra\s+\d+)\s+(GPS|LTE)?\s*(\d+)\/?(.+)$/);
     if(m){
-      const g = m[1], rest = m[4];
+      const g = m[1];
       const series = /^Ultra/.test(g) ? "Apple Watch Ultra "+g.split(/\s+/)[1] :
                      /^SE\s+\d+$/.test(g) ? "Apple Watch SE "+g.split(/\s+/)[1]+"(新錶帶色)" :
                      g==="SE" ? "Apple Watch SE(第三代)" :
                      "Apple Watch Series "+g.slice(1);
       const conn = m[2]==="LTE" ? "GPS + 行動網路" : "GPS";
-      const material = (rest.split("/")[0]||"").trim();
-      const steps = [["連線方式",conn],["錶徑",m[3]+"mm"]];
-      if(material) steps.push(["材質",material]);
-      return {family:series, steps};
+      return {family:series, steps:[
+        ["連線方式",conn],["錶徑",m[3]+"mm"]
+      ]};
     }
   }
   if(c==="AirPods"){
@@ -951,6 +950,10 @@ function eduDisc(x){
     if(id===262300) return 1000;              // SE LTE 鋁
     if(id>=262308 && id<=262323) return 1300; // S11 鋁 GPS
     if(id>=262361 && id<=262378) return 2700; // Ultra 3 全系列
+    if(id>=273252 && id<=273259) return 600;  // SE 3(新錶帶色)GPS
+    if(id>=273260 && id<=273267) return 1000; // SE 3(新錶帶色)LTE
+    if(id>=273268 && id<=273327) return 1400; // S12 全系列
+    if(id>=273328 && id<=273345) return 2900; // Ultra 4 全系列
   }
   return 0;
 }
@@ -989,50 +992,72 @@ function extractColor(x){
   return "";
 }
 
-// 近期到貨資訊(統計:0908)— key: 貨號, value: [9/3-9/9, 9/10-9/16, 9/17-9/23, 9/24-9/30(季末不出貨)]
+// 近期到貨資訊(統計:0922)— key: 貨號, value: [9/17-9/23, 9/24-9/30(季末不出貨), 10/1-10/7]
 const STOCK = {
   // AirPods
-  252141:[280,0,0,0], 252142:[0,0,20,0], 262379:[1000,180,350,0],
+  262379:[350,0,1020], 273346:[1580,0,500], 273347:[1230,0,120],
   // iMac
-  253475:[0,1,0,0],
+  253482:[0,0,1],
   // MBP 14 basic
-  263627:[0,18,5,0], 263628:[0,20,0,0], 263630:[0,0,1,0],
-  267393:[0,8,13,0], 267394:[0,10,3,0],
+  263627:[5,0,0], 263629:[0,0,30], 263630:[1,0,3],
+  267393:[13,0,0], 267394:[3,0,0],
   // MBA 13
-  267369:[8,0,2,0], 267370:[0,0,35,0], 267371:[12,0,27,0], 267372:[8,0,14,0],
-  267373:[8,0,2,0], 267374:[0,0,14,0], 267375:[10,0,8,0], 267376:[5,0,2,0],
-  267377:[0,0,2,0],
+  267369:[2,0,23], 267370:[35,0,10], 267371:[27,0,12], 267372:[14,0,35],
+  267373:[2,0,0], 267374:[14,0,0], 267375:[8,0,1], 267376:[2,0,0],
+  267377:[2,0,0],
   // MBA 15
-  267381:[42,34,0,0], 267382:[3,34,0,0], 267383:[2,0,0,0], 267384:[12,13,0,0],
-  267386:[7,1,0,0], 267389:[0,2,3,0], 267390:[0,0,4,0], 267391:[0,0,1,0],
-  267392:[0,0,4,0],
+  267381:[0,0,11], 267382:[0,0,25], 267383:[0,0,40], 267384:[0,0,25],
+  267389:[3,0,0], 267390:[4,0,0], 267391:[1,0,0], 267392:[4,0,0],
   // MBP 14 Pro/Max
-  267395:[0,1,0,0], 267396:[0,2,0,0], 267401:[0,2,0,0], 267402:[0,2,0,0],
+  267395:[8,0,4], 267396:[18,0,15],
+  // MBP 16
+  267403:[0,0,2], 267405:[0,0,1], 267406:[0,0,1], 267408:[0,0,2],
   // Studio Display
-  267411:[0,4,0,0],
+  267411:[0,0,6],
   // MacBook Neo
-  267442:[0,11,8,0], 267443:[0,9,15,0], 267444:[0,10,5,0], 267445:[1,0,15,0],
-  267446:[0,1,80,0], 267447:[3,6,15,0], 267448:[0,18,25,0], 267449:[18,31,28,0],
-  // iPad mini 7th
-  253160:[5,0,0,0],
+  267442:[8,0,10], 267443:[15,0,0], 267444:[5,0,0], 267445:[15,0,2],
+  267446:[80,0,25], 267447:[15,0,5], 267448:[25,0,0], 267449:[28,0,0],
   // iPad 11吋
-  256491:[400,0,0,0], 256493:[50,50,0,0],
-  // iPad Pro 13
-  263655:[10,14,30,0], 263656:[5,2,20,0], 263657:[0,6,0,0], 263658:[0,8,0,0],
-  263659:[1,0,0,0], 263660:[1,0,0,0], 263667:[0,1,0,0], 263668:[0,1,0,0],
+  256491:[0,0,20], 256493:[0,0,385], 256495:[0,0,75],
+  256496:[0,0,155], 256497:[0,0,140],
+  // iPad Pro 11 / 13
+  263632:[0,0,5], 263635:[0,0,3],
+  263655:[30,0,11], 263656:[20,0,7], 263657:[0,0,2], 263658:[0,0,1],
   // iPad Air 11 M4
-  267288:[0,0,30,0], 267289:[0,0,50,0], 267290:[0,0,10,0], 267291:[0,0,10,0],
-  267292:[0,0,15,0], 267293:[0,0,25,0], 267294:[0,0,25,0], 267295:[0,5,25,0],
-  267297:[0,0,5,0],
+  267288:[30,0,95], 267289:[50,0,0], 267290:[10,0,65], 267291:[10,0,55],
+  267292:[15,0,205], 267293:[25,0,75], 267294:[25,0,70], 267295:[25,0,65],
+  267297:[5,0,0], 267308:[0,0,5],
   // iPad Air 13 M4
-  267320:[3,0,0,0], 267322:[14,0,0,0], 267323:[0,1,0,0],
-  267324:[0,15,0,0], 267326:[0,1,0,0],
+  267320:[0,0,21], 267321:[0,0,0], 267324:[25,0,15], 267325:[11,0,9],
+  267326:[13,0,1], 267327:[25,0,0], 267328:[1,0,0], 267329:[2,0,0],
+  267330:[1,0,0], 267331:[1,0,1], 267332:[0,0,1], 267340:[0,0,2],
+  // Apple Watch SE 3(新錶帶色)
+  273252:[6,0,6], 273254:[18,0,12], 273256:[6,0,12], 273257:[18,0,36],
+  273258:[6,0,12], 273259:[6,0,24],
+  // Apple Watch S12
+  273268:[24,0,12], 273269:[6,0,0], 273270:[24,0,66], 273272:[6,0,12],
+  273274:[6,0,6], 273275:[6,0,0], 273276:[6,0,0],
+  273278:[6,0,0], 273279:[6,0,12], 273280:[6,0,0], 273281:[0,0,6],
+  273283:[6,0,0], 273284:[6,0,12],
+  // Apple Watch Ultra 4
+  273328:[42,0,0], 273329:[18,0,0], 273331:[6,0,0], 273334:[42,0,0],
+  273336:[6,0,6], 273337:[6,0,0], 273338:[12,0,6],
+  // iPhone 16e
+  256229:[0,0,10], 256230:[0,0,10],
   // iPhone 17e
-  267282:[0,30,10,0], 267283:[0,140,0,0], 267284:[50,30,20,0],
+  267282:[40,0,0], 267283:[140,0,0], 267284:[50,0,0],
   // iPhone 17
-  262249:[0,140,130,0], 262250:[40,90,230,0], 262251:[50,70,40,0],
-  262252:[50,60,20,0], 262253:[0,0,10,0],
-  262254:[0,10,0,0], 262256:[0,10,0,0], 262257:[0,10,0,0], 262258:[0,10,0,0]
+  262249:[270,0,150], 262250:[290,0,150], 262251:[40,0,40],
+  262252:[80,0,50], 262253:[10,0,0],
+  262254:[10,0,20], 262255:[0,0,10], 262256:[10,0,10],
+  // iPhone 18 Pro
+  273212:[50,0,50], 273213:[60,0,0], 273214:[0,60,160], 273215:[10,80,100],
+  273216:[0,0,10], 273217:[30,0,0], 273218:[30,0,70], 273219:[10,0,20],
+  273220:[0,0,10], 273221:[0,0,10], 273223:[0,0,20],
+  // iPhone 18 Pro Max
+  273228:[110,0,200], 273229:[250,0,10], 273230:[160,0,320], 273231:[30,0,180],
+  273232:[110,0,0], 273233:[420,0,0], 273234:[130,0,70], 273235:[130,0,50],
+  273237:[50,0,0], 273238:[20,0,0], 273239:[10,0,0], 273241:[10,0,0]
 };
 
 function renderField(idx, label, options, value, placeholder){
@@ -1135,9 +1160,10 @@ function renderDetailHTML(x){
   // · Mac 系列中沒有 BTS 方案,且非 Studio Display、非 Mac mini M6 新品預購的品項:
   //   - MacBook Neo 固定折 1500
   //   - 其餘 Mac:教育優惠折扣金額 < 2000 時,直接折抵該教育優惠金額;≥ 2000 時,維持折 2000
-  // · iPad / Apple Watch 系列中沒有 BTS 方案的品項,促銷價再折「教育優惠折抵金額」
+  // · iPad 系列中沒有 BTS 方案的品項,促銷價再折「教育優惠折抵金額」
+  // · Apple Watch 不適用併行活動
   const showParallelMac = state.cat==="Mac" && !BTS[state.family] && !/^Studio Display|^Mac mini M6|^Mac mini M5 Pro/.test(state.family);
-  const showParallelOther = (state.cat==="iPad" || state.cat==="Apple Watch") && !BTS[state.family] && edu>0;
+  const showParallelOther = state.cat==="iPad" && !BTS[state.family] && edu>0;
   const showParallel = showParallelMac || showParallelOther;
   const PARALLEL_DISC = {"13吋MBN A18 Pro":1500};
   const parallelDisc = showParallelMac
@@ -1153,10 +1179,10 @@ function renderDetailHTML(x){
     }
     return true;
   });
-  let w1=0, w2=0, w3=0, w4=0, hasStock=false;
+  let w1=0, w2=0, w3=0, hasStock=false;
   siblings.forEach(it=>{
     const s = STOCK[it.id];
-    if(s){ hasStock = true; w1 += s[0]; w2 += s[1]; w3 += s[2]; w4 += s[3]; }
+    if(s){ hasStock = true; w1 += s[0]; w2 += s[1]; w3 += s[2]; }
   });
   const stockClass = q => q===0 ? "zero" : (q>=50 ? "hi" : "");
   return `<div class="result">
@@ -1235,28 +1261,25 @@ function renderDetailHTML(x){
       </div>
     </div>`:''}
     ${hasStock?`<div class="stock-section">
-      <div class="stock-header">📦 近期到貨資訊(統計:0908)</div>
+      <div class="stock-header">📦 近期到貨資訊(統計:0922)</div>
       <div class="stock-note">※ 9/24 – 9/30 季末不出貨</div>
       <div class="stock-table">
         <div class="head">貨號 / 色系</div>
-        <div class="head">9/3 – 9</div>
-        <div class="head">9/10 – 16</div>
         <div class="head">9/17 – 23</div>
         <div class="head">9/24 – 30</div>
+        <div class="head">10/1 – 7</div>
         ${siblings.filter(it=>STOCK[it.id]).map(it=>{
           const s = STOCK[it.id];
           const col = extractColor(it) || "—";
           return `<div class="color-label"><span class="sku-tag">${it.id}</span>${esc(col)}</div>
             <div class="${stockClass(s[0])}">${fmt(s[0])}</div>
             <div class="${stockClass(s[1])}">${fmt(s[1])}</div>
-            <div class="${stockClass(s[2])}">${fmt(s[2])}</div>
-            <div class="${stockClass(s[3])}">${fmt(s[3])}</div>`;
+            <div class="${stockClass(s[2])}">${fmt(s[2])}</div>`;
         }).join("")}
         <div class="total">總計</div>
         <div class="total ${stockClass(w1)}">${fmt(w1)}</div>
         <div class="total ${stockClass(w2)}">${fmt(w2)}</div>
         <div class="total ${stockClass(w3)}">${fmt(w3)}</div>
-        <div class="total ${stockClass(w4)}">${fmt(w4)}</div>
       </div>
     </div>`:''}
   </div>`;
