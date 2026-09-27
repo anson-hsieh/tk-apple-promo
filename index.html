@@ -8,7 +8,7 @@
   :root{
     --bg:#fafafa; --card:#fff; --text:#0a0a0a; --sub:#737373; --muted:#a3a3a3;
     --accent:#0071e3; --border:#e5e5e5; --border-strong:#d4d4d4;
-    --promo:#dc2626; --save:#16a34a; --gift:#ea580c; --parallel:#7c3aed;
+    --promo:#dc2626; --save:#16a34a; --gift:#ea580c;
     --shadow-sm:0 1px 2px rgba(0,0,0,.04);
     --shadow:0 1px 3px rgba(0,0,0,.05),0 4px 12px rgba(0,0,0,.04);
     --shadow-lg:0 4px 8px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.08);
@@ -107,28 +107,6 @@
   .edu-disc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
   .edu-disc b{color:var(--save);font-weight:600}
   .edu-price{font-size:20px;font-weight:700;color:var(--accent);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-  .parallel-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--parallel) 5%,transparent)}
-  .parallel-icon{width:36px;height:36px;background:color-mix(in srgb,var(--parallel) 12%,transparent);color:var(--parallel);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
-  .parallel-content{flex:1;min-width:0}
-  .parallel-header{font-size:10px;font-weight:700;color:var(--parallel);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-  .parallel-rows{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-  .parallel-disc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
-  .parallel-disc b{color:var(--parallel);font-weight:600}
-  .parallel-price{font-size:20px;font-weight:700;color:var(--parallel);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-  .parallel-gift-title{margin-top:10px;font-size:11px;font-weight:700;color:var(--parallel);letter-spacing:.6px;text-transform:uppercase}
-  .parallel-gift-list{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--text);line-height:1.5}
-  .parallel-gift-list li{margin:2px 0}
-  .parallel-gift-list li b{color:var(--sub);font-weight:500;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;margin-right:6px}
-  .bts-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--save) 5%,transparent)}
-  .bts-icon{width:36px;height:36px;background:color-mix(in srgb,var(--save) 14%,transparent);color:var(--save);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
-  .bts-content{flex:1;min-width:0}
-  .bts-header{font-size:10px;font-weight:700;color:var(--save);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
-  .bts-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
-  .bts-title b{color:var(--save);font-variant-numeric:tabular-nums}
-  .bts-list{margin:4px 0 0;padding-left:18px;font-size:13px;color:var(--text);line-height:1.55}
-  .bts-list li{margin:2px 0}
-  .bts-list li b{color:var(--sub);font-weight:500;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;margin-right:6px}
-  .bts-split{margin-top:10px;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border:1.5px solid var(--save);border-radius:8px;font-size:13px;font-weight:700;color:var(--save);background:color-mix(in srgb,var(--save) 12%,transparent);font-variant-numeric:tabular-nums}
   .stock-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
   .stock-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
   .stock-note{font-size:10.5px;color:var(--muted);font-weight:500;margin:-6px 0 10px}
@@ -813,62 +791,6 @@ const CAT_META = {
   "其他":{icon:"📺",label:"其他"}
 };
 
-// BTS 開學方案(2026/07/17 – 09/24)— 買就送好禮清單
-const BTS = {
-  "13.6吋MBA M5": { total: 6869, split: 3540, gifts: [
-    "257407 Microsoft 365 Personal 個人版一年盒裝",
-    "231581 Riivan MacBook Air M2 13.6 亮面保護貼",
-    "256601 / 256602 / 256603 TUCANO Smilza 都會手提電腦包 13/14吋(黑 / 藍 / 奶茶)",
-    "267701 Riivan 65W GaN 伸縮線電源供應器 2C1A-白",
-    "269179 Zeiss 蔡司 手機螢幕清潔噴霧組 120ml"
-  ]},
-  "15.3吋MBA M5": { total: 6969, split: 3610, gifts: [
-    "257407 Microsoft 365 Personal 個人版一年盒裝",
-    "240939 Riivan MacBook Air 15 亮面抗刮保護貼",
-    "256605 / 256606 TUCANO Smilza 都會手提電腦包 15/16吋(黑 / 藍)",
-    "267701 Riivan 65W GaN 伸縮線電源供應器 2C1A-白",
-    "269179 Zeiss 蔡司 手機螢幕清潔噴霧組 120ml"
-  ]},
-  "14.2吋MBP M5": { total: 5990, split: 5290, gifts: [
-    "252142 AirPods 4 主動式降噪"
-  ]},
-  "14.2吋MBP M5 Pro": { total: 5990, split: 5290, gifts: [
-    "252142 AirPods 4 主動式降噪"
-  ]},
-  "14.2吋MBP M5 Max": { total: 5990, split: 5290, gifts: [
-    "252142 AirPods 4 主動式降噪"
-  ]},
-  "16.2吋MBP M5 Pro": { total: 5990, split: 5290, gifts: [
-    "252142 AirPods 4 主動式降噪"
-  ]},
-  "16.2吋MBP M5 Max": { total: 5990, split: 5290, gifts: [
-    "252142 AirPods 4 主動式降噪"
-  ]},
-  "iPad Air 11吋 M4": { total: 4440, split: 2370, gifts: [
-    "257407 Microsoft 365 Personal 個人版一年盒裝",
-    "249744 Riivan iPad Air 11 亮面保護貼",
-    "267696 / 267697 Riivan 45W GaN 氮化鎵電源供應器 2C(黑 / 白)"
-  ]},
-  "iPad Air 13吋 M4": { total: 4939, split: 2630, gifts: [
-    "257407 Microsoft 365 Personal 個人版一年盒裝",
-    "249745 Riivan iPad Air/Pro 13吋 亮面保護貼",
-    "267696 / 267697 Riivan 45W GaN 氮化鎵電源供應器 2C(黑 / 白)",
-    "269179 Zeiss 蔡司 手機螢幕清潔噴霧組 120ml"
-  ]},
-  "iPad Pro 11吋": { total: 5850, split: 3100, gifts: [
-    "257407 Microsoft 365 Personal 個人版一年盒裝",
-    "270306 / 270307 / 270308 LAUT iPad Pro 11吋 多角度保護殼(黑 / 灰 / 粉)",
-    "249746 Riivan iPad Pro 11 亮面保護貼",
-    "254371 / 254372 Riivan 65W GaN 氮化鎵充電器(黑 / 白)"
-  ]},
-  "iPad Pro 13吋": { total: 5950, split: 3180, gifts: [
-    "257407 Microsoft 365 Personal 個人版一年盒裝",
-    "270309 / 270310 / 270311 LAUT iPad Pro 13吋 多角度保護殼(黑 / 灰 / 粉)",
-    "249745 Riivan iPad Air/Pro 13吋 亮面保護貼",
-    "254371 / 254372 Riivan 65W GaN 氮化鎵充電器(黑 / 白)"
-  ]}
-};
-
 // AppleCare+ 新價(依家族名對應)
 const AC_PRICE = {
   // Mac
@@ -1156,21 +1078,6 @@ function renderDetailHTML(x){
   const dispName = state.family + (state.picks.length ? " " + state.picks.join(" ") : "");
   const edu = eduDisc(x);
   const eduPrice = edu ? x.price - edu : 0;
-  // 併行活動:
-  // · Mac 系列中沒有 BTS 方案,且非 Studio Display、非 Mac mini M6 新品預購的品項:
-  //   - MacBook Neo 固定折 1500
-  //   - 其餘 Mac:教育優惠折扣金額 < 2000 時,直接折抵該教育優惠金額;≥ 2000 時,維持折 2000
-  // · iPad 系列中沒有 BTS 方案的品項,促銷價再折「教育優惠折抵金額」
-  // · Apple Watch 不適用併行活動
-  const showParallelMac = state.cat==="Mac" && !BTS[state.family] && !/^Studio Display|^Mac mini M6|^Mac mini M5 Pro/.test(state.family);
-  const showParallelOther = state.cat==="iPad" && !BTS[state.family] && edu>0;
-  const showParallel = showParallelMac || showParallelOther;
-  const PARALLEL_DISC = {"13吋MBN A18 Pro":1500};
-  const parallelDisc = showParallelMac
-    ? (PARALLEL_DISC[state.family] !== undefined ? PARALLEL_DISC[state.family] : (edu>0 && edu<2000 ? edu : 2000))
-    : (showParallelOther ? edu : 0);
-  const parallelPrice = showParallel ? x.final - parallelDisc : 0;
-  const parallelGiftMatch = (showParallel && x.promo) ? x.promo.match(/^(.+?)\s*[((]贈品[::](.+?)[))]\s*$/) : null;
   // 加總同規格所有色系的到貨量
   const siblings = ALL.filter(it=>{
     if(it.family !== state.family) return false;
@@ -1220,33 +1127,6 @@ function renderDetailHTML(x){
           <div class="edu-price">$${fmt(eduPrice)}</div>
           <div class="edu-disc">折抵 <b>-$${fmt(edu)}</b> · 憑學生 / 教職員證</div>
         </div>
-      </div>
-    </div>`:''}
-    ${BTS[state.family]?`<div class="bts-section">
-      <div class="bts-icon">🎒</div>
-      <div class="bts-content">
-        <div class="bts-header">BTS 開學方案(2026/7/17 – 9/24)</div>
-        <div class="bts-title">買就送市價 <b>NT$${fmt(BTS[state.family].total)}</b> 好禮</div>
-        <ul class="bts-list">${BTS[state.family].gifts.map(g=>{
-          const gm = g.match(/^([\d\s/]+)\s+(.+)$/);
-          return gm ? `<li><b>${esc(gm[1].trim())}</b>${esc(gm[2])}</li>` : `<li>${esc(g)}</li>`;
-        }).join("")}</ul>
-        <div class="bts-split">🔁 可換配件金 $${fmt(BTS[state.family].split)}</div>
-      </div>
-    </div>`:''}
-    ${showParallel?`<div class="parallel-section">
-      <div class="parallel-icon">🔀</div>
-      <div class="parallel-content">
-        <div class="parallel-header">併行活動</div>
-        <div class="parallel-rows">
-          <div class="parallel-price">$${fmt(parallelPrice)}</div>
-          <div class="parallel-disc">促銷價再折 <b>-$${fmt(parallelDisc)}</b></div>
-        </div>
-        ${parallelGiftMatch?`<div class="parallel-gift-title">🎁 加贈</div>
-        <ul class="parallel-gift-list">${parallelGiftMatch[2].split(/\s*\/\s*/).map(g=>{
-          const gm = g.trim().match(/^(\d+)\s+(.+)$/);
-          return gm ? `<li><b>${esc(gm[1])}</b>${esc(gm[2])}</li>` : `<li>${esc(g.trim())}</li>`;
-        }).join("")}</ul>`:''}
       </div>
     </div>`:''}
     ${siblings.length?`<div class="skuinfo-section">
