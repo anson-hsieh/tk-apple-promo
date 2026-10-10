@@ -117,6 +117,25 @@
   .combo-calc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
   .combo-calc b{color:var(--save);font-weight:600}
   .combo-note{font-size:11px;color:var(--muted);margin-top:4px}
+  /* 分期試算表(可展開) */
+  .inst-section{border-top:1px solid var(--border)}
+  .inst-section summary{padding:12px 24px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;user-select:none;transition:.15s}
+  .inst-section summary::-webkit-details-marker{display:none}
+  .inst-section summary:hover{background:color-mix(in srgb,var(--accent) 4%,transparent)}
+  .inst-section summary::after{content:"▸";margin-left:auto;color:var(--muted);font-size:11px;transition:transform .2s}
+  .inst-section[open] summary::after{transform:rotate(90deg)}
+  .inst-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase}
+  .inst-base{font-size:11px;color:var(--muted);font-weight:500;font-variant-numeric:tabular-nums}
+  .inst-body{padding:4px 24px 16px}
+  .inst-note{font-size:10.5px;color:var(--muted);font-weight:500;margin-bottom:10px}
+  .inst-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .inst-card{border:1px solid var(--border);border-radius:9px;padding:10px 8px;text-align:center;background:color-mix(in srgb,var(--accent) 3%,transparent)}
+  .inst-term{font-size:11px;font-weight:600;color:var(--sub);letter-spacing:.5px;margin-bottom:2px}
+  .inst-amt{font-size:15px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .inst-amt .unit{font-size:11px;font-weight:500;color:var(--muted);margin-right:1px}
+  @media (max-width:600px){
+    .inst-grid{grid-template-columns:repeat(2,1fr)}
+  }
   .stock-section{padding:14px 24px 16px;border-top:1px solid var(--border)}
   .stock-header{font-size:10px;font-weight:700;color:var(--sub);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
   .stock-note{font-size:10.5px;color:var(--muted);font-weight:500;margin:-6px 0 10px}
@@ -977,6 +996,27 @@ const viewEl = document.getElementById("view");
 function fmt(n){return n?n.toLocaleString():"—";}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+// 分期試算區塊(預設收合;限 Mac / iPad / iPhone / Apple Watch)
+const INST_CATS = ["Mac","iPad","iPhone","Apple Watch"];
+function instHTML(label, base){
+  if(!base || !INST_CATS.includes(state.cat)) return '';
+  const terms = [3,6,8,12];
+  const cards = terms.map(n=>{
+    const per = Math.ceil(base/n);
+    return `<div class="inst-card"><div class="inst-term">${n} 期</div><div class="inst-amt"><span class="unit">$</span>${fmt(per)}</div></div>`;
+  }).join("");
+  return `<details class="inst-section">
+    <summary>
+      <span class="inst-header">💳 分期試算</span>
+      <span class="inst-base">${esc(label)} $${fmt(base)}</span>
+    </summary>
+    <div class="inst-body">
+      <div class="inst-note">以${esc(label)}計算,無息分期每期應繳金額</div>
+      <div class="inst-grid">${cards}</div>
+    </div>
+  </details>`;
+}
+
 // 從原始品名擷取顏色/變體標籤
 function extractColor(x){
   const n = x.name, c = x.cat;
@@ -1203,6 +1243,7 @@ function renderDetailHTML(x){
         })()}
       </div>
     </div>`:`<div class="no-promo">此商品目前無特別活動</div>`}
+    ${instHTML("檔期活動價", x.final)}
     ${edu?`<div class="edu-section">
       <div class="edu-icon">🎓</div>
       <div class="edu-content">
@@ -1212,7 +1253,8 @@ function renderDetailHTML(x){
           <div class="edu-disc">折抵 <b>-$${fmt(edu)}</b> · 憑學生 / 教職員證</div>
         </div>
       </div>
-    </div>`:''}
+    </div>
+    ${instHTML("學生教育優惠價", eduPrice)}`:''}
     ${comboPrice?`<div class="combo-section">
       <div class="combo-icon">🤝</div>
       <div class="combo-content">
@@ -1223,7 +1265,8 @@ function renderDetailHTML(x){
         </div>
         <div class="combo-note">${esc(combo.note)}</div>
       </div>
-    </div>`:''}
+    </div>
+    ${instHTML("併行活動價", comboPrice)}`:''}
     ${siblings.length?`<div class="skuinfo-section">
       <div class="skuinfo-header">🔖 產品貨號(${siblings.length} 項)</div>
       <div class="skuinfo-table">
