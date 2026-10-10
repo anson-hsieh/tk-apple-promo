@@ -998,14 +998,14 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').re
 
 // 分期試算區塊(預設收合;限 Mac / iPad / iPhone / Apple Watch)
 const INST_CATS = ["Mac","iPad","iPhone","Apple Watch"];
-function instHTML(label, base){
+function instHTML(label, base, open){
   if(!base || !INST_CATS.includes(state.cat)) return '';
   const terms = [3,6,8,12];
   const cards = terms.map(n=>{
     const per = Math.ceil(base/n);
     return `<div class="inst-card"><div class="inst-term">${n} 期</div><div class="inst-amt"><span class="unit">$</span>${fmt(per)}</div></div>`;
   }).join("");
-  return `<details class="inst-section">
+  return `<details class="inst-section"${open?' open':''}>
     <summary>
       <span class="inst-header">💳 分期試算</span>
       <span class="inst-base">${esc(label)} $${fmt(base)}</span>
@@ -1243,7 +1243,7 @@ function renderDetailHTML(x){
         })()}
       </div>
     </div>`:`<div class="no-promo">此商品目前無特別活動</div>`}
-    ${instHTML("檔期活動價", x.final)}
+    ${instHTML("檔期活動價", x.final, true)}
     ${edu?`<div class="edu-section">
       <div class="edu-icon">🎓</div>
       <div class="edu-content">
