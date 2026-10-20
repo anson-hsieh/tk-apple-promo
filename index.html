@@ -107,16 +107,6 @@
   .edu-disc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
   .edu-disc b{color:var(--save);font-weight:600}
   .edu-price{font-size:20px;font-weight:700;color:var(--accent);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-  /* 併行活動:現行促銷價再折抵 */
-  .combo-section{padding:16px 24px;display:flex;align-items:flex-start;gap:14px;border-top:1px solid var(--border);background:color-mix(in srgb,var(--save) 5%,transparent)}
-  .combo-icon{width:36px;height:36px;background:color-mix(in srgb,var(--save) 14%,transparent);color:var(--save);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:17px}
-  .combo-content{flex:1;min-width:0}
-  .combo-header{font-size:10px;font-weight:700;color:var(--save);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-  .combo-rows{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-  .combo-price{font-size:22px;font-weight:700;color:var(--save);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-  .combo-calc{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
-  .combo-calc b{color:var(--save);font-weight:600}
-  .combo-note{font-size:11px;color:var(--muted);margin-top:4px}
   /* 分期試算表(可展開) */
   .inst-section{border-top:1px solid var(--border)}
   .inst-section summary{padding:12px 24px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;user-select:none;transition:.15s}
@@ -184,25 +174,25 @@
 <div class="wrap">
   <header>
     <h1 id="title">TK 蘋果檔期優惠活動查詢</h1>
-    <div class="brand">2026/10/01 – 2026/10/18 檔期優惠</div>
+    <div class="brand">2026/10/19 – 2026/11/05 檔期優惠</div>
     <p class="crumb" id="crumb">選擇類別、機型與規格,查看促銷活動與優惠價</p>
   </header>
   <main id="view"></main>
 </div>
 
 <script>
-// -------- Data (來源:1001-1018操盤.pdf) --------
+// -------- Data (來源:1019-1105操盤.pdf) --------
 const RAW = [
   // ===== Mac =====
-  ["Mac","MacBook Neo 現折916起",[
-    [267442,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/胭粉","MHFH4TA/A",22900,916,21984],
-    [267443,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/青橘黃","MHFD4TA/A",22900,916,21984],
-    [267444,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/靛青","MHFF4TA/A",22900,916,21984],
-    [267445,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/銀","MHFA4TA/A",22900,916,21984],
-    [267446,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/胭粉","MHFJ4TA/A",25900,1036,24864],
-    [267447,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/青橘黃","MHFE4TA/A",25900,1036,24864],
-    [267448,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/靛青","MHFG4TA/A",25900,1036,24864],
-    [267449,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/銀","MHFC4TA/A",25900,1036,24864],
+  ["Mac","MacBook Neo 現折745起再送市價1280保護貼(贈品:268486 Riivan MacBook Neo 13吋亮面防刮保護貼)",[
+    [267442,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/胭粉","MHFH4TA/A",22900,745,22155],
+    [267443,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/青橘黃","MHFD4TA/A",22900,745,22155],
+    [267444,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/靛青","MHFF4TA/A",22900,745,22155],
+    [267445,"13吋MBN A18 Pro/6CPU/5GPU/8G/256G/銀","MHFA4TA/A",22900,745,22155],
+    [267446,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/胭粉","MHFJ4TA/A",25900,895,25005],
+    [267447,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/青橘黃","MHFE4TA/A",25900,895,25005],
+    [267448,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/靛青","MHFG4TA/A",25900,895,25005],
+    [267449,"13吋MBN A18 Pro/6CPU/5GPU/8G/512G/銀","MHFC4TA/A",25900,895,25005],
   ]],
   ["Mac","MacBook Air 13 M5 滿萬送400配件金",[
     [267369,"13.6吋MBA M5/10CPU/8GPU/16G/512G/午夜","MDHE4TA/A",42900,0,42900],
@@ -279,16 +269,16 @@ const RAW = [
     [267410,"16.2吋MBP M5 Max/18CPU/40GPU/48G/2T/黑","MGEE4TA/A",169900,10194,159706],
   ]],
   ["Mac","Mac mini M4 已停產,現有庫存完為止",[
-    [253545,"Mac mini M4/10CPU/10GPU/16G/512G","MU9E3TA/A",33900,1356,32544],
+    [253545,"Mac mini M4/10CPU/10GPU/16G/512G","MU9E3TA/A",33900,1695,32205],
     [253547,"Mac mini M4 Pro/12CPU/16GPU/24G/512G","MCX44TA/A",54900,2196,52704],
   ]],
-  ["Mac","Mac mini M6 滿萬送200配件金",[
+  ["Mac","Mac mini M6 滿萬送500配件金",[
     [272711,"Mac mini M6/12CPU/12GPU/16G/256G","MHQK4TA/A",29900,0,29900],
     [272712,"Mac mini M6/12CPU/12GPU/16G/512G","MHQL4TA/A",36900,0,36900],
     [272713,"Mac mini M6/12CPU/12GPU/24G/512G","MHQM4TA/A",43900,0,43900],
     [272714,"Mac mini M5 Pro/15CPU/16GPU/24G/512G","MHQN4TA/A",59900,0,59900],
   ]],
-  ["Mac","Mac Studio M5 Max 滿萬送200配件金",[
+  ["Mac","Mac Studio M5 Max 滿萬送500配件金",[
     [272715,"Mac Studio M5 Max/18CPU/32GPU/36G/512G","MHL64TA/A",84900,0,84900],
     [272716,"Mac Studio M5 Ultra/30CPU/64GPU/96G/1T","MHL74TA/A",199900,0,199900],
   ]],
@@ -297,32 +287,6 @@ const RAW = [
     [267412,"Studio Display標準玻璃(可調整高斜度支架)","MFEW4TA/A",64900,3894,61006],
   ]],
   // ===== iPad =====
-  ["iPad","iPad mini 7th 現折1194起",[
-    [253160,"iPad mini 7th Wi-Fi 128G-藍色","MXN73TA/A",19900,1194,18706],
-    [253161,"iPad mini 7th Wi-Fi 128G-紫色","MXN93TA/A",19900,1194,18706],
-    [253162,"iPad mini 7th Wi-Fi 128G-太空灰色","MXN63TA/A",19900,1194,18706],
-    [253163,"iPad mini 7th Wi-Fi 128G-星光色","MXN83TA/A",19900,1194,18706],
-    [253164,"iPad mini 7th Wi-Fi 256G-藍色","MXNC3TA/A",23400,1404,21996],
-    [253165,"iPad mini 7th Wi-Fi 256G-紫色","MXNE3TA/A",23400,1404,21996],
-    [253166,"iPad mini 7th Wi-Fi 256G-太空灰色","MXNA3TA/A",23400,1404,21996],
-    [253167,"iPad mini 7th Wi-Fi 256G-星光色","MXND3TA/A",23400,1404,21996],
-    [253168,"iPad mini 7th Wi-Fi 512G-藍色","MYH13TA/A",30400,1824,28576],
-    [253169,"iPad mini 7th Wi-Fi 512G-紫色","MYH33TA/A",30400,1824,28576],
-    [253170,"iPad mini 7th Wi-Fi 512G-太空灰色","MYGY3TA/A",30400,1824,28576],
-    [253171,"iPad mini 7th Wi-Fi 512G-星光色","MYH23TA/A",30400,1824,28576],
-    [253172,"iPad mini 7th Wi-Fi+LTE 128G-藍色","MXPP3TA/A",24900,1494,23406],
-    [253173,"iPad mini 7th Wi-Fi+LTE 128G-紫色","MXPR3TA/A",24900,1494,23406],
-    [253174,"iPad mini 7th Wi-Fi+LTE 128G-太空灰色","MXPN3TA/A",24900,1494,23406],
-    [253175,"iPad mini 7th Wi-Fi+LTE 128G-星光色","MXPQ3TA/A",24900,1494,23406],
-    [253176,"iPad mini 7th Wi-Fi+LTE 256G-藍色","MXPW3TA/A",28400,1704,26696],
-    [253177,"iPad mini 7th Wi-Fi+LTE 256G-紫色","MXPY3TA/A",28400,1704,26696],
-    [253178,"iPad mini 7th Wi-Fi+LTE 256G-太空灰色","MXPT3TA/A",28400,1704,26696],
-    [253179,"iPad mini 7th Wi-Fi+LTE 256G-星光色","MXPX3TA/A",28400,1704,26696],
-    [253180,"iPad mini 7th Wi-Fi+LTE 512G-藍色","MYHD3TA/A",35400,2124,33276],
-    [253181,"iPad mini 7th Wi-Fi+LTE 512G-紫色","MYHF3TA/A",35400,2124,33276],
-    [253182,"iPad mini 7th Wi-Fi+LTE 512G-太空灰色","MYHC3TA/A",35400,2124,33276],
-    [253183,"iPad mini 7th Wi-Fi+LTE 512G-星光色","MYHE3TA/A",35400,2124,33276],
-  ]],
   ["iPad","iPad 11吋 現折1043起",[
     [256491,"iPad 11吋 Wi-Fi 128G-銀","MD3Y4TA/A",14900,1043,13857],
     [256493,"iPad 11吋 Wi-Fi 128G-藍","MD4A4TA/A",14900,1043,13857],
@@ -349,169 +313,169 @@ const RAW = [
     [256514,"iPad 11吋 Wi-Fi+LTE 512G-黃","MD7R4TA/A",30400,2128,28272],
     [256515,"iPad 11吋 Wi-Fi+LTE 512G-粉紅","MD7T4TA/A",30400,2128,28272],
   ]],
-  ["iPad","iPad Air 11吋 M4 現折1413起再送市價800保護貼(贈品:249744 Riivan iPad Air 11亮面保護貼)",[
-    [267288,"iPad Air 11吋 M4 Wi-Fi 128G太空灰","MH304TA/A",24900,1413,23487],
-    [267289,"iPad Air 11吋 M4 Wi-Fi 128G藍","MH314TA/A",24900,1413,23487],
-    [267290,"iPad Air 11吋 M4 Wi-Fi 128G星光","MH334TA/A",24900,1413,23487],
-    [267291,"iPad Air 11吋 M4 Wi-Fi 128G紫","MH344TA/A",24900,1413,23487],
-    [267292,"iPad Air 11吋 M4 Wi-Fi 256G太空灰","MH354TA/A",28400,1658,26742],
-    [267293,"iPad Air 11吋 M4 Wi-Fi 256G藍","MH364TA/A",28400,1658,26742],
-    [267294,"iPad Air 11吋 M4 Wi-Fi 256G星光","MH374TA/A",28400,1658,26742],
-    [267295,"iPad Air 11吋 M4 Wi-Fi 256G紫","MH394TA/A",28400,1658,26742],
-    [267296,"iPad Air 11吋 M4 Wi-Fi 512G太空灰","MH3A4TA/A",35400,2148,33252],
-    [267297,"iPad Air 11吋 M4 Wi-Fi 512G藍","MH3C4TA/A",35400,2148,33252],
-    [267298,"iPad Air 11吋 M4 Wi-Fi 512G星光","MH3D4TA/A",35400,2148,33252],
-    [267299,"iPad Air 11吋 M4 Wi-Fi 512G紫","MH3E4TA/A",35400,2148,33252],
-    [267300,"iPad Air 11吋 M4 Wi-Fi 1T太空灰","MH3G4TA/A",45900,2883,43017],
-    [267301,"iPad Air 11吋 M4 Wi-Fi 1T藍","MH3H4TA/A",45900,2883,43017],
-    [267302,"iPad Air 11吋 M4 Wi-Fi 1T星光","MH3J4TA/A",45900,2883,43017],
-    [267303,"iPad Air 11吋 M4 Wi-Fi 1T紫","MH3K4TA/A",45900,2883,43017],
-    [267304,"iPad Air 11吋 M4 LTE 128G太空灰","MH784TA/A",29900,1763,28137],
-    [267305,"iPad Air 11吋 M4 LTE 128G藍","MH794TA/A",29900,1763,28137],
-    [267306,"iPad Air 11吋 M4 LTE 128G星光","MH7A4TA/A",29900,1763,28137],
-    [267307,"iPad Air 11吋 M4 LTE 128G紫","MH7C4TA/A",29900,1763,28137],
-    [267308,"iPad Air 11吋 M4 LTE 256G太空灰","MH7D4TA/A",33400,2008,31392],
-    [267309,"iPad Air 11吋 M4 LTE 256G藍","MH7E4TA/A",33400,2008,31392],
-    [267310,"iPad Air 11吋 M4 LTE 256G星光","MH7F4TA/A",33400,2008,31392],
-    [267311,"iPad Air 11吋 M4 LTE 256G紫","MH7G4TA/A",33400,2008,31392],
-    [267312,"iPad Air 11吋 M4 LTE 512G太空灰","MH7H4TA/A",40400,2498,37902],
-    [267313,"iPad Air 11吋 M4 LTE 512G藍","MH7J4TA/A",40400,2498,37902],
-    [267314,"iPad Air 11吋 M4 LTE 512G星光","MH7K4TA/A",40400,2498,37902],
-    [267315,"iPad Air 11吋 M4 LTE 512G紫","MH7L4TA/A",40400,2498,37902],
-    [267316,"iPad Air 11吋 M4 LTE 1T太空灰","MH7M4TA/A",50900,3233,47667],
-    [267317,"iPad Air 11吋 M4 LTE 1T藍","MH7N4TA/A",50900,3233,47667],
-    [267318,"iPad Air 11吋 M4 LTE 1T星光","MH7P4TA/A",50900,3233,47667],
-    [267319,"iPad Air 11吋 M4 LTE 1T紫","MH7Q4TA/A",50900,3233,47667],
+  ["iPad","iPad Air 11吋 M4 現折1392起再送市價980保護殼(贈品:270298 LAUT 萊德 iPad Air 11吋多角度保護殼)",[
+    [267288,"iPad Air 11吋 M4 Wi-Fi 128G太空灰","MH304TA/A",24900,1392,23508],
+    [267289,"iPad Air 11吋 M4 Wi-Fi 128G藍","MH314TA/A",24900,1392,23508],
+    [267290,"iPad Air 11吋 M4 Wi-Fi 128G星光","MH334TA/A",24900,1392,23508],
+    [267291,"iPad Air 11吋 M4 Wi-Fi 128G紫","MH344TA/A",24900,1392,23508],
+    [267292,"iPad Air 11吋 M4 Wi-Fi 256G太空灰","MH354TA/A",28400,1672,26728],
+    [267293,"iPad Air 11吋 M4 Wi-Fi 256G藍","MH364TA/A",28400,1672,26728],
+    [267294,"iPad Air 11吋 M4 Wi-Fi 256G星光","MH374TA/A",28400,1672,26728],
+    [267295,"iPad Air 11吋 M4 Wi-Fi 256G紫","MH394TA/A",28400,1672,26728],
+    [267296,"iPad Air 11吋 M4 Wi-Fi 512G太空灰","MH3A4TA/A",35400,2232,33168],
+    [267297,"iPad Air 11吋 M4 Wi-Fi 512G藍","MH3C4TA/A",35400,2232,33168],
+    [267298,"iPad Air 11吋 M4 Wi-Fi 512G星光","MH3D4TA/A",35400,2232,33168],
+    [267299,"iPad Air 11吋 M4 Wi-Fi 512G紫","MH3E4TA/A",35400,2232,33168],
+    [267300,"iPad Air 11吋 M4 Wi-Fi 1T太空灰","MH3G4TA/A",45900,3072,42828],
+    [267301,"iPad Air 11吋 M4 Wi-Fi 1T藍","MH3H4TA/A",45900,3072,42828],
+    [267302,"iPad Air 11吋 M4 Wi-Fi 1T星光","MH3J4TA/A",45900,3072,42828],
+    [267303,"iPad Air 11吋 M4 Wi-Fi 1T紫","MH3K4TA/A",45900,3072,42828],
+    [267304,"iPad Air 11吋 M4 LTE 128G太空灰","MH784TA/A",29900,1792,28108],
+    [267305,"iPad Air 11吋 M4 LTE 128G藍","MH794TA/A",29900,1792,28108],
+    [267306,"iPad Air 11吋 M4 LTE 128G星光","MH7A4TA/A",29900,1792,28108],
+    [267307,"iPad Air 11吋 M4 LTE 128G紫","MH7C4TA/A",29900,1792,28108],
+    [267308,"iPad Air 11吋 M4 LTE 256G太空灰","MH7D4TA/A",33400,2072,31328],
+    [267309,"iPad Air 11吋 M4 LTE 256G藍","MH7E4TA/A",33400,2072,31328],
+    [267310,"iPad Air 11吋 M4 LTE 256G星光","MH7F4TA/A",33400,2072,31328],
+    [267311,"iPad Air 11吋 M4 LTE 256G紫","MH7G4TA/A",33400,2072,31328],
+    [267312,"iPad Air 11吋 M4 LTE 512G太空灰","MH7H4TA/A",40400,2632,37768],
+    [267313,"iPad Air 11吋 M4 LTE 512G藍","MH7J4TA/A",40400,2632,37768],
+    [267314,"iPad Air 11吋 M4 LTE 512G星光","MH7K4TA/A",40400,2632,37768],
+    [267315,"iPad Air 11吋 M4 LTE 512G紫","MH7L4TA/A",40400,2632,37768],
+    [267316,"iPad Air 11吋 M4 LTE 1T太空灰","MH7M4TA/A",50900,3472,47428],
+    [267317,"iPad Air 11吋 M4 LTE 1T藍","MH7N4TA/A",50900,3472,47428],
+    [267318,"iPad Air 11吋 M4 LTE 1T星光","MH7P4TA/A",50900,3472,47428],
+    [267319,"iPad Air 11吋 M4 LTE 1T紫","MH7Q4TA/A",50900,3472,47428],
   ]],
-  ["iPad","iPad Air 13吋 M4 現折1903起再送市價800保護貼(贈品:249745 Riivan iPad Air/Pro 13吋亮面保護貼)",[
-    [267320,"iPad Air 13吋 M4 Wi-Fi 128G太空灰","MH5N4TA/A",31900,1903,29997],
-    [267321,"iPad Air 13吋 M4 Wi-Fi 128G藍","MH5P4TA/A",31900,1903,29997],
-    [267322,"iPad Air 13吋 M4 Wi-Fi 128G星光","MH5Q4TA/A",31900,1903,29997],
-    [267323,"iPad Air 13吋 M4 Wi-Fi 128G紫","MH5T4TA/A",31900,1903,29997],
-    [267324,"iPad Air 13吋 M4 Wi-Fi 256G太空灰","MH5U4TA/A",35400,2148,33252],
-    [267325,"iPad Air 13吋 M4 Wi-Fi 256G藍","MH5V4TA/A",35400,2148,33252],
-    [267326,"iPad Air 13吋 M4 Wi-Fi 256G星光","MH5W4TA/A",35400,2148,33252],
-    [267327,"iPad Air 13吋 M4 Wi-Fi 256G紫","MH5X4TA/A",35400,2148,33252],
-    [267328,"iPad Air 13吋 M4 Wi-Fi 512G太空灰","MH5Y4TA/A",42400,2638,39762],
-    [267329,"iPad Air 13吋 M4 Wi-Fi 512G藍","MH604TA/A",42400,2638,39762],
-    [267330,"iPad Air 13吋 M4 Wi-Fi 512G星光","MH614TA/A",42400,2638,39762],
-    [267331,"iPad Air 13吋 M4 Wi-Fi 512G紫","MH624TA/A",42400,2638,39762],
-    [267332,"iPad Air 13吋 M4 Wi-Fi 1T太空灰","MH634TA/A",52900,3373,49527],
-    [267333,"iPad Air 13吋 M4 Wi-Fi 1T藍","MH644TA/A",52900,3373,49527],
-    [267334,"iPad Air 13吋 M4 Wi-Fi 1T星光","MH654TA/A",52900,3373,49527],
-    [267335,"iPad Air 13吋 M4 Wi-Fi 1T紫","MHDK4TA/A",52900,3373,49527],
-    [267336,"iPad Air 13吋 M4 LTE 128G太空灰","MH9D4TA/A",36900,2253,34647],
-    [267337,"iPad Air 13吋 M4 LTE 128G藍","MH9E4TA/A",36900,2253,34647],
-    [267338,"iPad Air 13吋 M4 LTE 128G星光","MH9F4TA/A",36900,2253,34647],
-    [267339,"iPad Air 13吋 M4 LTE 128G紫","MH9G4TA/A",36900,2253,34647],
-    [267340,"iPad Air 13吋 M4 LTE 256G太空灰","MH9H4TA/A",40400,2498,37902],
-    [267341,"iPad Air 13吋 M4 LTE 256G藍","MH9J4TA/A",40400,2498,37902],
-    [267342,"iPad Air 13吋 M4 LTE 256G星光","MH9K4TA/A",40400,2498,37902],
-    [267343,"iPad Air 13吋 M4 LTE 256G紫","MH9L4TA/A",40400,2498,37902],
-    [267344,"iPad Air 13吋 M4 LTE 512G太空灰","MH9M4TA/A",47400,2988,44412],
-    [267345,"iPad Air 13吋 M4 LTE 512G藍","MH9N4TA/A",47400,2988,44412],
-    [267346,"iPad Air 13吋 M4 LTE 512G星光","MH9P4TA/A",47400,2988,44412],
-    [267347,"iPad Air 13吋 M4 LTE 512G紫","MH9Q4TA/A",47400,2988,44412],
-    [267348,"iPad Air 13吋 M4 LTE 1T太空灰","MH9R4TA/A",57900,3723,54177],
-    [267349,"iPad Air 13吋 M4 LTE 1T藍","MH9T4TA/A",57900,3723,54177],
-    [267350,"iPad Air 13吋 M4 LTE 1T星光","MH9U4TA/A",57900,3723,54177],
-    [267351,"iPad Air 13吋 M4 LTE 1T紫","MH9V4TA/A",57900,3723,54177],
+  ["iPad","iPad Air 13吋 M4 現折1882起再送市價1190充電器(贈品:267701 Riivan 65W GaN伸縮線電源供應器2C1A)",[
+    [267320,"iPad Air 13吋 M4 Wi-Fi 128G太空灰","MH5N4TA/A",31900,1882,30018],
+    [267321,"iPad Air 13吋 M4 Wi-Fi 128G藍","MH5P4TA/A",31900,1882,30018],
+    [267322,"iPad Air 13吋 M4 Wi-Fi 128G星光","MH5Q4TA/A",31900,1882,30018],
+    [267323,"iPad Air 13吋 M4 Wi-Fi 128G紫","MH5T4TA/A",31900,1882,30018],
+    [267324,"iPad Air 13吋 M4 Wi-Fi 256G太空灰","MH5U4TA/A",35400,2162,33238],
+    [267325,"iPad Air 13吋 M4 Wi-Fi 256G藍","MH5V4TA/A",35400,2162,33238],
+    [267326,"iPad Air 13吋 M4 Wi-Fi 256G星光","MH5W4TA/A",35400,2162,33238],
+    [267327,"iPad Air 13吋 M4 Wi-Fi 256G紫","MH5X4TA/A",35400,2162,33238],
+    [267328,"iPad Air 13吋 M4 Wi-Fi 512G太空灰","MH5Y4TA/A",42400,2722,39678],
+    [267329,"iPad Air 13吋 M4 Wi-Fi 512G藍","MH604TA/A",42400,2722,39678],
+    [267330,"iPad Air 13吋 M4 Wi-Fi 512G星光","MH614TA/A",42400,2722,39678],
+    [267331,"iPad Air 13吋 M4 Wi-Fi 512G紫","MH624TA/A",42400,2722,39678],
+    [267332,"iPad Air 13吋 M4 Wi-Fi 1T太空灰","MH634TA/A",52900,3562,49338],
+    [267333,"iPad Air 13吋 M4 Wi-Fi 1T藍","MH644TA/A",52900,3562,49338],
+    [267334,"iPad Air 13吋 M4 Wi-Fi 1T星光","MH654TA/A",52900,3562,49338],
+    [267335,"iPad Air 13吋 M4 Wi-Fi 1T紫","MHDK4TA/A",52900,3562,49338],
+    [267336,"iPad Air 13吋 M4 LTE 128G太空灰","MH9D4TA/A",36900,2282,34618],
+    [267337,"iPad Air 13吋 M4 LTE 128G藍","MH9E4TA/A",36900,2282,34618],
+    [267338,"iPad Air 13吋 M4 LTE 128G星光","MH9F4TA/A",36900,2282,34618],
+    [267339,"iPad Air 13吋 M4 LTE 128G紫","MH9G4TA/A",36900,2282,34618],
+    [267340,"iPad Air 13吋 M4 LTE 256G太空灰","MH9H4TA/A",40400,2562,37838],
+    [267341,"iPad Air 13吋 M4 LTE 256G藍","MH9J4TA/A",40400,2562,37838],
+    [267342,"iPad Air 13吋 M4 LTE 256G星光","MH9K4TA/A",40400,2562,37838],
+    [267343,"iPad Air 13吋 M4 LTE 256G紫","MH9L4TA/A",40400,2562,37838],
+    [267344,"iPad Air 13吋 M4 LTE 512G太空灰","MH9M4TA/A",47400,3122,44278],
+    [267345,"iPad Air 13吋 M4 LTE 512G藍","MH9N4TA/A",47400,3122,44278],
+    [267346,"iPad Air 13吋 M4 LTE 512G星光","MH9P4TA/A",47400,3122,44278],
+    [267347,"iPad Air 13吋 M4 LTE 512G紫","MH9Q4TA/A",47400,3122,44278],
+    [267348,"iPad Air 13吋 M4 LTE 1T太空灰","MH9R4TA/A",57900,3962,53938],
+    [267349,"iPad Air 13吋 M4 LTE 1T藍","MH9T4TA/A",57900,3962,53938],
+    [267350,"iPad Air 13吋 M4 LTE 1T星光","MH9U4TA/A",57900,3962,53938],
+    [267351,"iPad Air 13吋 M4 LTE 1T紫","MH9V4TA/A",57900,3962,53938],
   ]],
-  ["iPad","iPad Pro 11吋 M5 現折1995起再送市價3090 Office 365(贈品:257407 Microsoft 365 Personal 個人版一年盒裝)",[
-    [263631,"iPad Pro 11吋 Wi-Fi 256GB-太空黑","MDWK4TA/A",39900,1995,37905],
-    [263632,"iPad Pro 11吋 Wi-Fi 256GB-銀","MDWL4TA/A",39900,1995,37905],
-    [263633,"iPad Pro 11吋 Wi-Fi 512GB-太空黑","MDWM4TA/A",46900,2345,44555],
-    [263634,"iPad Pro 11吋 Wi-Fi 512GB-銀","MDWN4TA/A",46900,2345,44555],
-    [263635,"iPad Pro 11吋 Wi-Fi 1TB-太空黑","MDWP4TA/A",60900,3045,57855],
-    [263636,"iPad Pro 11吋 Wi-Fi 1TB-銀","MDWQ4TA/A",60900,3045,57855],
-    [263637,"iPad Pro 11吋 Wi-Fi 2TB-太空黑","MDWU4TA/A",78400,3920,74480],
-    [263638,"iPad Pro 11吋 Wi-Fi 2TB-銀","MDWV4TA/A",78400,3920,74480],
-    [263639,"iPad Pro 11吋 Wi-Fi 1T-太空黑(Nano)","MDWR4TA/A",64400,3220,61180],
-    [263640,"iPad Pro 11吋 Wi-Fi 1T-銀(Nano)","MDWT4TA/A",64400,3220,61180],
-    [263641,"iPad Pro 11吋 Wi-Fi 2T-太空黑(Nano)","MDWW4TA/A",81900,4095,77805],
-    [263642,"iPad Pro 11吋 Wi-Fi 2T-銀(Nano)","MDWX4TA/A",81900,4095,77805],
-    [263643,"iPad Pro 11吋 Wi-Fi+LTE 256G-太空黑","ME2N4TA/A",46900,2345,44555],
-    [263644,"iPad Pro 11吋 Wi-Fi+LTE 256G-銀","ME2P4TA/A",46900,2345,44555],
-    [263645,"iPad Pro 11吋 Wi-Fi+LTE 512G-太空黑","ME2Q4TA/A",53900,2695,51205],
-    [263646,"iPad Pro 11吋 Wi-Fi+LTE 512G-銀","ME2T4TA/A",53900,2695,51205],
-    [263647,"iPad Pro 11吋 Wi-Fi+LTE 1T-太空黑","ME2U4TA/A",67900,3395,64505],
-    [263648,"iPad Pro 11吋 Wi-Fi+LTE 1T-銀","ME2V4TA/A",67900,3395,64505],
-    [263649,"iPad Pro 11吋 Wi-Fi+LTE 2T-太空黑","ME2Y4TA/A",85400,4270,81130],
-    [263650,"iPad Pro 11吋 Wi-Fi+LTE 2T-銀","ME6A4TA/A",85400,4270,81130],
-    [263651,"iPad Pro 11吋 Wi-Fi+LTE 1T-太空黑(Nano)","ME2W4TA/A",71400,3570,67830],
-    [263652,"iPad Pro 11吋 Wi-Fi+LTE 1T-銀(Nano)","ME2X4TA/A",71400,3570,67830],
-    [263653,"iPad Pro 11吋 Wi-Fi+LTE 2T-太空黑(Nano)","ME6C4TA/A",88900,4445,84455],
-    [263654,"iPad Pro 11吋 Wi-Fi+LTE 2T-銀(Nano)","ME6D4TA/A",88900,4445,84455],
+  ["iPad","iPad Pro 11吋 M5 現折2303起再送市價800保護貼(贈品:249746 Riivan iPad Pro 11亮面保護貼)",[
+    [263631,"iPad Pro 11吋 Wi-Fi 256GB-太空黑","MDWK4TA/A",39900,2303,37597],
+    [263632,"iPad Pro 11吋 Wi-Fi 256GB-銀","MDWL4TA/A",39900,2303,37597],
+    [263633,"iPad Pro 11吋 Wi-Fi 512GB-太空黑","MDWM4TA/A",46900,2793,44107],
+    [263634,"iPad Pro 11吋 Wi-Fi 512GB-銀","MDWN4TA/A",46900,2793,44107],
+    [263635,"iPad Pro 11吋 Wi-Fi 1TB-太空黑","MDWP4TA/A",60900,3773,57127],
+    [263636,"iPad Pro 11吋 Wi-Fi 1TB-銀","MDWQ4TA/A",60900,3773,57127],
+    [263637,"iPad Pro 11吋 Wi-Fi 2TB-太空黑","MDWU4TA/A",78400,4998,73402],
+    [263638,"iPad Pro 11吋 Wi-Fi 2TB-銀","MDWV4TA/A",78400,4998,73402],
+    [263639,"iPad Pro 11吋 Wi-Fi 1T-太空黑(Nano)","MDWR4TA/A",64400,4018,60382],
+    [263640,"iPad Pro 11吋 Wi-Fi 1T-銀(Nano)","MDWT4TA/A",64400,4018,60382],
+    [263641,"iPad Pro 11吋 Wi-Fi 2T-太空黑(Nano)","MDWW4TA/A",81900,5243,76657],
+    [263642,"iPad Pro 11吋 Wi-Fi 2T-銀(Nano)","MDWX4TA/A",81900,5243,76657],
+    [263643,"iPad Pro 11吋 Wi-Fi+LTE 256G-太空黑","ME2N4TA/A",46900,2793,44107],
+    [263644,"iPad Pro 11吋 Wi-Fi+LTE 256G-銀","ME2P4TA/A",46900,2793,44107],
+    [263645,"iPad Pro 11吋 Wi-Fi+LTE 512G-太空黑","ME2Q4TA/A",53900,3283,50617],
+    [263646,"iPad Pro 11吋 Wi-Fi+LTE 512G-銀","ME2T4TA/A",53900,3283,50617],
+    [263647,"iPad Pro 11吋 Wi-Fi+LTE 1T-太空黑","ME2U4TA/A",67900,4263,63637],
+    [263648,"iPad Pro 11吋 Wi-Fi+LTE 1T-銀","ME2V4TA/A",67900,4263,63637],
+    [263649,"iPad Pro 11吋 Wi-Fi+LTE 2T-太空黑","ME2Y4TA/A",85400,5488,79912],
+    [263650,"iPad Pro 11吋 Wi-Fi+LTE 2T-銀","ME6A4TA/A",85400,5488,79912],
+    [263651,"iPad Pro 11吋 Wi-Fi+LTE 1T-太空黑(Nano)","ME2W4TA/A",71400,4508,66892],
+    [263652,"iPad Pro 11吋 Wi-Fi+LTE 1T-銀(Nano)","ME2X4TA/A",71400,4508,66892],
+    [263653,"iPad Pro 11吋 Wi-Fi+LTE 2T-太空黑(Nano)","ME6C4TA/A",88900,5733,83167],
+    [263654,"iPad Pro 11吋 Wi-Fi+LTE 2T-銀(Nano)","ME6D4TA/A",88900,5733,83167],
   ]],
-  ["iPad","iPad Pro 13吋 M5 現折2545起再送市價3090 Office 365(贈品:257407 Microsoft 365 Personal 個人版一年盒裝)",[
-    [263655,"iPad Pro 13吋 Wi-Fi 256GB-太空黑","MDYJ4TA/A",50900,2545,48355],
-    [263656,"iPad Pro 13吋 Wi-Fi 256GB-銀","MDYK4TA/A",50900,2545,48355],
-    [263657,"iPad Pro 13吋 Wi-Fi 512GB-太空黑","MDYL4TA/A",57900,2895,55005],
-    [263658,"iPad Pro 13吋 Wi-Fi 512GB-銀","MDYM4TA/A",57900,2895,55005],
-    [263659,"iPad Pro 13吋 Wi-Fi 1TB-太空黑","MDYN4TA/A",71900,3595,68305],
-    [263660,"iPad Pro 13吋 Wi-Fi 1TB-銀","MDYP4TA/A",71900,3595,68305],
-    [263661,"iPad Pro 13吋 Wi-Fi 2TB-太空黑","MDYT4TA/A",89400,4470,84930],
-    [263662,"iPad Pro 13吋 Wi-Fi 2TB-銀","MDYU4TA/A",89400,4470,84930],
-    [263663,"iPad Pro 13吋 Wi-Fi 1TB-太空黑(Nano)","MDYQ4TA/A",75400,3770,71630],
-    [263664,"iPad Pro 13吋 Wi-Fi 1TB-銀(Nano)","MDYR4TA/A",75400,3770,71630],
-    [263665,"iPad Pro 13吋 Wi-Fi 2TB-太空黑(Nano)","MDYV4TA/A",92900,4645,88255],
-    [263666,"iPad Pro 13吋 Wi-Fi 2TB-銀(Nano)","MDYW4TA/A",92900,4645,88255],
-    [263667,"iPad Pro 13吋 Wi-Fi+LTE 256G-太空黑","ME7W4TA/A",57900,2895,55005],
-    [263668,"iPad Pro 13吋 Wi-Fi+LTE 256G-銀","ME7X4TA/A",57900,2895,55005],
-    [263669,"iPad Pro 13吋 Wi-Fi+LTE 512G-太空黑","ME7Y4TA/A",64900,3245,61655],
-    [263670,"iPad Pro 13吋 Wi-Fi+LTE 512G-銀","ME8C4TA/A",64900,3245,61655],
-    [263671,"iPad Pro 13吋 Wi-Fi+LTE 1T-太空黑","ME8D4TA/A",78900,3945,74955],
-    [263672,"iPad Pro 13吋 Wi-Fi+LTE 1T-銀","ME8F4TA/A",78900,3945,74955],
-    [263673,"iPad Pro 13吋 Wi-Fi+LTE 2T-太空黑","ME8J4TA/A",96400,4820,91580],
-    [263674,"iPad Pro 13吋 Wi-Fi+LTE 2T-銀","ME8K4TA/A",96400,4820,91580],
-    [263675,"iPad Pro 13吋 Wi-Fi+LTE 1T-太空黑(Nano)","ME8G4TA/A",82400,4120,78280],
-    [263676,"iPad Pro 13吋 Wi-Fi+LTE 1T-銀(Nano)","ME8H4TA/A",82400,4120,78280],
-    [263677,"iPad Pro 13吋 Wi-Fi+LTE 2T-太空黑(Nano)","ME8M4TA/A",99900,4995,94905],
-    [263678,"iPad Pro 13吋 Wi-Fi+LTE 2T-銀(Nano)","ME8N4TA/A",99900,4995,94905],
+  ["iPad","iPad Pro 13吋 M5 現折3563起",[
+    [263655,"iPad Pro 13吋 Wi-Fi 256GB-太空黑","MDYJ4TA/A",50900,3563,47337],
+    [263656,"iPad Pro 13吋 Wi-Fi 256GB-銀","MDYK4TA/A",50900,3563,47337],
+    [263657,"iPad Pro 13吋 Wi-Fi 512GB-太空黑","MDYL4TA/A",57900,4053,53847],
+    [263658,"iPad Pro 13吋 Wi-Fi 512GB-銀","MDYM4TA/A",57900,4053,53847],
+    [263659,"iPad Pro 13吋 Wi-Fi 1TB-太空黑","MDYN4TA/A",71900,5033,66867],
+    [263660,"iPad Pro 13吋 Wi-Fi 1TB-銀","MDYP4TA/A",71900,5033,66867],
+    [263661,"iPad Pro 13吋 Wi-Fi 2TB-太空黑","MDYT4TA/A",89400,6258,83142],
+    [263662,"iPad Pro 13吋 Wi-Fi 2TB-銀","MDYU4TA/A",89400,6258,83142],
+    [263663,"iPad Pro 13吋 Wi-Fi 1TB-太空黑(Nano)","MDYQ4TA/A",75400,5278,70122],
+    [263664,"iPad Pro 13吋 Wi-Fi 1TB-銀(Nano)","MDYR4TA/A",75400,5278,70122],
+    [263665,"iPad Pro 13吋 Wi-Fi 2TB-太空黑(Nano)","MDYV4TA/A",92900,6503,86397],
+    [263666,"iPad Pro 13吋 Wi-Fi 2TB-銀(Nano)","MDYW4TA/A",92900,6503,86397],
+    [263667,"iPad Pro 13吋 Wi-Fi+LTE 256G-太空黑","ME7W4TA/A",57900,4053,53847],
+    [263668,"iPad Pro 13吋 Wi-Fi+LTE 256G-銀","ME7X4TA/A",57900,4053,53847],
+    [263669,"iPad Pro 13吋 Wi-Fi+LTE 512G-太空黑","ME7Y4TA/A",64900,4543,60357],
+    [263670,"iPad Pro 13吋 Wi-Fi+LTE 512G-銀","ME8C4TA/A",64900,4543,60357],
+    [263671,"iPad Pro 13吋 Wi-Fi+LTE 1T-太空黑","ME8D4TA/A",78900,5523,73377],
+    [263672,"iPad Pro 13吋 Wi-Fi+LTE 1T-銀","ME8F4TA/A",78900,5523,73377],
+    [263673,"iPad Pro 13吋 Wi-Fi+LTE 2T-太空黑","ME8J4TA/A",96400,6748,89652],
+    [263674,"iPad Pro 13吋 Wi-Fi+LTE 2T-銀","ME8K4TA/A",96400,6748,89652],
+    [263675,"iPad Pro 13吋 Wi-Fi+LTE 1T-太空黑(Nano)","ME8G4TA/A",82400,5768,76632],
+    [263676,"iPad Pro 13吋 Wi-Fi+LTE 1T-銀(Nano)","ME8H4TA/A",82400,5768,76632],
+    [263677,"iPad Pro 13吋 Wi-Fi+LTE 2T-太空黑(Nano)","ME8M4TA/A",99900,6993,92907],
+    [263678,"iPad Pro 13吋 Wi-Fi+LTE 2T-銀(Nano)","ME8N4TA/A",99900,6993,92907],
   ]],
   // ===== iPhone =====
-  ["iPhone","iPhone 16e 滿萬送500配件金",[
-    [256229,"iPhone 16e 128G-黑色","MD1Q4ZP/A",21900,0,21900],
-    [256230,"iPhone 16e 128G-白色","MD1R4ZP/A",21900,0,21900],
+  ["iPhone","iPhone 16e 現折876",[
+    [256229,"iPhone 16e 128G-黑色","MD1Q4ZP/A",21900,876,21024],
+    [256230,"iPhone 16e 128G-白色","MD1R4ZP/A",21900,876,21024],
   ]],
-  ["iPhone","iPhone 17e 滿萬送500配件金",[
-    [267282,"iPhone 17e 256GB-黑色","MHRV4ZP/A",25900,0,25900],
-    [267283,"iPhone 17e 256GB-白色","MHRW4ZP/A",25900,0,25900],
-    [267284,"iPhone 17e 256GB-嫩粉色","MHRX4ZP/A",25900,0,25900],
-    [267285,"iPhone 17e 512GB-黑色","MHRY4ZP/A",32900,0,32900],
-    [267286,"iPhone 17e 512GB-白色","MHU04ZP/A",32900,0,32900],
+  ["iPhone","iPhone 17e 現折1036起",[
+    [267282,"iPhone 17e 256GB-黑色","MHRV4ZP/A",25900,1036,24864],
+    [267283,"iPhone 17e 256GB-白色","MHRW4ZP/A",25900,1036,24864],
+    [267284,"iPhone 17e 256GB-嫩粉色","MHRX4ZP/A",25900,1036,24864],
+    [267285,"iPhone 17e 512GB-黑色","MHRY4ZP/A",32900,1316,31584],
+    [267286,"iPhone 17e 512GB-白色","MHU04ZP/A",32900,1316,31584],
   ]],
-  ["iPhone","iPhone 16 滿萬送500配件金",[
-    [252083,"iPhone 16 128GB-黑色","MYE73ZP/A",29900,0,29900],
-    [252084,"iPhone 16 128GB-白色","MYE93ZP/A",29900,0,29900],
-    [252085,"iPhone 16 128GB-粉紅色","MYEA3ZP/A",29900,0,29900],
+  ["iPhone","iPhone 16 現折1196",[
+    [252083,"iPhone 16 128GB-黑色","MYE73ZP/A",29900,1196,28704],
+    [252084,"iPhone 16 128GB-白色","MYE93ZP/A",29900,1196,28704],
+    [252085,"iPhone 16 128GB-粉紅色","MYEA3ZP/A",29900,1196,28704],
   ]],
-  ["iPhone","iPhone 17 滿萬送500配件金",[
-    [262249,"iPhone 17 256GB-黑色","MG6J4ZP/A",32900,0,32900],
-    [262250,"iPhone 17 256GB-白色","MG6K4ZP/A",32900,0,32900],
-    [262251,"iPhone 17 256GB-霧藍色","MG6L4ZP/A",32900,0,32900],
-    [262252,"iPhone 17 256GB-薰衣草紫色","MG6M4ZP/A",32900,0,32900],
-    [262253,"iPhone 17 256GB-鼠尾草綠色","MG6N4ZP/A",32900,0,32900],
-    [262254,"iPhone 17 512GB-黑色","MG6P4ZP/A",39900,0,39900],
-    [262255,"iPhone 17 512GB-白色","MG6Q4ZP/A",39900,0,39900],
-    [262256,"iPhone 17 512GB-霧藍色","MG6T4ZP/A",39900,0,39900],
-    [262257,"iPhone 17 512GB-薰衣草紫色","MG6U4ZP/A",39900,0,39900],
-    [262258,"iPhone 17 512GB-鼠尾草綠色","MG6V4ZP/A",39900,0,39900],
+  ["iPhone","iPhone 17 現折866起再送市價990保護貼(贈品:272963 Riivan i18/18Pro 2.5D 4倍高透保貼)",[
+    [262249,"iPhone 17 256GB-黑色","MG6J4ZP/A",32900,866,32034],
+    [262250,"iPhone 17 256GB-白色","MG6K4ZP/A",32900,866,32034],
+    [262251,"iPhone 17 256GB-霧藍色","MG6L4ZP/A",32900,866,32034],
+    [262252,"iPhone 17 256GB-薰衣草紫色","MG6M4ZP/A",32900,866,32034],
+    [262253,"iPhone 17 256GB-鼠尾草綠色","MG6N4ZP/A",32900,866,32034],
+    [262254,"iPhone 17 512GB-黑色","MG6P4ZP/A",39900,1146,38754],
+    [262255,"iPhone 17 512GB-白色","MG6Q4ZP/A",39900,1146,38754],
+    [262256,"iPhone 17 512GB-霧藍色","MG6T4ZP/A",39900,1146,38754],
+    [262257,"iPhone 17 512GB-薰衣草紫色","MG6U4ZP/A",39900,1146,38754],
+    [262258,"iPhone 17 512GB-鼠尾草綠色","MG6V4ZP/A",39900,1146,38754],
   ]],
-  ["iPhone","iPhone 17 Pro 滿萬送400配件金(皆現有庫存售完為止)",[
-    [262271,"iPhone 17 Pro 256GB-銀色","MG8G4ZP/A",39900,0,39900],
-    [262272,"iPhone 17 Pro 256GB-宇宙橙色","MG8H4ZP/A",39900,0,39900],
-    [262273,"iPhone 17 Pro 256GB-藏藍色","MG8J4ZP/A",39900,0,39900],
+  ["iPhone","iPhone 17 Pro 現折1197起(皆現有庫存售完為止)",[
+    [262271,"iPhone 17 Pro 256GB-銀色","MG8G4ZP/A",39900,1197,38703],
+    [262272,"iPhone 17 Pro 256GB-宇宙橙色","MG8H4ZP/A",39900,1197,38703],
+    [262273,"iPhone 17 Pro 256GB-藏藍色","MG8J4ZP/A",39900,1197,38703],
   ]],
-  ["iPhone","iPhone 17 Pro Max 滿萬送400配件金(皆現有庫存售完為止)",[
-    [262280,"iPhone 17 Pro Max 256GB-銀色","MFYM4ZP/A",44900,0,44900],
-    [262281,"iPhone 17 Pro Max 256GB-宇宙橙色","MFYN4ZP/A",44900,0,44900],
-    [262282,"iPhone 17 Pro Max 256GB-藏藍色","MFYP4ZP/A",44900,0,44900],
-    [262283,"iPhone 17 Pro Max 512GB-銀色","MFYQ4ZP/A",51900,0,51900],
-    [262284,"iPhone 17 Pro Max 512GB-宇宙橙色","MFYQ5ZP/A",51900,0,51900],
-    [262285,"iPhone 17 Pro Max 512GB-藏藍色","MFYQ6ZP/A",51900,0,51900],
-    [262290,"iPhone 17 Pro Max 2TB-宇宙橙色","MFYQ11ZP/A",72900,0,72900],
-    [262291,"iPhone 17 Pro Max 2TB-藏藍色","MFYQ12ZP/A",72900,0,72900],
+  ["iPhone","iPhone 17 Pro Max 現折1347起(皆現有庫存售完為止)",[
+    [262280,"iPhone 17 Pro Max 256GB-銀色","MFYM4ZP/A",44900,1347,43553],
+    [262281,"iPhone 17 Pro Max 256GB-宇宙橙色","MFYN4ZP/A",44900,1347,43553],
+    [262282,"iPhone 17 Pro Max 256GB-藏藍色","MFYP4ZP/A",44900,1347,43553],
+    [262283,"iPhone 17 Pro Max 512GB-銀色","MFYQ4ZP/A",51900,1557,50343],
+    [262284,"iPhone 17 Pro Max 512GB-宇宙橙色","MFYQ5ZP/A",51900,1557,50343],
+    [262285,"iPhone 17 Pro Max 512GB-藏藍色","MFYQ6ZP/A",51900,1557,50343],
+    [262290,"iPhone 17 Pro Max 2TB-宇宙橙色","MFYQ11ZP/A",72900,2187,70713],
+    [262291,"iPhone 17 Pro Max 2TB-藏藍色","MFYQ12ZP/A",72900,2187,70713],
   ]],
   ["iPhone","iPhone 18 Pro 滿萬送200配件金",[
     [273212,"iPhone 18 Pro 256GB-黑色","MJRP4ZP/A",44900,0,44900],
@@ -555,10 +519,7 @@ const RAW = [
     [262293,"AW SE GPS 40/星光鋁/星光運動錶帶-M/L","MEH54TA/A",7900,553,7347],
     [262294,"AW SE GPS 40/午夜鋁/午夜運動錶帶-S/M","MEH94TA/A",7900,553,7347],
     [262295,"AW SE GPS 40/午夜鋁/午夜運動錶帶-M/L","MEHC4TA/A",7900,553,7347],
-    [262296,"AW SE GPS 44/星光鋁/星光運動錶帶-S/M","MEHG4TA/A",8900,623,8277],
     [262297,"AW SE GPS 44/星光鋁/星光運動錶帶-M/L","MEHJ4TA/A",8900,623,8277],
-    [262298,"AW SE GPS 44/午夜鋁/午夜運動錶帶-S/M","MEHN4TA/A",8900,623,8277],
-    [262299,"AW SE GPS 44/午夜鋁/午夜運動錶帶-M/L","MEHQ4TA/A",8900,623,8277],
   ]],
   ["Apple Watch","Apple Watch S11 現折512起",[
     [262308,"AW S11 GPS 42/曜石黑鋁/黑運動錶帶-S/M","MEQT4TA/A",12400,532,11868],
@@ -572,13 +533,14 @@ const RAW = [
     [262361,"AW Ultra 3 49/原色鈦/錨藍色海洋錶帶","MEWH4TA/A",24800,321,24479],
     [262362,"AW Ultra 3 49/黑色鈦/黑色海洋錶帶","MF0J4TA/A",24800,321,24479],
     [262364,"AW Ultra 3 49/黑色鈦/黑色高山錶環-M","MF0V4TA/A",24800,321,24479],
+    [262365,"AW Ultra 3 49/黑色鈦/黑色高山錶環-L","MF0X4TA/A",24800,321,24479],
     [262367,"AW Ultra 3 49/原色鈦/淡藍色高山錶環-M","MEWM4TA/A",24800,321,24479],
     [262369,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-SM","MEWR4TA/A",24800,321,24479],
     [262370,"AW Ultra 3 49/原色鈦/藍配亮藍越野錶環-ML","MEWU4TA/A",24800,321,24479],
     [262371,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-SM","MF1D4TA/A",24800,321,24479],
     [262372,"AW Ultra 3 49/黑色鈦/黑配木炭色越野錶環-ML","MF1H4TA/A",24800,321,24479],
   ]],
-  ["Apple Watch","Apple Watch SE 3 送200配件金",[
+  ["Apple Watch","Apple Watch SE 3 送300配件金",[
     [273252,"AW SE 3 GPS 40/午夜鋁/海軍藍運動錶帶-S/M","MJKY4TA/A",7900,0,7900],
     [273253,"AW SE 3 GPS 40/午夜鋁/海軍藍運動錶帶-M/L","MJL14TA/A",7900,0,7900],
     [273254,"AW SE 3 GPS 40/星光鋁/沙色運動錶帶-S/M","MJKR4TA/A",7900,0,7900],
@@ -596,7 +558,7 @@ const RAW = [
     [273266,"AW SE 3 LTE 44/星光鋁/沙色運動錶帶-S/M","MJLL4TA/A",10400,0,10400],
     [273267,"AW SE 3 LTE 44/星光鋁/沙色運動錶帶-M/L","MJLN4TA/A",10400,0,10400],
   ]],
-  ["Apple Watch","Apple Watch S12 滿萬送200配件金",[
+  ["Apple Watch","Apple Watch S12 滿萬送300配件金",[
     [273268,"AW S12 GPS 42/黑鋁/黑運動錶帶-S/M","MJEA4TA/A",13900,0,13900],
     [273269,"AW S12 GPS 42/黑鋁/黑運動錶帶-M/L","MJEC4TA/A",13900,0,13900],
     [273270,"AW S12 GPS 42/淺金鋁/沙色運動錶帶-S/M","MJED4TA/A",13900,0,13900],
@@ -658,7 +620,7 @@ const RAW = [
     [273316,"AW S12 LTE 46/珍珠白陶瓷/沙色運動錶帶-S/M","MJH14TA/A",34400,0,34400],
     [273317,"AW S12 LTE 46/珍珠白陶瓷/沙色運動錶帶-M/L","MJH24TA/A",34400,0,34400],
   ]],
-  ["Apple Watch","Apple Watch Ultra 4 滿萬送200配件金",[
+  ["Apple Watch","Apple Watch Ultra 4 滿萬送300配件金",[
     [273328,"AW Ultra 4 49/原色鈦/半透明灰海洋錶帶","MJAD4TA/A",27900,0,27900],
     [273329,"AW Ultra 4 49/原色鈦/沙色越野錶環-S/M","MJAJ4TA/A",27900,0,27900],
     [273330,"AW Ultra 4 49/原色鈦/沙色越野錶環-M/L","MJAQ4TA/A",27900,0,27900],
@@ -693,9 +655,6 @@ const RAW = [
   ]],
   ["AirPods","AirPods 5 無線充電盒 送200配件金",[
     [273347,"AirPods 5-無線充電盒","MKFT4TA/A",5190,0,5190],
-  ]],
-  ["AirPods","AirPods Max 現折3991(已停產)",[
-    [252143,"AirPods Max-午夜色","MWW43TA/A",17990,3991,13999],
   ]],
   ["AirPods","AirPods Max 2 現折899",[
     [267952,"AirPods Max 2-午夜色","MHWK4TA/A",17990,899,17091],
@@ -765,7 +724,6 @@ const RAW = [
     [258264,"Beats USB-C對Lightning編織線閃電黑-1.5M","MDGK4ZP/A",590,221,369],
     [258263,"Beats USB-C對USB-C編織線氮燃藍-1.5M","MDGE4ZP/A",590,221,369],
     [258262,"Beats USB-C對USB-C編織線風馳灰-1.5M","MDGD4ZP/A",590,221,369],
-    [258261,"Beats USB-C對USB-C編織線閃電黑-1.5M","MDGA4ZP/A",590,221,369],
     [262393,"iPhone Air 防護邊框-淺灰色","MH014FE/A",1290,129,1161],
     [262396,"斜背掛繩-橙色","MGGD4FE/A",1890,94,1796],
     [262399,"斜背掛繩-藍色","MGGG4FE/A",1890,94,1796],
@@ -773,16 +731,36 @@ const RAW = [
     [262402,"斜背掛繩-小麥色","MGGK4FE/A",1890,94,1796],
     [262403,"斜背掛繩-黑色","MGGL4FE/A",1890,94,1796],
     [262405,"斜背掛繩-赭褐色","MGGN4FE/A",1890,94,1796],
+    [273385,"斜背掛繩-勃根地紅色","MK974FE/A",1890,94,1796],
+    [262433,"iPhone MagSafe精細織紋卡套-海軍藍色","MGH94FE/A",1890,94,1796],
+    [262434,"iPhone MagSafe精細織紋卡套-黑色","MGHA4FE/A",1890,94,1796],
     [262406,"iPhone 17 Pro MagSafe透明保護殼","MGFT4FE/A",1690,169,1521],
-    [262407,"iPhone 17 Pro MagSafe矽膠保護殼-橙","MGFE4FE/A",1690,169,1521],
     [262410,"iPhone 17 Pro MagSafe矽膠保護殼-午夜","MGFH4FE/A",1690,169,1521],
     [262412,"iPhone 17 Pro MagSafe矽膠保護殼-黑","MGFK4FE/A",1690,169,1521],
-    [262415,"iPhone 17 Pro MagSafe科技織紋保護殼-紫","MGF54FE/A",1890,189,1701],
     [262418,"iPhone 17 Pro Max MagSafe透明保護殼","MGFW4FE/A",1690,169,1521],
-    [262419,"iPhone 17 PM MagSafe矽膠保護殼-橙","MGFL4FE/A",1690,169,1521],
     [262422,"iPhone 17 PM MagSafe矽膠保護殼-午夜","MGFP4FE/A",1690,169,1521],
     [262424,"iPhone 17 PM MagSafe矽膠保護殼-黑","MGFR4FE/A",1690,169,1521],
-    [262429,"iPhone 17 PM MagSafe科技織紋保護殼-綠","MGFD4FE/A",1890,189,1701],
+    [267352,"iPhone 17e MagSafe透明保護殼","MHWC4FE/A",1490,149,1341],
+    [267353,"iPhone 17e MagSafe矽膠保護殼-黑","MHWD4FE/A",1490,149,1341],
+    [267354,"iPhone 17e MagSafe矽膠保護殼-香草","MHWG4FE/A",1490,149,1341],
+    [273348,"iPhone 18 Pro MagSafe透明殼","MKDU4FE/A",1690,84,1606],
+    [273349,"iPhone 18 Pro MagSafe矽膠殼-黑色","MK8Y4FE/A",1690,84,1606],
+    [273350,"iPhone 18 Pro MagSafe矽膠殼-清爽藍色","MK8W4FE/A",1690,84,1606],
+    [273351,"iPhone 18 Pro MagSafe矽膠殼-洋紅色","MK8T4FE/A",1690,84,1606],
+    [273352,"iPhone 18 Pro MagSafe矽膠殼-勃根地紅色","MK8U4FE/A",1690,84,1606],
+    [273353,"iPhone 18 Pro MagSafe矽膠保護殼-橄欖色","MK8V4FE/A",1690,84,1606],
+    [273355,"iPhone 18 Pro MagSafe織紋殼-黑色","MKD64FE/A",1890,94,1796],
+    [273356,"iPhone 18 Pro MagSafe織紋殼-水手布藍色","MKD54FE/A",1890,94,1796],
+    [273357,"iPhone 18 Pro MagSafe織紋殼-勃根地紅色","MKD14FE/A",1890,94,1796],
+    [273359,"iPhone 18 Pro MagSafe織紋殼-桑葚色","MKD24FE/A",1890,94,1796],
+    [273361,"iPhone 18 PM MagSafe透明殼","MKDV4FE/A",1690,84,1606],
+    [273362,"iPhone 18 PM MagSafe矽膠殼-黑色","MK954FE/A",1690,84,1606],
+    [273363,"iPhone 18 PM MagSafe矽膠殼-清爽藍色","MK934FE/A",1690,84,1606],
+    [273364,"iPhone 18 PM MagSafe矽膠殼-洋紅色","MK904FE/A",1690,84,1606],
+    [273365,"iPhone 18 PM MagSafe矽膠殼-勃根地紅色","MK914FE/A",1690,84,1606],
+    [273368,"iPhone 18 PM MagSafe織紋殼-黑色","MKDT4FE/A",1890,94,1796],
+    [273369,"iPhone 18 PM MagSafe織紋殼-水手布藍色","MKDR4FE/A",1890,94,1796],
+    [273371,"iPhone 18 PM MagSafe織紋殼-勃根地紅色","MKDM4FE/A",1890,94,1796],
   ]],
 ];
 
@@ -918,6 +896,8 @@ const AC_PRICE = {
   "iPhone Air": 6390,
   "iPhone 17 Pro": 6390,
   "iPhone 17 Pro Max": 6390,
+  "iPhone 18 Pro": 6990,
+  "iPhone 18 Pro Max": 6990,
   // Apple Watch
   "Apple Watch SE(第三代)": 1690,
   "Apple Watch SE 3(新錶帶色)": 1690,
@@ -926,6 +906,8 @@ const AC_PRICE = {
   // AirPods
   "AirPods 4": 990,
   "AirPods 4-主動式降噪": 990,
+  "AirPods 5": 990,
+  "AirPods 5-無線充電盒": 990,
   "AirPods Pro 3": 1290,
   "AirPods Max": 1990,
   "AirPods Max 2": 1990,
@@ -969,25 +951,6 @@ function eduDisc(x){
     if(id>=273328 && id<=273345) return 2900; // Ultra 4 全系列
   }
   return 0;
-}
-
-// 併行活動設定
-// iPad / Apple Watch:現行活動價再折抵教育優惠
-// Mac:現行活動價再折 2000(MacBook Neo 折 1500)
-const COMBO_CATS = ["Mac","iPad","Apple Watch"];
-function comboInfo(x){
-  if(!COMBO_CATS.includes(x.cat)) return null;
-  if(x.cat==="Mac"){
-    const d = /MBN/i.test(x.name) ? 1500 : 2000;
-    return {disc:d, label:"併行折抵",
-            head:"併行活動 · 檔期優惠再折抵",
-            note:"※ 本檔期 Mac 活動價可再折抵 $2,000(MacBook Neo 折抵 $1,500)"};
-  }
-  const d = eduDisc(x);
-  if(!d) return null;
-  return {disc:d, label:"教育折抵",
-          head:"併行活動 · 檔期優惠 ＋ 教育優惠同享",
-          note:"※ 本檔期 iPad / Apple Watch 活動價可與教育優惠併行,須憑學生或教職員證"};
 }
 
 const state = {cat:null, family:null, picks:[]};
@@ -1199,9 +1162,6 @@ function renderDetailHTML(x){
   const dispName = state.family + (state.picks.length ? " " + state.picks.join(" ") : "");
   const edu = eduDisc(x);
   const eduPrice = edu ? x.price - edu : 0;
-  // 併行活動:現行優惠活動價再折抵(Mac 定額 / iPad·Apple Watch 教育優惠)
-  const combo = comboInfo(x);
-  const comboPrice = combo ? x.final - combo.disc : 0;
   // 加總同規格所有色系的到貨量
   const siblings = ALL.filter(it=>{
     if(it.family !== state.family) return false;
@@ -1255,18 +1215,6 @@ function renderDetailHTML(x){
       </div>
     </div>
     ${instHTML("學生教育優惠價", eduPrice)}`:''}
-    ${comboPrice?`<div class="combo-section">
-      <div class="combo-icon">🤝</div>
-      <div class="combo-content">
-        <div class="combo-header">${esc(combo.head)}</div>
-        <div class="combo-rows">
-          <div class="combo-price">$${fmt(comboPrice)}</div>
-          <div class="combo-calc">促銷價 $${fmt(x.final)} − ${esc(combo.label)} <b>-$${fmt(combo.disc)}</b></div>
-        </div>
-        <div class="combo-note">${esc(combo.note)}</div>
-      </div>
-    </div>
-    ${instHTML("併行活動價", comboPrice)}`:''}
     ${siblings.length?`<div class="skuinfo-section">
       <div class="skuinfo-header">🔖 產品貨號(${siblings.length} 項)</div>
       <div class="skuinfo-table">
